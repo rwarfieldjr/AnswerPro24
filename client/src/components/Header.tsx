@@ -21,10 +21,10 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-24">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2" data-testid="link-home">
-            <img src={logoImage} alt="AnswerPro 24" className="h-12 w-auto" />
+            <img src={logoImage} alt="AnswerPro 24" className="h-20 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
