@@ -24,7 +24,7 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center" data-testid="link-home">
-            <span className="text-5xl font-bold text-primary" style={{letterSpacing: '0.2em'}}>Answer<span className="text-blue-500">Pro</span> <span className="text-slate-600">24</span></span>
+            <span className="text-2xl font-bold text-primary">AnswerPro 24</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -44,13 +44,13 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-4">
             <a
               href="tel:770-404-9750"
-              className="flex items-center space-x-4 text-xl font-semibold text-primary hover:text-primary/80 border-2 border-primary rounded-lg px-4 py-2"
+              className="flex items-center space-x-2 text-sm font-medium text-primary hover:text-primary/80"
               data-testid="link-phone"
             >
-              <Phone className="h-6 w-6" />
+              <Phone className="h-4 w-4" />
               <span>(770) 404-9750</span>
             </a>
             <ThemeToggle />
