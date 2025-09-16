@@ -24,7 +24,6 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
         <div className="flex items-center justify-between py-3 md:py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3" data-testid="link-home">
-            <img src={logoImage} alt="AnswerPro 24 Logo" className="h-12 sm:h-14 md:h-16 lg:h-18 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
