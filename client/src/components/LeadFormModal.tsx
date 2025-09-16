@@ -71,7 +71,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
   });
 
   const createLeadMutation = useMutation({
-    mutationFn: (data: LeadFormData) => apiRequest("/api/leads", "POST", data),
+    mutationFn: (data: LeadFormData) => apiRequest("POST", "/api/leads", data),
     onSuccess: () => {
       setIsSubmitted(true);
       queryClient.invalidateQueries({ queryKey: ["/api/leads"] });
