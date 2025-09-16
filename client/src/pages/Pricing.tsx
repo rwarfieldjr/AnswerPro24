@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import PricingCards from "@/components/PricingCards";
 import LeadFormModal from "@/components/LeadFormModal";
 import { Button } from "@/components/ui/button";
@@ -40,8 +41,38 @@ export default function Pricing() {
     }
   ];
 
+  const pricingStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "AnswerPro 24 Pricing Plans",
+    "description": "Transparent pricing for AI-powered after-hours call answering service",
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Starter Plan",
+        "price": "49",
+        "priceCurrency": "USD",
+        "description": "Perfect for small businesses with basic after-hours needs"
+      },
+      {
+        "@type": "Offer",
+        "name": "Professional Plan", 
+        "price": "149",
+        "priceCurrency": "USD",
+        "description": "Ideal for growing businesses with multiple technicians"
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Pricing - AnswerPro 24 | Transparent After-Hours Call Service Rates"
+        description="Simple, transparent pricing for AI call answering. Plans start at $49/month. 14-day free trial, no setup fees, no contracts. Pay only for calls you receive."
+        keywords={["answering service pricing", "call service rates", "after hours pricing", "home service call costs", "AI answering service price"]}
+        canonicalUrl="https://answerpro24.com/pricing"
+        structuredData={pricingStructuredData}
+      />
       <Header onStartTrial={handleStartTrial} />
       
       <main>

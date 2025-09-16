@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import HowItWorksStepper from "@/components/HowItWorksStepper";
 import LeadFormModal from "@/components/LeadFormModal";
 import { Card, CardContent } from "@/components/ui/card";
@@ -65,8 +66,48 @@ export default function HowItWorks() {
     setIsLeadFormOpen(true);
   };
 
+  const howItWorksStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Set Up AnswerPro 24 Call Answering Service",
+    "description": "Simple 4-step process to get AI call answering for your home service business",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Phone Setup",
+        "text": "Forward your after-hours calls to our dedicated number",
+        "url": "https://answerpro24.com/how-it-works#phone-setup"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Configure Rules",
+        "text": "Customize your emergency escalation criteria", 
+        "url": "https://answerpro24.com/how-it-works#configure-rules"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "AI Training",
+        "text": "Our AI learns your specific service terminology",
+        "url": "https://answerpro24.com/how-it-works#ai-training"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Go Live",
+        "text": "Start receiving professionally handled calls",
+        "url": "https://answerpro24.com/how-it-works#go-live"
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="How It Works - AnswerPro 24 | Simple Setup in 15 Minutes"
+        description="Learn how AnswerPro 24 works. Simple 4-step setup process gets you professional after-hours call handling in just 15 minutes. No technical expertise required."
+        keywords={["how answering service works", "call service setup", "after hours setup process", "AI call answering setup", "home service call handling"]}
+        canonicalUrl="https://answerpro24.com/how-it-works"
+        structuredData={howItWorksStructuredData}
+      />
       <Header onStartTrial={handleStartTrial} />
       
       <main>

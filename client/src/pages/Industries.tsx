@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import IndustriesCards from "@/components/IndustriesCards";
 import LeadFormModal from "@/components/LeadFormModal";
 import { Card, CardContent } from "@/components/ui/card";
@@ -102,8 +103,41 @@ export default function Industries() {
     setIsLeadFormOpen(true);
   };
 
+  const industriesStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Industry-Specific Call Handling",
+    "description": "Specialized AI call answering for plumbing, electrical, HVAC, and garage door services",
+    "serviceType": "Industry-Specific Call Answering",
+    "audience": [
+      {
+        "@type": "Audience",
+        "audienceType": "Plumbing Services"
+      },
+      {
+        "@type": "Audience", 
+        "audienceType": "Electrical Services"
+      },
+      {
+        "@type": "Audience",
+        "audienceType": "HVAC Services"
+      },
+      {
+        "@type": "Audience",
+        "audienceType": "Garage Door Services"
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Industries - AnswerPro 24 | Specialized Call Handling for Home Services"
+        description="Industry-specific AI call handling for plumbers, electricians, HVAC, and garage door companies. Smart emergency detection with custom escalation rules for each trade."
+        keywords={["plumber answering service", "electrician call service", "HVAC answering service", "garage door call answering", "home service industries", "trade-specific call handling"]}
+        canonicalUrl="https://answerpro24.com/industries"
+        structuredData={industriesStructuredData}
+      />
       <Header onStartTrial={handleStartTrial} />
       
       <main>
