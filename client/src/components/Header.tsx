@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Phone } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import logoImage from "@assets/generated_images/AnswerPro_24_main_logo_f019b18c.png";
 
 const navigation = [
@@ -52,6 +53,7 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
               <Phone className="h-4 w-4" />
               <span>(888) 000-0247</span>
             </a>
+            <ThemeToggle />
             <Button onClick={onStartTrial} data-testid="button-start-trial">
               Start Free Trial
             </Button>
@@ -88,6 +90,10 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
                     <Phone className="h-5 w-5" />
                     <span>(888) 000-0247</span>
                   </a>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Theme:</span>
+                    <ThemeToggle />
+                  </div>
                   <Button onClick={() => { onStartTrial(); setIsOpen(false); }} className="w-full" data-testid="mobile-button-start-trial">
                     Start Free Trial
                   </Button>
