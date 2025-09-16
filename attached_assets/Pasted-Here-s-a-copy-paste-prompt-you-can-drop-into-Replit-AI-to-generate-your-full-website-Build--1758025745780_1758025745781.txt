@@ -1,0 +1,249 @@
+Here’s a copy-paste prompt you can drop into Replit AI to generate your full website.
+
+---
+
+# Build a Production Website for **AnswerPro 24**
+
+## Summary
+
+Create a fast, responsive marketing site for **AnswerPro 24** — an after-hours AI voice answering service that screens calls, gathers details, and either:
+
+* schedules a morning call with the vendor, or
+* escalates/rings the on-call vendor for true emergencies.
+
+Primary audiences: **Plumbers, Electricians, HVAC, Garage Door** companies (but open to all home-service vendors).
+
+Domain: `AnswerPro24.com`
+
+## Tech & Quality Bar
+
+* **Framework:** Next.js (App Router) + TypeScript
+* **Styling:** Tailwind CSS + shadcn/ui components
+* **Forms:** React Hook Form + Zod validation
+* **Email/SMS placeholders:** environment-driven (e.g., SendGrid/Mailgun, Twilio)
+* **Analytics:** lightweight script placeholder (e.g., Plausible/GA4)
+* **SEO:** next-seo, sitemap.xml, robots.txt, OpenGraph images
+* **Accessibility:** WCAG AA (semantic headings, alt text, focus states)
+* **Performance:** Lighthouse 90+ on Performance/SEO/Best Practices/Accessibility
+* **Deploy-ready:** single `Deploy` step (Vercel ready)
+
+## Brand & Tone
+
+* Tone: clear, professional, trustworthy, service-first.
+* Color direction (adjust if needed):
+
+  * Primary: `#0F172A` (slate-900)
+  * Accent: `#2563EB` (blue-600)
+  * Support: `#22C55E` (green-500) for “Online/Live” badges
+* Typography: modern sans (e.g., Inter).
+* Icon set: Lucide.
+
+## Pages & Structure
+
+* `/` Home (hero, social proof, features, how it works, industries, pricing, FAQs, CTA)
+* `/pricing`
+* `/industries` (overview + sections for Plumbers, Electricians, HVAC, Garage Doors)
+* `/how-it-works`
+* `/about`
+* `/contact` (lead form, click-to-call, email)
+* `/legal/privacy`
+* `/legal/terms`
+* `/status` (placeholder component “All systems operational”)
+* `404`, `500`
+
+## Header/Footer
+
+* Header: logo (AP24), nav (Pricing, Industries, How It Works, About, Contact), CTA button “Start Free Trial”
+* Sticky mobile nav, clear phone CTA: **(888) 000-0247** (placeholder)
+* Footer: quick links, contact info, © year, social, legal links, “Powered by AI Voice”.
+
+## Home Page Content (use this copy)
+
+**Hero**
+
+* H1: *After-Hours Answering Powered by AI Voice*
+* Subhead: *We screen every call, collect details, and escalate only true emergencies. You wake up to organized service requests — not chaos.*
+* Primary CTA: **Start Free Trial**
+* Secondary CTA: **See How It Works** (scroll link)
+
+**Trust Row**
+
+* Badges: “24/7 Coverage”, “Emergency Escalation”, “Vendor-Friendly”, “U.S.-Based On-Call Options”
+
+**3 Value Pillars**
+
+1. **Screening That Protects Your Time** — AI captures name, number, address, issue, photos/video link, urgency, warranty status.
+2. **Smart Escalation** — If criteria met (e.g., active water leak, no heat in freezing temps), we **ring your on-call tech**. Otherwise we **schedule for morning**.
+3. **Zero Missed Leads** — Every call becomes a ticket with summary + transcript + recording link (optional).
+
+**How It Works (4 steps)**
+
+1. **Forward Your Number After Hours** (we provide instructions and a dedicated number).
+2. **AI Answers & Assesses** (collects details, classifies urgency).
+3. **Route**: Schedule for morning **or** ring the on-call vendor for emergencies.
+4. **Deliver**: You get a morning digest + real-time alerts for escalations.
+
+**Industries We Serve**
+
+* **Plumbers**: burst pipes, leaks, clogs
+* **Electricians**: outages, breaker issues
+* **HVAC**: no-heat/no-cool, safety alerts
+* **Garage Doors**: stuck doors, broken springs
+
+**Feature Highlights**
+
+* Call recording + transcript (optional)
+* Custom escalation rules & schedules
+* Appointment booking (calendar integration placeholder)
+* CRM/webhook/Zapier/Make hooks
+* SMS/email follow-ups to callers
+* Spam/solicitor filtering
+
+**Simple Pricing (teaser)**
+
+* Starter, Pro, Scale (see pricing page for details)
+* All plans include: after-hours coverage, call screening, morning digest.
+
+**FAQ (sample)**
+
+* *What counts as an emergency?*
+  We’ll use your rules (and our defaults) — e.g., active leaks, no heat under 40°F, electrical danger.
+* *How do I forward calls after hours?*
+  We’ll send step-by-step instructions for your carrier or VoIP system.
+* *Do you work with teams?*
+  Yes, round-robin and on-call trees are supported.
+* *Can I start without switching providers?*
+  Yes. Keep your existing number — just forward after hours.
+
+**Final CTA**
+
+* H2: *Stop Losing Sleep — and Leads*
+* Button: **Start Free Trial**
+
+## Pricing (page copy)
+
+* **Starter** — \$99/mo + usage
+
+  * After-hours AI answering
+  * Morning summary
+  * Basic rules & 1 on-call number
+* **Pro** — \$299/mo + usage
+
+  * Everything in Starter
+  * Custom escalation rules
+  * Appointment booking + SMS confirmations
+  * CRM/webhook integration
+* **Scale** — Custom
+
+  * Multi-location, multi-brand
+  * Dedicated success manager
+  * Custom SLAs + reporting
+
+(Add a usage meter component placeholder: per-minute or per-call; make easily editable.)
+
+## Contact & Conversion
+
+* **Primary CTA** everywhere: *Start Free Trial* → `/contact` form modal
+* **Contact form fields (required unless noted):**
+
+  * Company Name, Contact Name, Phone, Email
+  * Industry (select: Plumbing, Electrical, HVAC, Garage Door, Other)
+  * Service Area ZIP/City
+  * Current after-hours volume (select: 0–20, 21–100, 100+)
+  * On-call schedule link (optional URL)
+  * **Consent checkbox**: “I agree to be contacted by SMS/email.”
+* Validate and show success state: “Thanks! We’ll reach out shortly.”
+* On submit:
+
+  * Save to `/api/lead` (dummy handler)
+  * Fire webhook (console log + TODO)
+  * Send confirmation email/SMS (placeholders)
+
+## Components to Implement
+
+* **HeroWithCTA**
+* **FeatureGrid**
+* **IndustriesCards**
+* **HowItWorksStepper**
+* **PricingCards** (toggle monthly/annual placeholder)
+* **FAQAccordion**
+* **LeadFormModal**
+* **Toast** for form success/error
+* **Badge** for “24/7” and “Emergency Escalation”
+
+## Example Copy for Industry Sections
+
+* **Plumbers**: “Stop 2am chaos. We escalate only true emergencies like active leaks or no water. Everything else is booked for morning — fully documented.”
+* **Electricians**: “Safety first. Potential hazards escalate to on-call; nuisance calls are queued with notes.”
+* **HVAC**: “No-heat/no-cool rules based on your thresholds (e.g., <40°F or >90°F).”
+* **Garage Doors**: “Emergency access issues escalate; noisy door inquiries get morning slots.”
+
+## Routing Rules (UI + copy)
+
+Create a simple admin rules UI (static demo):
+
+* If **Category** = Plumbing AND **Issue** includes “active leak” → **Escalate: Call On-Call**
+* If **HVAC** AND **No Heat** AND **Outside Temp < 40°F** (placeholder) → **Escalate**
+* Else → **Schedule Morning Call**
+
+## Integrations (placeholders)
+
+* `POST /api/lead` — save JSON payload
+* `POST /api/webhooks/crm` — forward payload
+* Email via SendGrid/Mailgun (env placeholders)
+* SMS via Twilio (env placeholders)
+* Calendar link field for routing to Calendly/Google Calendar booking page (open in new tab)
+
+## Schema.org & SEO
+
+* Add JSON-LD:
+
+  * `Organization` for AnswerPro 24
+  * `Service` entries for Plumbing/Electrical/HVAC/Garage Door Answering
+* Title/description per page, OG/Twitter images, canonical tags.
+* sitemap.xml + robots.txt
+
+## Accessibility & Compliance
+
+* Visible focus states; aria-labels on buttons/links.
+* Consent checkbox and clear privacy language near forms.
+* Pages: `/legal/privacy` and `/legal/terms` with basic boilerplate.
+
+## Assets
+
+* Generate a simple text logo “AnswerPro 24” + an AP24 monogram mark (SVG).
+* Create a default OG image (brand colors, headline, URL).
+
+## Env & README
+
+* `.env.example` with:
+
+  * `NEXT_PUBLIC_SITE_URL`
+  * `SENDGRID_API_KEY` / `MAILGUN_API_KEY`
+  * `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_MESSAGING_SID`
+  * `CRM_WEBHOOK_URL`
+* `README.md` with:
+
+  * Install, dev, build, deploy (Vercel)
+  * How to set up call forwarding (placeholder links for common carriers)
+  * Where to edit pricing, FAQs, rules, and industries
+
+## Acceptance Criteria (must pass)
+
+* Clean, modern UI; fully responsive.
+* Working lead form with client-side + server-side validation.
+* SEO meta + JSON-LD + sitemap/robots present.
+* Pages listed above exist with provided copy.
+* Lighthouse 90+ across categories on a fresh build.
+* Single command deploy (Vercel).
+* Code is readable, commented where non-obvious, and uses a clear component structure.
+
+## Nice-to-Have (if time)
+
+* Dark mode toggle (remember preference).
+* Simple “Morning Digest” sample page showing how a nightly email might look (static demo).
+* Basic “Status” badge that can be flipped (operational/maintenance).
+
+---
+
+If you want, I can also hand you the exact copy as editable JSON so your VA can tweak headlines, pricing, and FAQs without touching code.
