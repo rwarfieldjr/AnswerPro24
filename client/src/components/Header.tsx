@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Phone } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import logoImage from "@assets/generated_images/Clean_AnswerPro_24_logo_3dd6acb6.png";
+import logoImage from "@assets/generated_images/Tightly_cropped_AnswerPro_logo_27b58189.png";
 
 const navigation = [
   { name: "Pricing", href: "/pricing" },
@@ -21,10 +21,10 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-28">
+        <div className="flex items-center justify-between py-3 md:py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3" data-testid="link-home">
-            <img src={logoImage} alt="AnswerPro 24 Logo" className="h-24 w-auto" />
+            <img src={logoImage} alt="AnswerPro 24 Logo" className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
