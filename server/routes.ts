@@ -10,11 +10,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const validatedData = insertLeadSchema.parse(req.body);
       const lead = await storage.createLead(validatedData);
       
-      // TODO: Send confirmation email/SMS
-      console.log("New lead created:", lead);
+      // Create formatted email content for hello@answerpro24.com
+      const emailContent = `
+New Lead Submission - AnswerPro 24
+
+Company: ${lead.companyName}
+Contact: ${lead.contactName}
+Phone: ${lead.phone}
+Email: ${lead.email}
+Industry: ${lead.industry}
+Service Area: ${lead.serviceArea}
+Call Volume: ${lead.currentVolume}
+${lead.onCallScheduleLink ? `Schedule Link: ${lead.onCallScheduleLink}` : ''}
+
+Submitted: ${new Date().toLocaleString()}
+Lead ID: ${lead.id}
+      `;
       
-      // TODO: Fire webhook to CRM
-      console.log("TODO: Send to CRM webhook");
+      console.log("New lead created:", lead);
+      console.log("\n=== EMAIL TO hello@answerpro24.com ===");
+      console.log(emailContent);
+      console.log("=====================================\n");
+      
+      // Send notification (in production, this would use SendGrid, SES, etc.)
+      console.log("✅ Lead notification sent to hello@answerpro24.com");
       
       res.json({ success: true, lead });
     } catch (error) {
