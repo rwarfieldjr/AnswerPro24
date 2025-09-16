@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import Header from "@/components/Header";
 import SEOHead from "@/components/SEOHead";
 import HeroWithCTA from "@/components/HeroWithCTA";
@@ -13,6 +14,7 @@ import LeadFormModal from "@/components/LeadFormModal";
 
 export default function Home() {
   const [isLeadFormOpen, setIsLeadFormOpen] = useState(false);
+  const [, setLocation] = useLocation();
 
   const handleStartTrial = () => {
     setIsLeadFormOpen(true);
@@ -24,8 +26,7 @@ export default function Home() {
   };
 
   const handleIndustryLearnMore = (slug: string) => {
-    console.log(`Navigate to industry: ${slug}`);
-    // TODO: Navigate to /industries/${slug}
+    setLocation("/contact");
   };
 
   const handlePlanSelect = (planName: string) => {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -98,6 +99,7 @@ const industryDetails = {
 
 export default function Industries() {
   const [isLeadFormOpen, setIsLeadFormOpen] = useState(false);
+  const [, setLocation] = useLocation();
 
   const handleStartTrial = () => {
     setIsLeadFormOpen(true);
@@ -158,8 +160,7 @@ export default function Industries() {
 
         {/* Industries Overview */}
         <IndustriesCards onLearnMore={(slug) => {
-          const element = document.getElementById(slug);
-          element?.scrollIntoView({ behavior: 'smooth' });
+          setLocation("/contact");
         }} />
 
         {/* Detailed Industry Sections */}
