@@ -45,14 +45,6 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-4">
-            <a
-              href="tel:770-404-9750"
-              className="flex items-center space-x-2 text-sm font-medium text-primary hover:text-primary/80"
-              data-testid="link-phone"
-            >
-              <Phone className="h-4 w-4" />
-              <span>(770) 404-9750</span>
-            </a>
             <ThemeToggle />
             <Button onClick={onStartTrial} data-testid="button-start-trial">
               Start Free Trial
@@ -82,14 +74,6 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
                   </Link>
                 ))}
                 <div className="pt-6 border-t space-y-4">
-                  <a
-                    href="tel:770-404-9750"
-                    className="flex items-center space-x-2 text-lg font-medium text-primary"
-                    data-testid="mobile-link-phone"
-                  >
-                    <Phone className="h-5 w-5" />
-                    <span>(770) 404-9750</span>
-                  </a>
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium">Theme:</span>
                     <ThemeToggle />

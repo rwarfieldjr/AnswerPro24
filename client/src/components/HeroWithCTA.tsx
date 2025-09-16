@@ -43,6 +43,33 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
               </Button>
             </div>
 
+            {/* Test Drive Section */}
+            <div className="bg-primary/5 border border-primary/20 rounded-xl p-6 space-y-4">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Phone className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">Test Drive Our AI Voice System</h3>
+              </div>
+              <p className="text-muted-foreground">
+                Experience our AI in action! Call our live demo line and interact with the same AI voice system that will handle your after-hours calls.
+              </p>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <a 
+                  href="tel:770-404-9750"
+                  className="flex items-center space-x-3 text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
+                  data-testid="link-test-drive-phone"
+                >
+                  <Phone className="h-6 w-6" />
+                  <span>(770) 404-9750</span>
+                </a>
+                <div className="text-sm text-muted-foreground">
+                  <div className="font-medium">Available 24/7 for testing</div>
+                  <div>See how our AI handles real scenarios</div>
+                </div>
+              </div>
+            </div>
+
             {/* Trust Badges */}
             <div className="grid grid-cols-2 gap-4 pt-8">
               {trustBadges.map((badge, index) => (
