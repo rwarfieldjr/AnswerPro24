@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Phone } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import logoImage from "@assets/AnswerPro Logo_1758032356924.jpeg";
+import logoImage from "@assets/generated_images/Clean_AnswerPro_24_logo_3dd6acb6.png";
 
 const navigation = [
   { name: "Pricing", href: "/pricing" },
@@ -24,7 +24,7 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3" data-testid="link-home">
-            <img src={logoImage} alt="AnswerPro 24 Logo" className="h-12 w-auto" />
+            <img src={logoImage} alt="AnswerPro 24 Logo" className="h-16 w-auto" />
             <span className="text-4xl font-bold tracking-tight text-primary">AnswerPro 24</span>
           </Link>
 
