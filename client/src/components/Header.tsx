@@ -25,7 +25,6 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3" data-testid="link-home">
             <img src={logoImage} alt="AnswerPro 24 Logo" className="h-16 w-auto" />
-            <span className="text-4xl font-bold tracking-tight text-primary">AnswerPro 24</span>
           </Link>
 
           {/* Desktop Navigation */}
