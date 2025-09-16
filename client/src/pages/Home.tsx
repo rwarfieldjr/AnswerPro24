@@ -46,7 +46,7 @@ export default function Home() {
     "provider": {
       "@type": "Organization",
       "name": "AnswerPro 24",
-      "telephone": "(888) 000-0247",
+      "telephone": "(770) 404-9750",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "123 Tech Boulevard, Suite 400",

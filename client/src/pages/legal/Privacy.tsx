@@ -122,7 +122,7 @@ export default function Privacy() {
                         <li>Withdraw consent for data processing where applicable</li>
                       </ul>
                       <p>
-                        To exercise these rights, contact us at privacy@answerpro24.com or (888) 000-0247.
+                        To exercise these rights, contact us at privacy@answerpro24.com or (770) 404-9750.
                       </p>
                     </div>
                   </div>
@@ -165,7 +165,7 @@ export default function Privacy() {
                         <p>123 Tech Boulevard, Suite 400</p>
                         <p>Austin, TX 78701</p>
                         <p>Email: privacy@answerpro24.com</p>
-                        <p>Phone: (888) 000-0247</p>
+                        <p>Phone: (770) 404-9750</p>
                       </div>
                     </div>
                   </div>

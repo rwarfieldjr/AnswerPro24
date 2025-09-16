@@ -83,7 +83,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     onError: () => {
       toast({
         title: "Something went wrong",
-        description: "Please try again or call us directly at (888) 000-0247",
+        description: "Please try again or call us directly at (770) 404-9750",
         variant: "destructive",
       });
     },
@@ -114,7 +114,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
             <DialogTitle className="text-2xl">Thank You!</DialogTitle>
             <DialogDescription className="text-base">
               We'll reach out shortly to get you started with your free trial.
-              In the meantime, feel free to call us at <strong>(888) 000-0247</strong> with any questions.
+              In the meantime, feel free to call us at <strong>(770) 404-9750</strong> with any questions.
             </DialogDescription>
           </DialogHeader>
           <Button onClick={handleClose} className="mt-4" data-testid="button-close-success">

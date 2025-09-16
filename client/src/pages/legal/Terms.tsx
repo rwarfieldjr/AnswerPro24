@@ -206,7 +206,7 @@ export default function Terms() {
                         <p>123 Tech Boulevard, Suite 400</p>
                         <p>Austin, TX 78701</p>
                         <p>Email: legal@answerpro24.com</p>
-                        <p>Phone: (888) 000-0247</p>
+                        <p>Phone: (770) 404-9750</p>
                       </div>
                     </div>
                   </div>
