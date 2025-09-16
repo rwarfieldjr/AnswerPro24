@@ -23,8 +23,8 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3" data-testid="link-home">
-            <span className="text-4xl font-bold tracking-tight text-primary">AnswerPro 24</span>
+          <Link href="/" className="flex items-center" data-testid="link-home">
+            <span className="text-4xl font-bold tracking-wide text-primary">AnswerPro 24</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -44,13 +44,13 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
             <a
               href="tel:770-404-9750"
-              className="flex items-center space-x-2 text-sm font-medium text-primary hover:text-primary/80"
+              className="flex items-center space-x-3 text-lg font-medium text-primary hover:text-primary/80"
               data-testid="link-phone"
             >
-              <Phone className="h-4 w-4" />
+              <Phone className="h-5 w-5" />
               <span>(770) 404-9750</span>
             </a>
             <ThemeToggle />
