@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Phone } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import logoImage from "@assets/generated_images/Tightly_cropped_AnswerPro_logo_27b58189.png";
+import logoImage from "@assets/ChatGPT Image Sep 16, 2025, 11_20_54 AM_1758036107813.png";
 
 const navigation = [
   { name: "Pricing", href: "/pricing" },
@@ -24,6 +24,7 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
         <div className="flex items-center justify-between py-3 md:py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3" data-testid="link-home">
+            <img src={logoImage} alt="AnswerPro 24 Logo" className="h-12 sm:h-14 md:h-16 lg:h-18 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
