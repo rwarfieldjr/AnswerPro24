@@ -6,7 +6,7 @@ import electricianImage from "@assets/generated_images/Professional_electrician_
 import hvacImage from "@assets/generated_images/Professional_HVAC_technician_349997aa.png";
 import garageDoorImage from "@assets/generated_images/Garage_door_technician_working_56fb8c7b.png";
 import locksmithImage from "@assets/Generated Image September 23, 2025 - 12_08PM_1758644350905.png";
-import towingImage from "@assets/stock_images/professional_tow_tru_8800be13.jpg";
+import towingImage from "@assets/Generated Image September 23, 2025 - 12_10PM_1758644393501.png";
 import roofingImage from "@assets/stock_images/professional_roofing_4aefba87.jpg";
 import restorationImage from "@assets/stock_images/professional_water_d_20add265.jpg";
 import veterinaryImage from "@assets/stock_images/professional_veterin_72675291.jpg";
