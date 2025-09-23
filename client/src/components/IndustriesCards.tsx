@@ -8,7 +8,7 @@ import garageDoorImage from "@assets/generated_images/Garage_door_technician_wor
 import locksmithImage from "@assets/Generated Image September 23, 2025 - 12_08PM_1758644350905.png";
 import towingImage from "@assets/Generated Image September 23, 2025 - 12_10PM_1758644393501.png";
 import roofingImage from "@assets/Generated Image September 23, 2025 - 12_15PM_1758644481898.png";
-import restorationImage from "@assets/stock_images/professional_water_d_20add265.jpg";
+import restorationImage from "@assets/Generated Image September 23, 2025 - 12_25PM_1758644865767.png";
 import veterinaryImage from "@assets/stock_images/professional_veterin_72675291.jpg";
 import propertyManagementImage from "@assets/Generated Image September 23, 2025 - 12_14PM_1758644417532.png";
 import dentalImage from "@assets/stock_images/professional_dentist_ff0d3629.jpg";
