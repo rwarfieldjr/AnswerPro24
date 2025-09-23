@@ -16,7 +16,7 @@ import restaurantImage from "@assets/Generated Image September 23, 2025 - 12_31P
 import eventPlannerImage from "@assets/Generated Image September 23, 2025 - 12_46PM_1758646030069.png";
 import homeInspectorImage from "@assets/Generated Image September 23, 2025 - 12_52PM_1758646445130.png";
 import poolServiceImage from "@assets/Generated Image September 23, 2025 - 1_12PM_1758647594527.png";
-import funeralHomeImage from "@assets/stock_images/professional_funeral_af5a38fb.jpg";
+import funeralHomeImage from "@assets/Generated Image September 23, 2025 - 1_20PM_1758648069647.png";
 
 interface Industry {
   title: string;
