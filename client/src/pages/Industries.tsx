@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useLocation } from "wouter";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -11,6 +10,69 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle, AlertTriangle, Clock } from "lucide-react";
 
 const industryDetails = {
+  locksmiths: {
+    title: "Locksmith Services",
+    emergencies: [
+      "Lockouts from home or car",
+      "Broken keys in locks",
+      "Security breaches and break-ins",
+      "Safe lockouts with important documents"
+    ],
+    morningCalls: [
+      "Key duplication requests",
+      "Lock installation",
+      "Security upgrades",
+      "Routine lock maintenance"
+    ],
+    rules: [
+      "Lockouts after 10 PM → Immediate escalation",
+      "Security breach → Emergency",
+      "Car lockout with emergency → Priority",
+      "Key duplication → Morning appointment"
+    ]
+  },
+  towing: {
+    title: "Towing Services",
+    emergencies: [
+      "Car breakdowns on highways",
+      "Accident towing",
+      "Vehicle blocking traffic",
+      "Emergency roadside assistance"
+    ],
+    morningCalls: [
+      "Scheduled vehicle transport",
+      "Non-emergency towing",
+      "Vehicle recovery from private property",
+      "Jump start services"
+    ],
+    rules: [
+      "Highway breakdown → Immediate escalation",
+      "Accident scene → Emergency",
+      "Traffic blocking → Priority",
+      "Scheduled tow → Morning appointment"
+    ]
+  },
+  hvac: {
+    title: "HVAC Services",
+    emergencies: [
+      "No heat when outdoor temp < 40°F",
+      "No AC when outdoor temp > 90°F", 
+      "Gas leak detection",
+      "Carbon monoxide alarms"
+    ],
+    morningCalls: [
+      "Unit making noise",
+      "Poor air flow",
+      "Thermostat issues", 
+      "Routine maintenance"
+    ],
+    rules: [
+      "No heat + freezing → Immediate escalation",
+      "No AC + extreme heat → Emergency",
+      "Gas smell → Priority escalation", 
+      "Minor issues → Morning appointment"
+    ]
+  },
   plumbing: {
     title: "Plumbing Services",
     emergencies: [
@@ -30,6 +92,48 @@ const industryDetails = {
       "No water + freezing temps → Emergency",
       "Sewer backup → Priority escalation",
       "Minor leaks → Morning appointment"
+    ]
+  },
+  roofing: {
+    title: "Roofing Services",
+    emergencies: [
+      "Storm damage with active leaks",
+      "Missing shingles during bad weather",
+      "Structural damage from fallen trees",
+      "Emergency tarping needs"
+    ],
+    morningCalls: [
+      "Roof inspections",
+      "Gutter cleaning",
+      "Minor repairs",
+      "Estimate requests"
+    ],
+    rules: [
+      "Active leak + storm → Immediate escalation",
+      "Structural damage → Emergency",
+      "Storm damage → Priority",
+      "Inspections → Morning appointment"
+    ]
+  },
+  restoration: {
+    title: "Restoration Services",
+    emergencies: [
+      "Active water damage",
+      "Fire damage assessment",
+      "Mold contamination",
+      "Flood damage"
+    ],
+    morningCalls: [
+      "Estimate appointments",
+      "Insurance consultations",
+      "Preventive inspections",
+      "Routine assessments"
+    ],
+    rules: [
+      "Active water damage → Immediate escalation",
+      "Fire damage → Emergency",
+      "Mold discovery → Priority",
+      "Estimates → Morning appointment"
     ]
   },
   electrical: {
@@ -53,25 +157,172 @@ const industryDetails = {
       "Single outlet issue → Morning appointment"
     ]
   },
-  hvac: {
-    title: "HVAC Services",
+  veterinary: {
+    title: "Veterinary Services",
     emergencies: [
-      "No heat when outdoor temp < 40°F",
-      "No AC when outdoor temp > 90°F", 
-      "Gas leak detection",
-      "Carbon monoxide alarms"
+      "Pet injuries or trauma",
+      "Difficulty breathing in animals",
+      "Suspected poisoning",
+      "Severe pain or distress"
     ],
     morningCalls: [
-      "Unit making noise",
-      "Poor air flow",
-      "Thermostat issues", 
-      "Routine maintenance"
+      "Routine checkups",
+      "Vaccination appointments",
+      "Grooming services",
+      "Prescription refills"
     ],
     rules: [
-      "No heat + freezing → Immediate escalation",
-      "No AC + extreme heat → Emergency",
-      "Gas smell → Priority escalation", 
-      "Minor issues → Morning appointment"
+      "Life-threatening symptoms → Immediate escalation",
+      "Severe injury → Emergency",
+      "Poisoning → Priority",
+      "Routine care → Morning appointment"
+    ]
+  },
+  "property-management": {
+    title: "Property Management",
+    emergencies: [
+      "No heat or water in units",
+      "Security issues",
+      "Major leaks affecting multiple units",
+      "Emergency lockouts"
+    ],
+    morningCalls: [
+      "Maintenance requests",
+      "Noise complaints",
+      "Rent inquiries",
+      "Lease questions"
+    ],
+    rules: [
+      "No utilities → Immediate escalation",
+      "Security breach → Emergency",
+      "Major leak → Priority",
+      "Noise complaints → Morning appointment"
+    ]
+  },
+  dental: {
+    title: "Emergency Dental Care",
+    emergencies: [
+      "Severe tooth pain",
+      "Dental trauma or injury",
+      "Swelling affecting breathing",
+      "Lost permanent tooth"
+    ],
+    morningCalls: [
+      "Routine cleanings",
+      "Check-up appointments",
+      "Cosmetic consultations",
+      "Insurance questions"
+    ],
+    rules: [
+      "Severe pain → Immediate escalation",
+      "Trauma → Emergency",
+      "Swelling → Priority",
+      "Routine care → Morning appointment"
+    ]
+  },
+  restaurants: {
+    title: "Restaurant Services",
+    emergencies: [
+      "Kitchen equipment failures during service",
+      "Refrigeration breakdowns",
+      "POS system outages",
+      "Health inspection issues"
+    ],
+    morningCalls: [
+      "Reservation inquiries",
+      "Catering requests",
+      "Menu questions",
+      "Private party bookings"
+    ],
+    rules: [
+      "Equipment failure during service → Immediate escalation",
+      "Refrigeration failure → Emergency",
+      "POS issues → Priority",
+      "Reservations → Morning appointment"
+    ]
+  },
+  "event-planning": {
+    title: "Event Planning Services",
+    emergencies: [
+      "Venue cancellations day-of",
+      "Vendor no-shows",
+      "Weather-related changes",
+      "Equipment failures during events"
+    ],
+    morningCalls: [
+      "Consultation requests",
+      "Vendor questions",
+      "Package information",
+      "Availability inquiries"
+    ],
+    rules: [
+      "Day-of emergencies → Immediate escalation",
+      "Vendor issues → Emergency",
+      "Weather changes → Priority",
+      "Consultations → Morning appointment"
+    ]
+  },
+  "home-inspection": {
+    title: "Home Inspection Services",
+    emergencies: [
+      "Pre-closing urgent inspections",
+      "Safety hazard discoveries",
+      "Time-sensitive buyer requests",
+      "Insurance claim inspections"
+    ],
+    morningCalls: [
+      "Routine inspection scheduling",
+      "Report clarifications",
+      "Price quotes",
+      "Service area questions"
+    ],
+    rules: [
+      "Pre-closing rush → Immediate escalation",
+      "Safety hazards → Emergency",
+      "Time-sensitive → Priority",
+      "Routine scheduling → Morning appointment"
+    ]
+  },
+  "pool-services": {
+    title: "Pool Services",
+    emergencies: [
+      "Equipment failures during events",
+      "Chemical imbalance health risks",
+      "Pump or filter breakdowns",
+      "Safety equipment malfunctions"
+    ],
+    morningCalls: [
+      "Routine maintenance",
+      "Chemical delivery",
+      "Equipment upgrades",
+      "Seasonal services"
+    ],
+    rules: [
+      "Safety hazards → Immediate escalation",
+      "Equipment failure → Emergency",
+      "Chemical issues → Priority",
+      "Routine maintenance → Morning appointment"
+    ]
+  },
+  "funeral-homes": {
+    title: "Funeral Services",
+    emergencies: [
+      "Death notifications",
+      "Immediate transport needs",
+      "Time-sensitive arrangements",
+      "Family crisis support"
+    ],
+    morningCalls: [
+      "Pre-planning consultations",
+      "Price inquiries",
+      "Service questions",
+      "Memorial options"
+    ],
+    rules: [
+      "Death notifications → Immediate escalation",
+      "Transport needs → Emergency",
+      "Crisis support → Priority",
+      "Pre-planning → Morning appointment"
     ]
   },
   "garage-doors": {
@@ -99,7 +350,6 @@ const industryDetails = {
 
 export default function Industries() {
   const [isLeadFormOpen, setIsLeadFormOpen] = useState(false);
-  const [, setLocation] = useLocation();
 
   const handleStartTrial = () => {
     setIsLeadFormOpen(true);
@@ -160,7 +410,10 @@ export default function Industries() {
 
         {/* Industries Overview */}
         <IndustriesCards onLearnMore={(slug) => {
-          setLocation("/contact");
+          const element = document.getElementById(slug);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
         }} />
 
         {/* Detailed Industry Sections */}

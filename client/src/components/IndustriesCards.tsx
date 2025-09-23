@@ -16,25 +16,109 @@ interface Industry {
 
 const industries: Industry[] = [
   {
+    title: "Locksmiths",
+    description: "Never miss an emergency lockout call again. We handle your after-hours calls so you can focus on unlocking doors, not answering phones.",
+    emergencyExamples: ["Home lockouts", "Car lockouts", "Broken keys", "Security breaches"],
+    image: electricianImage, // Placeholder - using existing image
+    slug: "locksmiths"
+  },
+  {
+    title: "Towing Companies",
+    description: "We'll answer your calls 24/7 and connect you with stranded drivers. You only pay when you get a job.",
+    emergencyExamples: ["Highway breakdowns", "Accidents", "Traffic blocking", "Roadside assistance"],
+    image: garageDoorImage, // Placeholder - using existing image
+    slug: "towing"
+  },
+  {
+    title: "HVAC",
+    description: "Don't let after-hours calls go to voicemail. AnswerPro24 ensures you're the first to respond to urgent HVAC issues.",
+    emergencyExamples: ["No heat in winter", "AC failure in extreme heat", "Gas leaks", "Carbon monoxide alerts"],
+    image: hvacImage,
+    slug: "hvac"
+  },
+  {
     title: "Plumbers",
-    description: "Stop 2am chaos. We escalate only true emergencies like active leaks or no water. Everything else is booked for morning — fully documented.",
+    description: "We'll answer your emergency plumbing calls 24/7, so you never miss a high-ticket job.",
     emergencyExamples: ["Burst pipes", "Active leaks", "No water supply", "Sewage backups"],
     image: plumberImage,
     slug: "plumbing"
   },
   {
+    title: "Roofing Companies",
+    description: "Be the first roofer they call after a storm. AnswerPro24 captures those urgent leads for you.",
+    emergencyExamples: ["Storm damage", "Active leaks", "Missing shingles", "Emergency tarping"],
+    image: hvacImage, // Placeholder - using existing image
+    slug: "roofing"
+  },
+  {
+    title: "Restoration Companies",
+    description: "We'll handle your emergency calls and connect you with homeowners in crisis.",
+    emergencyExamples: ["Water damage", "Fire damage", "Mold contamination", "Flood damage"],
+    image: plumberImage, // Placeholder - using existing image
+    slug: "restoration"
+  },
+  {
     title: "Electricians", 
-    description: "Safety first. Potential hazards escalate to on-call; nuisance calls are queued with notes.",
+    description: "Don't let after-hours calls go unanswered. AnswerPro24 keeps your phone lines open 24/7.",
     emergencyExamples: ["Power outages", "Electrical hazards", "Breaker issues", "Sparking outlets"],
     image: electricianImage,
     slug: "electrical"
   },
   {
-    title: "HVAC",
-    description: "No-heat/no-cool rules based on your thresholds (e.g., <40°F or >90°F).",
-    emergencyExamples: ["No heat in winter", "AC failure in extreme heat", "Gas leaks", "Carbon monoxide alerts"],
-    image: hvacImage,
-    slug: "hvac"
+    title: "Veterinary Clinics",
+    description: "We'll answer your after-hours calls and connect pet owners with your clinic when they need you most.",
+    emergencyExamples: ["Pet injuries", "Breathing difficulties", "Suspected poisoning", "Severe pain"],
+    image: electricianImage, // Placeholder - using existing image
+    slug: "veterinary"
+  },
+  {
+    title: "Property Management",
+    description: "Let AnswerPro24 handle your tenant calls after hours. We'll triage issues and notify you only when it's urgent.",
+    emergencyExamples: ["No utilities", "Security issues", "Major leaks", "Emergency lockouts"],
+    image: garageDoorImage, // Placeholder - using existing image
+    slug: "property-management"
+  },
+  {
+    title: "Emergency Dental Care",
+    description: "Capture every emergency dental lead with AnswerPro24. We'll make sure no patient slips through the cracks.",
+    emergencyExamples: ["Severe tooth pain", "Dental trauma", "Breathing swelling", "Lost tooth"],
+    image: electricianImage, // Placeholder - using existing image
+    slug: "dental"
+  },
+  {
+    title: "Restaurants",
+    description: "Let AnswerPro24 handle your calls during busy hours, so your staff can focus on serving customers.",
+    emergencyExamples: ["Equipment failures", "Refrigeration issues", "POS outages", "Health inspections"],
+    image: hvacImage, // Placeholder - using existing image
+    slug: "restaurants"
+  },
+  {
+    title: "Event Planners",
+    description: "We'll answer your calls and book appointments, so you never miss a potential client.",
+    emergencyExamples: ["Venue cancellations", "Vendor no-shows", "Weather changes", "Equipment failures"],
+    image: garageDoorImage, // Placeholder - using existing image
+    slug: "event-planning"
+  },
+  {
+    title: "Home Inspectors",
+    description: "AnswerPro24 ensures you're the first choice for home inspections, even after hours.",
+    emergencyExamples: ["Pre-closing rush", "Safety hazards", "Time-sensitive requests", "Insurance claims"],
+    image: electricianImage, // Placeholder - using existing image
+    slug: "home-inspection"
+  },
+  {
+    title: "Pool Services",
+    description: "We'll answer your calls and schedule repairs, so you never miss a pool emergency.",
+    emergencyExamples: ["Equipment failures", "Chemical hazards", "Pump breakdowns", "Safety malfunctions"],
+    image: hvacImage, // Placeholder - using existing image
+    slug: "pool-services"
+  },
+  {
+    title: "Funeral Homes",
+    description: "Provide compassionate, 24/7 support to grieving families with AnswerPro24.",
+    emergencyExamples: ["Death notifications", "Transport needs", "Crisis support", "Time-sensitive arrangements"],
+    image: electricianImage, // Placeholder - using existing image
+    slug: "funeral-homes"
   },
   {
     title: "Garage Doors",
@@ -90,7 +174,7 @@ export default function IndustriesCards({ onLearnMore }: IndustriesCardsProps) {
 
                 <Button 
                   variant="outline" 
-                  className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+                  className="w-full"
                   onClick={() => onLearnMore?.(industry.slug)}
                   data-testid={`button-learn-more-${industry.slug}`}
                 >
