@@ -5,18 +5,18 @@ import plumberImage from "@assets/generated_images/Professional_plumber_at_work_
 import electricianImage from "@assets/generated_images/Professional_electrician_at_work_097d465f.png";
 import hvacImage from "@assets/generated_images/Professional_HVAC_technician_349997aa.png";
 import garageDoorImage from "@assets/generated_images/Garage_door_technician_working_56fb8c7b.png";
-import locksmithImage from "@assets/stock_images/professional_locksmi_3bb55f5c.jpg";
-import towingImage from "@assets/stock_images/tow_truck_driver_hel_f21a1042.jpg";
-import roofingImage from "@assets/stock_images/roofing_contractor_w_306bc073.jpg";
-import restorationImage from "@assets/stock_images/water_damage_restora_098fcef7.jpg";
-import veterinaryImage from "@assets/stock_images/veterinarian_examini_946a19fb.jpg";
-import propertyManagementImage from "@assets/stock_images/property_manager_ins_c0dadaa5.jpg";
-import dentalImage from "@assets/stock_images/dentist_treating_pat_cfe19cd1.jpg";
-import restaurantImage from "@assets/stock_images/chef_cooking_in_busy_677cc09c.jpg";
-import eventPlannerImage from "@assets/stock_images/event_planner_organi_907c61e3.jpg";
-import homeInspectorImage from "@assets/stock_images/home_inspector_check_a9fba5e8.jpg";
-import poolServiceImage from "@assets/stock_images/pool_technician_clea_236ac9f1.jpg";
-import funeralHomeImage from "@assets/stock_images/funeral_director_pro_7a2d4a40.jpg";
+import locksmithImage from "@assets/stock_images/professional_locksmi_5232a448.jpg";
+import towingImage from "@assets/stock_images/professional_tow_tru_8800be13.jpg";
+import roofingImage from "@assets/stock_images/professional_roofing_4aefba87.jpg";
+import restorationImage from "@assets/stock_images/professional_water_d_20add265.jpg";
+import veterinaryImage from "@assets/stock_images/professional_veterin_72675291.jpg";
+import propertyManagementImage from "@assets/stock_images/professional_propert_4708d5d8.jpg";
+import dentalImage from "@assets/stock_images/professional_dentist_ff0d3629.jpg";
+import restaurantImage from "@assets/stock_images/professional_chef_in_33385738.jpg";
+import eventPlannerImage from "@assets/stock_images/professional_event_p_51900f4a.jpg";
+import homeInspectorImage from "@assets/stock_images/professional_home_in_c80ffba0.jpg";
+import poolServiceImage from "@assets/stock_images/professional_pool_se_2e897ef8.jpg";
+import funeralHomeImage from "@assets/stock_images/professional_funeral_af5a38fb.jpg";
 
 interface Industry {
   title: string;
