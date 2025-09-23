@@ -10,7 +10,7 @@ import towingImage from "@assets/Generated Image September 23, 2025 - 12_10PM_17
 import roofingImage from "@assets/stock_images/professional_roofing_4aefba87.jpg";
 import restorationImage from "@assets/stock_images/professional_water_d_20add265.jpg";
 import veterinaryImage from "@assets/stock_images/professional_veterin_72675291.jpg";
-import propertyManagementImage from "@assets/stock_images/professional_propert_4708d5d8.jpg";
+import propertyManagementImage from "@assets/Generated Image September 23, 2025 - 12_14PM_1758644417532.png";
 import dentalImage from "@assets/stock_images/professional_dentist_ff0d3629.jpg";
 import restaurantImage from "@assets/stock_images/professional_chef_in_33385738.jpg";
 import eventPlannerImage from "@assets/stock_images/professional_event_p_51900f4a.jpg";
