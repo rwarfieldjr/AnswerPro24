@@ -13,7 +13,7 @@ import veterinaryImage from "@assets/Screen Shot 2025-09-23 at 11.49.03 AM_17586
 import propertyManagementImage from "@assets/Generated Image September 23, 2025 - 12_14PM_1758644417532.png";
 import dentalImage from "@assets/Generated Image September 23, 2025 - 12_42PM_1758645778077.png";
 import restaurantImage from "@assets/Generated Image September 23, 2025 - 12_31PM_1758645136427.png";
-import eventPlannerImage from "@assets/stock_images/professional_event_p_51900f4a.jpg";
+import eventPlannerImage from "@assets/Generated Image September 23, 2025 - 12_46PM_1758646030069.png";
 import homeInspectorImage from "@assets/Generated Image September 23, 2025 - 12_27PM (1)_1758644988631.png";
 import poolServiceImage from "@assets/stock_images/professional_pool_se_2e897ef8.jpg";
 import funeralHomeImage from "@assets/stock_images/professional_funeral_af5a38fb.jpg";
