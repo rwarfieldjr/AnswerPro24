@@ -11,7 +11,7 @@ import roofingImage from "@assets/Generated Image September 23, 2025 - 12_15PM_1
 import restorationImage from "@assets/Generated Image September 23, 2025 - 12_25PM_1758644865767.png";
 import veterinaryImage from "@assets/Screen Shot 2025-09-23 at 11.49.03 AM_1758644897232.png";
 import propertyManagementImage from "@assets/Generated Image September 23, 2025 - 12_14PM_1758644417532.png";
-import dentalImage from "@assets/stock_images/professional_dentist_ff0d3629.jpg";
+import dentalImage from "@assets/Generated Image September 23, 2025 - 12_42PM_1758645778077.png";
 import restaurantImage from "@assets/Generated Image September 23, 2025 - 12_31PM_1758645136427.png";
 import eventPlannerImage from "@assets/stock_images/professional_event_p_51900f4a.jpg";
 import homeInspectorImage from "@assets/Generated Image September 23, 2025 - 12_27PM (1)_1758644988631.png";
