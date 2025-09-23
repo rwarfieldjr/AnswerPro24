@@ -14,7 +14,7 @@ import propertyManagementImage from "@assets/Generated Image September 23, 2025 
 import dentalImage from "@assets/stock_images/professional_dentist_ff0d3629.jpg";
 import restaurantImage from "@assets/stock_images/professional_chef_in_33385738.jpg";
 import eventPlannerImage from "@assets/stock_images/professional_event_p_51900f4a.jpg";
-import homeInspectorImage from "@assets/stock_images/professional_home_in_c80ffba0.jpg";
+import homeInspectorImage from "@assets/Generated Image September 23, 2025 - 12_27PM (1)_1758644988631.png";
 import poolServiceImage from "@assets/stock_images/professional_pool_se_2e897ef8.jpg";
 import funeralHomeImage from "@assets/stock_images/professional_funeral_af5a38fb.jpg";
 
