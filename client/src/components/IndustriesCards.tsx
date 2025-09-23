@@ -15,7 +15,7 @@ import dentalImage from "@assets/Generated Image September 23, 2025 - 12_42PM_17
 import restaurantImage from "@assets/Generated Image September 23, 2025 - 12_31PM_1758645136427.png";
 import eventPlannerImage from "@assets/Generated Image September 23, 2025 - 12_46PM_1758646030069.png";
 import homeInspectorImage from "@assets/Generated Image September 23, 2025 - 12_52PM_1758646445130.png";
-import poolServiceImage from "@assets/Generated Image September 23, 2025 - 1_12PM_1758647594527.png";
+import poolServiceImage from "@assets/Generated Image September 23, 2025 - 2_00PM_1758650514942.png";
 import funeralHomeImage from "@assets/Generated Image September 23, 2025 - 1_20PM_1758648069647.png";
 
 interface Industry {
