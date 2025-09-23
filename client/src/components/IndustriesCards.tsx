@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import plumberImage from "@assets/generated_images/Professional_plumber_at_work_6a157825.png";
 import electricianImage from "@assets/generated_images/Professional_electrician_at_work_097d465f.png";
 import hvacImage from "@assets/generated_images/Professional_HVAC_technician_349997aa.png";
-import garageDoorImage from "@assets/generated_images/Garage_door_technician_working_56fb8c7b.png";
+import garageDoorImage from "@assets/Generated Image September 23, 2025 - 1_15PM_1758647836652.png";
 import locksmithImage from "@assets/Generated Image September 23, 2025 - 12_08PM_1758644350905.png";
 import towingImage from "@assets/Generated Image September 23, 2025 - 12_10PM_1758644393501.png";
 import roofingImage from "@assets/Generated Image September 23, 2025 - 12_15PM_1758644481898.png";
@@ -133,7 +133,7 @@ const industries: Industry[] = [
     slug: "funeral-homes"
   },
   {
-    title: "Garage Doors",
+    title: "Garage Door Services",
     description: "Emergency access issues escalate; noisy door inquiries get morning slots.",
     emergencyExamples: ["Stuck doors", "Broken springs", "Off-track doors", "Safety sensor failures"],
     image: garageDoorImage,
