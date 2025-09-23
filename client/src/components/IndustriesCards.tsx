@@ -35,6 +35,13 @@ const industries: Industry[] = [
     slug: "locksmiths"
   },
   {
+    title: "Garage Door Services",
+    description: "Emergency access issues escalate; noisy door inquiries get morning slots.",
+    emergencyExamples: ["Stuck doors", "Broken springs", "Off-track doors", "Safety sensor failures"],
+    image: garageDoorImage,
+    slug: "garage-doors"
+  },
+  {
     title: "Towing Companies",
     description: "We'll answer your calls 24/7 and connect you with stranded drivers. You only pay when you get a job.",
     emergencyExamples: ["Highway breakdowns", "Accidents", "Traffic blocking", "Roadside assistance"],
@@ -131,13 +138,6 @@ const industries: Industry[] = [
     emergencyExamples: ["Death notifications", "Transport needs", "Crisis support", "Time-sensitive arrangements"],
     image: funeralHomeImage,
     slug: "funeral-homes"
-  },
-  {
-    title: "Garage Door Services",
-    description: "Emergency access issues escalate; noisy door inquiries get morning slots.",
-    emergencyExamples: ["Stuck doors", "Broken springs", "Off-track doors", "Safety sensor failures"],
-    image: garageDoorImage,
-    slug: "garage-doors"
   }
 ];
 
