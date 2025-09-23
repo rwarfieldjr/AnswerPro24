@@ -5,6 +5,18 @@ import plumberImage from "@assets/generated_images/Professional_plumber_at_work_
 import electricianImage from "@assets/generated_images/Professional_electrician_at_work_097d465f.png";
 import hvacImage from "@assets/generated_images/Professional_HVAC_technician_349997aa.png";
 import garageDoorImage from "@assets/generated_images/Garage_door_technician_working_56fb8c7b.png";
+import locksmithImage from "@assets/stock_images/professional_locksmi_3bb55f5c.jpg";
+import towingImage from "@assets/stock_images/tow_truck_driver_hel_f21a1042.jpg";
+import roofingImage from "@assets/stock_images/roofing_contractor_w_306bc073.jpg";
+import restorationImage from "@assets/stock_images/water_damage_restora_098fcef7.jpg";
+import veterinaryImage from "@assets/stock_images/veterinarian_examini_946a19fb.jpg";
+import propertyManagementImage from "@assets/stock_images/property_manager_ins_c0dadaa5.jpg";
+import dentalImage from "@assets/stock_images/dentist_treating_pat_cfe19cd1.jpg";
+import restaurantImage from "@assets/stock_images/chef_cooking_in_busy_677cc09c.jpg";
+import eventPlannerImage from "@assets/stock_images/event_planner_organi_907c61e3.jpg";
+import homeInspectorImage from "@assets/stock_images/home_inspector_check_a9fba5e8.jpg";
+import poolServiceImage from "@assets/stock_images/pool_technician_clea_236ac9f1.jpg";
+import funeralHomeImage from "@assets/stock_images/funeral_director_pro_7a2d4a40.jpg";
 
 interface Industry {
   title: string;
@@ -19,14 +31,14 @@ const industries: Industry[] = [
     title: "Locksmiths",
     description: "Never miss an emergency lockout call again. We handle your after-hours calls so you can focus on unlocking doors, not answering phones.",
     emergencyExamples: ["Home lockouts", "Car lockouts", "Broken keys", "Security breaches"],
-    image: electricianImage, // Placeholder - using existing image
+    image: locksmithImage,
     slug: "locksmiths"
   },
   {
     title: "Towing Companies",
     description: "We'll answer your calls 24/7 and connect you with stranded drivers. You only pay when you get a job.",
     emergencyExamples: ["Highway breakdowns", "Accidents", "Traffic blocking", "Roadside assistance"],
-    image: garageDoorImage, // Placeholder - using existing image
+    image: towingImage,
     slug: "towing"
   },
   {
@@ -47,14 +59,14 @@ const industries: Industry[] = [
     title: "Roofing Companies",
     description: "Be the first roofer they call after a storm. AnswerPro24 captures those urgent leads for you.",
     emergencyExamples: ["Storm damage", "Active leaks", "Missing shingles", "Emergency tarping"],
-    image: hvacImage, // Placeholder - using existing image
+    image: roofingImage,
     slug: "roofing"
   },
   {
     title: "Restoration Companies",
     description: "We'll handle your emergency calls and connect you with homeowners in crisis.",
     emergencyExamples: ["Water damage", "Fire damage", "Mold contamination", "Flood damage"],
-    image: plumberImage, // Placeholder - using existing image
+    image: restorationImage,
     slug: "restoration"
   },
   {
@@ -68,56 +80,56 @@ const industries: Industry[] = [
     title: "Veterinary Clinics",
     description: "We'll answer your after-hours calls and connect pet owners with your clinic when they need you most.",
     emergencyExamples: ["Pet injuries", "Breathing difficulties", "Suspected poisoning", "Severe pain"],
-    image: electricianImage, // Placeholder - using existing image
+    image: veterinaryImage,
     slug: "veterinary"
   },
   {
     title: "Property Management",
     description: "Let AnswerPro24 handle your tenant calls after hours. We'll triage issues and notify you only when it's urgent.",
     emergencyExamples: ["No utilities", "Security issues", "Major leaks", "Emergency lockouts"],
-    image: garageDoorImage, // Placeholder - using existing image
+    image: propertyManagementImage,
     slug: "property-management"
   },
   {
     title: "Emergency Dental Care",
     description: "Capture every emergency dental lead with AnswerPro24. We'll make sure no patient slips through the cracks.",
     emergencyExamples: ["Severe tooth pain", "Dental trauma", "Breathing swelling", "Lost tooth"],
-    image: electricianImage, // Placeholder - using existing image
+    image: dentalImage,
     slug: "dental"
   },
   {
     title: "Restaurants",
     description: "Let AnswerPro24 handle your calls during busy hours, so your staff can focus on serving customers.",
     emergencyExamples: ["Equipment failures", "Refrigeration issues", "POS outages", "Health inspections"],
-    image: hvacImage, // Placeholder - using existing image
+    image: restaurantImage,
     slug: "restaurants"
   },
   {
     title: "Event Planners",
     description: "We'll answer your calls and book appointments, so you never miss a potential client.",
     emergencyExamples: ["Venue cancellations", "Vendor no-shows", "Weather changes", "Equipment failures"],
-    image: garageDoorImage, // Placeholder - using existing image
+    image: eventPlannerImage,
     slug: "event-planning"
   },
   {
     title: "Home Inspectors",
     description: "AnswerPro24 ensures you're the first choice for home inspections, even after hours.",
     emergencyExamples: ["Pre-closing rush", "Safety hazards", "Time-sensitive requests", "Insurance claims"],
-    image: electricianImage, // Placeholder - using existing image
+    image: homeInspectorImage,
     slug: "home-inspection"
   },
   {
     title: "Pool Services",
     description: "We'll answer your calls and schedule repairs, so you never miss a pool emergency.",
     emergencyExamples: ["Equipment failures", "Chemical hazards", "Pump breakdowns", "Safety malfunctions"],
-    image: hvacImage, // Placeholder - using existing image
+    image: poolServiceImage,
     slug: "pool-services"
   },
   {
     title: "Funeral Homes",
     description: "Provide compassionate, 24/7 support to grieving families with AnswerPro24.",
     emergencyExamples: ["Death notifications", "Transport needs", "Crisis support", "Time-sensitive arrangements"],
-    image: electricianImage, // Placeholder - using existing image
+    image: funeralHomeImage,
     slug: "funeral-homes"
   },
   {

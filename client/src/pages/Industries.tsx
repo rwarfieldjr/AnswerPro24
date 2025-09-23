@@ -412,7 +412,13 @@ export default function Industries() {
         <IndustriesCards onLearnMore={(slug) => {
           const element = document.getElementById(slug);
           if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            const rect = element.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const offsetTop = rect.top + scrollTop - 120; // Account for header height with extra padding
+            window.scrollTo({
+              top: offsetTop,
+              behavior: 'smooth'
+            });
           }
         }} />
 
