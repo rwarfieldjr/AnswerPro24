@@ -9,7 +9,7 @@ import locksmithImage from "@assets/Generated Image September 23, 2025 - 12_08PM
 import towingImage from "@assets/Generated Image September 23, 2025 - 12_10PM_1758644393501.png";
 import roofingImage from "@assets/Generated Image September 23, 2025 - 12_15PM_1758644481898.png";
 import restorationImage from "@assets/Generated Image September 23, 2025 - 12_25PM_1758644865767.png";
-import veterinaryImage from "@assets/stock_images/professional_veterin_72675291.jpg";
+import veterinaryImage from "@assets/Screen Shot 2025-09-23 at 11.49.03 AM_1758644897232.png";
 import propertyManagementImage from "@assets/Generated Image September 23, 2025 - 12_14PM_1758644417532.png";
 import dentalImage from "@assets/stock_images/professional_dentist_ff0d3629.jpg";
 import restaurantImage from "@assets/stock_images/professional_chef_in_33385738.jpg";
