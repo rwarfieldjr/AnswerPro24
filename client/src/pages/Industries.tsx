@@ -394,9 +394,9 @@ export default function Industries() {
       
       <main>
         {/* Hero Section */}
-        <section className="py-16 lg:py-24">
+        <section className="pt-16 lg:pt-24 pb-8 lg:pb-12">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center space-y-6 mb-16">
+            <div className="text-center space-y-6 mb-8">
               <h1 className="text-4xl sm:text-5xl font-bold text-foreground" data-testid="text-industries-hero-title">
                 Industry-Specific Call Handling
               </h1>
