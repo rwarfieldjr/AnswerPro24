@@ -1,0 +1,56 @@
+Offer & Pricing (positioning)
+
+Action → Impact
+
+Anchor the Core Plan at $499/mo.
+Includes: after-hours coverage (e.g., 5pm–8am + weekends), unique tracking number, triage + emergency escalation, appointment scheduling, call recording/transcripts, next-morning summary by 9am, missed-call text-back, monthly analytics.
+→ Clear value vs. a part-time receptionist. Easy compare to one lost job.
+
+Usage guardrails.
+Up to 300 answered minutes or 120 calls per month (pick one metric; I’d use minutes). $0.75/additional minute.
+→ Protects margins and keeps “heavy” users profitable.
+
+Add-ons (menu pricing).
+24/7 coverage +$300; Overflow during business hours +$199; Bilingual line +$100; Google review request workflow +$49; Priority “hot-transfer” (rings techs first) +$49; Extra numbers/locations +$15 ea.
+→ Increases ARPU without complicating the core plan.
+
+Guarantee.
+“If we don’t generate at least 3 qualified after-hours opportunities in your first 30 days, we’ll credit your next month.”
+→ Lowers perceived risk while avoiding pay-per-close headaches.
+
+14-Day Free Trial (with teeth)
+
+Action → Impact
+
+Trial terms on the page:
+14 days, 100 answered minutes included, CC required, cancel anytime online, auto-convert to $499 unless canceled.
+→ Serious prospects only; prevents abuse; smooth conversion.
+
+Fast setup (same day):
+Unique number, greeting script, escalation rules, appointment calendar link, integration to CRM.
+→ “Time to value” under 24 hours.
+
+Trial success plan (send as a 1-pager):
+
+We turn on tracking number. 2) You point your after-hours calls. 3) We capture/triage. 4) Daily SMS summary. 5) Day 10 review call.
+→ Sets expectations and a natural upsell call.
+
+Kill-switch for overuse:
+Auto-pause trial at 100 minutes; prompt “upgrade now to keep answering.”
+→ Protects costs and nudges conversion.
+
+Offer Architecture (what they actually get)
+
+Action → Impact
+
+Greeting & triage that mirrors their brand.
+“Thanks for calling [Brand]. Are you experiencing an emergency right now? Press 1…”
+→ Feels like their receptionist; higher trust.
+
+Escalation logic built for trades:
+Emergency? → hot transfer + SMS to on-call tech. Non-urgent? → schedule slot.
+→ Right calls reach the right person; fewer late-night disruptions.
+
+Morning brief & analytics:
+9am text/email: count of calls, emergencies handled, bookings, recordings/transcripts link.
+→ Visible ROI that justifies $499.
