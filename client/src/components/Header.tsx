@@ -24,7 +24,10 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center" data-testid="link-home">
-            <span className="text-2xl font-bold text-primary">AnswerPro 24</span>
+            <span className="text-2xl font-bold">
+              <span className="text-foreground">AnswerPro</span>
+              <span className="text-primary"> 24</span>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
