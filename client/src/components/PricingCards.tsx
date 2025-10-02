@@ -29,7 +29,7 @@ const corePlan: PricingPlan = {
     "After-hours coverage (5pm–8am + weekends)",
     "Unique tracking number",
     "Triage + emergency escalation",
-    "Appointment scheduling",
+    "Appointment scheduling (Optional)",
     "Call recording & transcripts",
     "Next-morning summary by 9am",
     "Missed-call text-back",
