@@ -40,7 +40,8 @@ const leadFormSchema = z.object({
   serviceArea: z.string().min(1, "Service area is required"),
   currentVolume: z.string().min(1, "Please select call volume"),
   onCallScheduleLink: z.string().optional(),
-  consentAgreed: z.boolean().refine(val => val === true, "You must agree to be contacted"),
+  transactionalConsent: z.boolean().refine(val => val === true, "You must consent to receive transactional messages"),
+  marketingConsent: z.boolean().optional(),
 });
 
 type LeadFormData = z.infer<typeof leadFormSchema>;
@@ -66,16 +67,18 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
       serviceArea: "",
       currentVolume: "",
       onCallScheduleLink: "",
-      consentAgreed: false,
+      transactionalConsent: false,
+      marketingConsent: false,
     },
   });
 
   const createLeadMutation = useMutation({
     mutationFn: (data: LeadFormData) => {
-      // Transform boolean to string for backend compatibility
+      // Transform booleans to strings for backend compatibility
       const transformedData = {
         ...data,
-        consentAgreed: data.consentAgreed ? "true" : "false"
+        transactionalConsent: data.transactionalConsent ? "true" : "false",
+        marketingConsent: data.marketingConsent ? "true" : "false"
       };
       return apiRequest("POST", "/api/leads", transformedData);
     },
@@ -281,19 +284,41 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
 
             <FormField
               control={form.control}
-              name="consentAgreed"
+              name="transactionalConsent"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
-                      data-testid="checkbox-consent"
+                      data-testid="checkbox-transactional-consent"
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormLabel className="text-sm">
-                      I agree to be contacted by SMS/email with information about AnswerPro 24 services. *
+                      By checking this box, I consent to receive transactional messages related to my account, orders, or services I have requested. These messages may include appointment reminders, order confirmations, and account notifications among others. Message frequency may vary. Message & Data rates may apply. Reply HELP for help or STOP to opt-out.
+                    </FormLabel>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="marketingConsent"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      data-testid="checkbox-marketing-consent"
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel className="text-sm">
+                      By checking this box, I consent to receive marketing and promotional messages, including special offers, discounts, new product updates among others. Message frequency may vary. Message & Data rates may apply. Reply HELP for help or STOP to opt-out.
                     </FormLabel>
                   </div>
                   <FormMessage />

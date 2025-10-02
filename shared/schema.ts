@@ -19,7 +19,8 @@ export const leads = pgTable("leads", {
   serviceArea: text("service_area").notNull(),
   currentVolume: text("current_volume").notNull(),
   onCallScheduleLink: text("on_call_schedule_link"),
-  consentAgreed: text("consent_agreed").notNull(),
+  transactionalConsent: text("transactional_consent").notNull(),
+  marketingConsent: text("marketing_consent").notNull(),
   createdAt: text("created_at").default(sql`NOW()`),
 });
 
