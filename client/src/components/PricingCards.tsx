@@ -157,7 +157,7 @@ export default function PricingCards({ onPlanSelect }: PricingCardsProps) {
                       </li>
                       <li className="flex items-center space-x-2">
                         <Check className="h-4 w-4 text-primary" />
-                        <span>Same-day setup</span>
+                        <span>Quick Set Up</span>
                       </li>
                       <li className="flex items-center space-x-2">
                         <Check className="h-4 w-4 text-primary" />

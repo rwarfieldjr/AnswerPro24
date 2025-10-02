@@ -61,7 +61,7 @@ export default function Pricing() {
     <div className="min-h-screen bg-background">
       <SEOHead
         title="Pricing - AnswerPro 24 | $499/Month After-Hours Call Service"
-        description="Professional after-hours call management for $499/month. 14-day free trial with 100 minutes included. Same-day setup, no contracts. 30-day success guarantee."
+        description="Professional after-hours call management for $499/month. 14-day free trial with 100 minutes included. Quick Set Up, no contracts. 30-day success guarantee."
         keywords={["after hours answering service $499", "professional call service pricing", "home service after hours", "call answering service cost", "14 day free trial answering service"]}
         canonicalUrl="https://answerpro24.com/pricing"
         structuredData={pricingStructuredData}
