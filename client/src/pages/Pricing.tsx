@@ -22,7 +22,7 @@ export default function Pricing() {
   const valuePropositions = [
     {
       icon: Clock,
-      title: "Same-Day Setup",
+      title: "Quick Set Up",
       description: "Custom greeting script, escalation rules, and calendar integration ready within hours"
     },
     {
