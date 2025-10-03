@@ -43,33 +43,103 @@ export function registerWebhook(app: Express): void {
       }
 
       // Handle events
-      switch (event.type) {
-        case "checkout.session.completed": {
-          const session = event.data.object as Stripe.Checkout.Session;
-          console.log("✅ Checkout session completed:", session.id);
-          console.log("   Customer:", session.customer);
-          console.log("   Subscription:", session.subscription);
-          break;
+      try {
+        switch (event.type) {
+          case "checkout.session.completed": {
+            const session = event.data.object as Stripe.Checkout.Session;
+            console.log("✅ Checkout session completed:", session.id);
+            console.log("   Customer:", session.customer);
+            console.log("   Subscription:", session.subscription);
+            
+            // Get subscription to extract period_end
+            if (session.subscription) {
+              const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+              const periodEnd = new Date((subscription as any).current_period_end * 1000).toISOString();
+              
+              // Update lead membership status (lead may not exist yet if webhook fires before /api/checkout-success)
+              const updated = await storage.updateLeadMembership(
+                session.customer as string,
+                subscription.status,
+                periodEnd
+              );
+              
+              if (updated) {
+                console.log("✅ Membership activated for customer:", session.customer);
+              } else {
+                console.warn("⚠️ Lead not found for customer (will be set in /api/checkout-success):", session.customer);
+              }
+            }
+            break;
+          }
+          case "invoice.paid": {
+            const invoice = event.data.object as Stripe.Invoice;
+            console.log("✅ Invoice paid:", invoice.id);
+            
+            // Update membership status when invoice is paid
+            if (invoice.customer && (invoice as any).subscription) {
+              const subscription = await stripe.subscriptions.retrieve((invoice as any).subscription as string);
+              const periodEnd = new Date((subscription as any).current_period_end * 1000).toISOString();
+              
+              const updated = await storage.updateLeadMembership(
+                invoice.customer as string,
+                subscription.status,
+                periodEnd
+              );
+              
+              if (updated) {
+                console.log("✅ Membership updated after payment:", invoice.customer);
+              } else {
+                console.warn("⚠️ Lead not found for customer:", invoice.customer);
+              }
+            }
+            break;
+          }
+          case "customer.subscription.updated": {
+            const subscription = event.data.object as Stripe.Subscription;
+            console.log("✅ Subscription updated:", subscription.id);
+            console.log("   Status:", subscription.status);
+            
+            const periodEnd = new Date((subscription as any).current_period_end * 1000).toISOString();
+            
+            const updated = await storage.updateLeadMembership(
+              subscription.customer as string,
+              subscription.status,
+              periodEnd
+            );
+            
+            if (updated) {
+              console.log("✅ Membership status updated:", subscription.customer);
+            } else {
+              console.warn("⚠️ Lead not found for customer:", subscription.customer);
+            }
+            break;
+          }
+          case "customer.subscription.deleted": {
+            const subscription = event.data.object as Stripe.Subscription;
+            console.log("🔴 Subscription deleted:", subscription.id);
+            
+            const periodEnd = new Date((subscription as any).current_period_end * 1000).toISOString();
+            
+            const updated = await storage.updateLeadMembership(
+              subscription.customer as string,
+              "canceled",
+              periodEnd
+            );
+            
+            if (updated) {
+              console.log("🔴 Membership canceled:", subscription.customer);
+            } else {
+              console.warn("⚠️ Lead not found for customer:", subscription.customer);
+            }
+            break;
+          }
+          default:
+            console.log(`📋 Unhandled event type: ${event.type}`);
+            break;
         }
-        case "invoice.paid": {
-          const invoice = event.data.object as Stripe.Invoice;
-          console.log("✅ Invoice paid:", invoice.id);
-          break;
-        }
-        case "customer.subscription.updated": {
-          const subscription = event.data.object as Stripe.Subscription;
-          console.log("✅ Subscription updated:", subscription.id);
-          console.log("   Status:", subscription.status);
-          break;
-        }
-        case "customer.subscription.deleted": {
-          const subscription = event.data.object as Stripe.Subscription;
-          console.log("🔴 Subscription deleted:", subscription.id);
-          break;
-        }
-        default:
-          console.log(`📋 Unhandled event type: ${event.type}`);
-          break;
+      } catch (error: any) {
+        console.error("Error processing webhook event:", error);
+        // Still return 200 to acknowledge receipt
       }
 
       res.json({ received: true });
@@ -136,9 +206,8 @@ Lead ID: ${lead.id}
     try {
       const { email, companyName, leadData } = req.body;
       
-      const baseUrl = process.env.REPLIT_DEV_DOMAIN 
-        ? `https://${process.env.REPLIT_DEV_DOMAIN}`
-        : 'http://localhost:5000';
+      const baseUrl = process.env.APP_BASE_URL 
+        || (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : 'http://localhost:5000');
       
       const successUrl = `${baseUrl}/signup/success?session_id={CHECKOUT_SESSION_ID}`;
       const cancelUrl = `${baseUrl}/signup/cancel`;
@@ -146,11 +215,16 @@ Lead ID: ${lead.id}
       // Create a temporary session to store lead data
       const tempSessionId = `temp_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
+      const priceId = process.env.PRICE_PRO_499;
+      if (!priceId) {
+        throw new Error("PRICE_PRO_499 environment variable not set");
+      }
+
       const session = await stripe.checkout.sessions.create({
         mode: "subscription",
         customer_email: email,
         line_items: [{ 
-          price: "price_1Qh0WiAHdOxJzlqtK4wMW01F", // Fixed Price ID - replace with env var
+          price: priceId,
           quantity: 1 
         }],
         payment_method_collection: "always",
@@ -228,10 +302,19 @@ Lead ID: ${lead.id}
 
       const lead = await storage.createLead(validatedData);
       
+      // Set initial membership status from subscription
+      const periodEnd = new Date((subscription as any).current_period_end * 1000).toISOString();
+      await storage.updateLeadMembership(
+        customer.id,
+        subscription.status,
+        periodEnd
+      );
+      
       // Clean up pending checkout
       pendingCheckouts.delete(sessionId);
       
       console.log("✅ New lead created from checkout:", lead);
+      console.log("✅ Membership activated:", subscription.status, "until", periodEnd);
       console.log("✅ Lead notification sent to hello@answerpro24.com");
 
       res.json({ 
@@ -239,6 +322,8 @@ Lead ID: ${lead.id}
         lead,
         customerId: customer.id,
         subscriptionId: subscription.id,
+        membershipStatus: subscription.status,
+        membershipPeriodEnd: periodEnd,
       });
     } catch (error: any) {
       console.error("Error processing checkout success:", error);
