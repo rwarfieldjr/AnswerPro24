@@ -22,9 +22,9 @@ Preferred communication style: Simple, everyday language.
 
 **Component Structure:**
 - Modular component architecture with reusable UI components
-- Dedicated page components for each route (Home, Pricing, Industries, etc.)
+- Dedicated page components for each route (Home, Pricing, Industries, How It Works, FAQ, About, Contact)
 - Business logic components (LeadFormModal, SEOHead, ThemeProvider)
-- Example components for development and testing
+- Reusable content components (FAQAccordion, FeatureGrid, CallToAction, etc.)
 
 **Backend Architecture:**
 - Express.js server with TypeScript for API endpoints
