@@ -23,13 +23,21 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
           {/* Content */}
           <div className="space-y-8">
             <div className="space-y-4">
+              <Badge variant="secondary" className="text-sm px-4 py-2">
+                Industry-First AI Call Screening Technology
+              </Badge>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight" data-testid="text-hero-title">
                 After-Hours Answering{" "}
                 <span className="text-primary">Powered by AI Voice</span>
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed max-w-lg" data-testid="text-hero-subtitle">
-                We screen every call, collect details, and escalate only true emergencies. 
-                You wake up to organized service requests — not chaos.
+                What are missed calls — during business hours or after hours — costing your business?
+              </p>
+              <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
+                <span className="font-semibold text-foreground">27% of service calls go unanswered.*</span> We screen every call, collect details, and escalate only true emergencies. You wake up to organized service requests — not chaos.
+              </p>
+              <p className="text-xs text-muted-foreground italic">
+                *Source: Invoca's Home Services Call Report
               </p>
             </div>
 

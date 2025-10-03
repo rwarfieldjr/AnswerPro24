@@ -77,8 +77,14 @@ export default function Pricing() {
                 $499/Month. Everything Included.
               </h1>
               <p className="text-xl text-muted-foreground max-w-4xl mx-auto" data-testid="text-pricing-hero-subtitle">
-                Professional after-hours call management that pays for itself with just one captured job. 
+                What are missed calls — during business hours or after hours — costing your business?
+              </p>
+              <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+                <span className="font-semibold text-foreground">27% of service calls go unanswered.*</span> Professional after-hours call management that pays for itself with just one captured job. 
                 Start your 14-day free trial today with 100 answered minutes included.
+              </p>
+              <p className="text-xs text-muted-foreground italic">
+                *Source: Invoca's Home Services Call Report
               </p>
               <Button size="lg" onClick={handleStartTrial} data-testid="button-pricing-hero-trial">
                 Start 14-Day Free Trial

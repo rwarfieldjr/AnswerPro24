@@ -115,12 +115,15 @@ export default function HowItWorks() {
         <section className="py-16 lg:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center space-y-6 mb-16">
+              <Badge variant="secondary" className="text-sm px-4 py-2">
+                Industry-First Technology
+              </Badge>
               <h1 className="text-4xl sm:text-5xl font-bold text-foreground" data-testid="text-how-it-works-hero-title">
                 How It Works
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="text-how-it-works-hero-subtitle">
-                Get started in minutes with our simple 4-step process. 
-                No technical expertise required.
+                Unlike traditional answering services, our AI actually understands the difference between emergencies and routine calls. 
+                Get started in minutes with our simple 4-step process. No technical expertise required.
               </p>
               <div className="flex justify-center">
                 <Badge variant="secondary" className="text-sm px-4 py-2">

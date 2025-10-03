@@ -97,8 +97,8 @@ export default function About() {
                   The Problem We Solve
                 </h2>
                 <div className="space-y-4 text-muted-foreground">
-                  <p>
-                    Every home service business faces the same dilemma: miss after-hours calls and lose revenue, 
+                  <p className="text-lg">
+                    <span className="font-semibold text-foreground">27% of service calls go unanswered.</span> Every home service business faces the same dilemma: miss after-hours calls and lose revenue, 
                     or answer every call and lose sleep to non-emergencies.
                   </p>
                   <p>
@@ -107,8 +107,11 @@ export default function About() {
                     real emergencies.
                   </p>
                   <p>
-                    That's why we built AnswerPro 24 — an AI that actually understands home services, 
+                    That's why we built AnswerPro 24 — <span className="font-semibold text-foreground">the industry's first AI that actually understands home services</span>, 
                     trained on millions of real calls to make smart decisions about what needs immediate attention.
+                  </p>
+                  <p className="text-sm italic">
+                    *Source: Invoca's Home Services Call Report
                   </p>
                 </div>
               </div>
