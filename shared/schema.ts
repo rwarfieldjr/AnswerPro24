@@ -28,6 +28,8 @@ export const leads = pgTable("leads", {
   notes: text("notes"),
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
+  membershipStatus: text("membership_status"),
+  membershipPeriodEnd: text("membership_period_end"),
   createdAt: text("created_at").default(sql`NOW()`),
 });
 
