@@ -2,6 +2,14 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertLeadSchema } from "@shared/schema";
+import Stripe from "stripe";
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
+}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2025-09-30.clover",
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Lead creation endpoint
@@ -53,6 +61,33 @@ Lead ID: ${lead.id}
     } catch (error) {
       console.error("Error fetching leads:", error);
       res.status(500).json({ error: "Failed to fetch leads" });
+    }
+  });
+
+  // Create Stripe subscription payment intent
+  app.post("/api/create-subscription-intent", async (req, res) => {
+    try {
+      const { email, amount } = req.body;
+      
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(amount * 100),
+        currency: "usd",
+        automatic_payment_methods: {
+          enabled: true,
+        },
+        receipt_email: email,
+        metadata: {
+          type: 'subscription',
+          plan: 'monthly-499',
+        },
+      });
+      
+      res.json({ clientSecret: paymentIntent.client_secret });
+    } catch (error: any) {
+      console.error("Error creating payment intent:", error);
+      res.status(500).json({ 
+        error: "Error creating payment intent: " + error.message 
+      });
     }
   });
 
