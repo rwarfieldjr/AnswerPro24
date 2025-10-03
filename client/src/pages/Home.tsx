@@ -1,42 +1,21 @@
 import { useState } from "react";
-import { useLocation } from "wouter";
 import Header from "@/components/Header";
 import SEOHead from "@/components/SEOHead";
 import HeroWithCTA from "@/components/HeroWithCTA";
 import FeatureGrid from "@/components/FeatureGrid";
-import IndustriesCards from "@/components/IndustriesCards";
-import HowItWorksStepper from "@/components/HowItWorksStepper";
-import PricingCards from "@/components/PricingCards";
-import FAQAccordion from "@/components/FAQAccordion";
 import CallToAction from "@/components/CallToAction";
 import Footer from "@/components/Footer";
 import LeadFormModal from "@/components/LeadFormModal";
 
 export default function Home() {
   const [isLeadFormOpen, setIsLeadFormOpen] = useState(false);
-  const [, setLocation] = useLocation();
 
   const handleStartTrial = () => {
     setIsLeadFormOpen(true);
   };
 
   const handleSeeHowItWorks = () => {
-    const element = document.getElementById('how-it-works');
-    element?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handleIndustryLearnMore = (slug: string) => {
-    setLocation("/contact");
-  };
-
-  const handlePlanSelect = (planName: string) => {
-    console.log(`Selected plan: ${planName}`);
-    if (planName === "Scale") {
-      // TODO: Navigate to contact page
-      console.log('Navigate to contact for custom pricing');
-    } else {
-      setIsLeadFormOpen(true);
-    }
+    window.location.href = '/how-it-works';
   };
 
   const homeStructuredData = {
@@ -103,16 +82,6 @@ export default function Home() {
         />
         
         <FeatureGrid />
-        
-        <div id="how-it-works">
-          <HowItWorksStepper />
-        </div>
-        
-        <IndustriesCards onLearnMore={handleIndustryLearnMore} />
-        
-        <PricingCards onPlanSelect={handlePlanSelect} />
-        
-        <FAQAccordion />
         
         <CallToAction onStartTrial={handleStartTrial} />
       </main>
