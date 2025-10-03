@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Clock, Phone, CheckCircle } from "lucide-react";
+import { Shield, Clock, Phone, CheckCircle, Sparkles } from "lucide-react";
 import heroImage from "@assets/generated_images/Service_technician_hero_image_1ccde34c.png";
 
 interface HeroWithCTAProps {
@@ -52,28 +52,35 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
             </div>
 
             {/* Test Drive Section */}
-            <div className="bg-primary/5 border border-primary/20 rounded-xl p-6 space-y-4">
+            <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30 rounded-xl p-6 space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <Phone className="h-5 w-5 text-primary" />
+                <div className="p-3 bg-primary/20 rounded-lg">
+                  <Sparkles className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold text-foreground">Test Drive Our AI Voice System</h3>
+                <h3 className="text-2xl font-bold text-foreground">Hear It To Believe It</h3>
               </div>
-              <p className="text-muted-foreground">
-                Experience our AI in action! Call our live demo line and interact with the same AI voice system that will handle your after-hours calls.
+              <p className="text-lg text-foreground font-medium">
+                Don't just read about it — experience the future of after-hours call handling right now!
               </p>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <p className="text-muted-foreground">
+                Call our live demo line and have a real conversation with our AI. You'll be amazed at how natural it sounds and how intelligently it handles service calls. This is the same technology that will protect your sleep and capture your leads.
+              </p>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
                 <a 
                   href="tel:770-404-9750"
-                  className="flex items-center space-x-3 text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
+                  className="flex items-center space-x-3 text-3xl font-bold text-primary hover:text-primary/80 transition-colors"
                   data-testid="link-test-drive-phone"
                 >
-                  <Phone className="h-6 w-6" />
+                  <Phone className="h-7 w-7" />
                   <span>(770) 404-9750</span>
                 </a>
                 <div className="text-sm text-muted-foreground">
-                  <div className="font-medium">Available 24/7 for testing</div>
-                  <div>See how our AI handles real scenarios</div>
+                  <div className="flex items-center gap-2 font-semibold text-foreground">
+                    <Phone className="h-4 w-4" />
+                    Call anytime, 24/7
+                  </div>
+                  <div>Try real plumbing, HVAC, or electrical scenarios</div>
+                  <div className="text-xs italic mt-1">No spam. Just an incredible demo experience.</div>
                 </div>
               </div>
             </div>
