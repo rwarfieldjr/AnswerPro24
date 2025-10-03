@@ -19,7 +19,7 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
   return (
     <section className="py-16 lg:py-24 bg-gradient-to-br from-background to-muted/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Content */}
           <div className="space-y-8">
             <div className="space-y-4">
@@ -51,40 +51,6 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
               </Button>
             </div>
 
-            {/* Test Drive Section */}
-            <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30 rounded-xl p-6 space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="p-3 bg-primary/20 rounded-lg">
-                  <Sparkles className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-2xl font-bold text-foreground">Hear It To Believe It</h3>
-              </div>
-              <p className="text-lg text-foreground font-medium">
-                Don't just read about it — experience the future of after-hours call handling right now!
-              </p>
-              <p className="text-muted-foreground">
-                Call our live demo line and have a real conversation with our AI. You'll be amazed at how natural it sounds and how intelligently it handles service calls. This is the same technology that will protect your sleep and capture your leads.
-              </p>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
-                <a 
-                  href="tel:770-404-9750"
-                  className="flex items-center space-x-3 text-3xl font-bold text-primary hover:text-primary/80 transition-colors"
-                  data-testid="link-test-drive-phone"
-                >
-                  <Phone className="h-7 w-7" />
-                  <span>(770) 404-9750</span>
-                </a>
-                <div className="text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2 font-semibold text-foreground">
-                    <Phone className="h-4 w-4" />
-                    Call anytime, 24/7
-                  </div>
-                  <div>Try real plumbing, HVAC, or electrical scenarios</div>
-                  <div className="text-xs italic mt-1">No spam. Just an incredible demo experience.</div>
-                </div>
-              </div>
-            </div>
-
             {/* Trust Badges */}
             <div className="grid grid-cols-2 gap-4 pt-8">
               {trustBadges.map((badge, index) => (
@@ -113,6 +79,42 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                 <span className="text-sm font-medium">Live 24/7</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Test Drive Section - Full Width */}
+        <div className="max-w-5xl mx-auto mt-16">
+          <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30 rounded-xl p-8 space-y-4">
+            <div className="flex items-center space-x-3">
+              <div className="p-3 bg-primary/20 rounded-lg">
+                <Sparkles className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground">Hear It To Believe It</h3>
+            </div>
+            <p className="text-lg text-foreground font-medium">
+              Don't just read about it — experience the future of after-hours call handling right now!
+            </p>
+            <p className="text-muted-foreground">
+              Call our live demo line and have a real conversation with our AI. You'll be amazed at how natural it sounds and how intelligently it handles service calls. This is the same technology that will protect your sleep and capture your leads.
+            </p>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
+              <a 
+                href="tel:770-404-9750"
+                className="flex items-center space-x-3 text-3xl font-bold text-primary hover:text-primary/80 transition-colors"
+                data-testid="link-test-drive-phone"
+              >
+                <Phone className="h-7 w-7" />
+                <span>(770) 404-9750</span>
+              </a>
+              <div className="text-sm text-muted-foreground">
+                <div className="flex items-center gap-2 font-semibold text-foreground">
+                  <Phone className="h-4 w-4" />
+                  Call anytime, 24/7
+                </div>
+                <div>Try real plumbing, HVAC, or electrical scenarios</div>
+                <div className="text-xs italic mt-1">No spam. Just an incredible demo experience.</div>
               </div>
             </div>
           </div>
