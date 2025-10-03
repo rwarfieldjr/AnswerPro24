@@ -116,15 +116,15 @@ export default function About() {
                 <CardContent className="p-8 text-center space-y-4">
                   <h3 className="text-2xl font-bold text-foreground">The Challenge</h3>
                   <div className="space-y-4">
-                    <div className="p-4 bg-destructive/10 rounded-lg">
-                      <p className="text-sm font-medium text-destructive">Traditional Problem</p>
+                    <div className="p-4 bg-amber-50 dark:bg-amber-950/30 rounded-lg">
+                      <p className="text-sm font-medium text-amber-600 dark:text-amber-500">Traditional Problem</p>
                       <p className="text-sm text-muted-foreground mt-1">
                         Answer all calls → Lose sleep to non-emergencies
                       </p>
                     </div>
                     <div className="text-muted-foreground">OR</div>
-                    <div className="p-4 bg-destructive/10 rounded-lg">
-                      <p className="text-sm font-medium text-destructive">Traditional Problem</p>
+                    <div className="p-4 bg-amber-50 dark:bg-amber-950/30 rounded-lg">
+                      <p className="text-sm font-medium text-amber-600 dark:text-amber-500">Traditional Problem</p>
                       <p className="text-sm text-muted-foreground mt-1">
                         Miss calls → Lose revenue and customers
                       </p>
