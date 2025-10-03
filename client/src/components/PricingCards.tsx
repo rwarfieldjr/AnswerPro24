@@ -1,13 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, Star, Shield, Clock, Phone } from "lucide-react";
-
-interface AddOn {
-  name: string;
-  price: string;
-  description: string;
-}
+import { Check, Star, Shield, Clock } from "lucide-react";
 
 interface PricingPlan {
   name: string;
@@ -41,38 +35,6 @@ const corePlan: PricingPlan = {
   buttonVariant: "default"
 };
 
-const addOns: AddOn[] = [
-  {
-    name: "24/7 Coverage",
-    price: "+$300",
-    description: "Extended coverage to full 24/7 operation"
-  },
-  {
-    name: "Overflow During Business Hours",
-    price: "+$199",
-    description: "Handle overflow calls during your business hours"
-  },
-  {
-    name: "Bilingual Line",
-    price: "+$100",
-    description: "Spanish/English bilingual call handling"
-  },
-  {
-    name: "Google Review Request Workflow",
-    price: "+$49",
-    description: "Automated review requests after service completion"
-  },
-  {
-    name: "Priority Hot-Transfer",
-    price: "+$49",
-    description: "Direct transfer to technicians for urgent calls"
-  },
-  {
-    name: "Extra Numbers/Locations",
-    price: "+$15 each",
-    description: "Additional phone numbers for multiple locations"
-  }
-];
 
 interface PricingCardsProps {
   onPlanSelect?: (planName: string) => void;
@@ -194,31 +156,6 @@ export default function PricingCards({ onPlanSelect }: PricingCardsProps) {
               </div>
             </CardContent>
           </Card>
-        </div>
-
-        {/* Add-ons Section */}
-        <div className="max-w-6xl mx-auto mb-16">
-          <div className="text-center space-y-4 mb-12">
-            <h3 className="text-2xl font-bold text-foreground">Optional Add-Ons</h3>
-            <p className="text-muted-foreground">Customize your service with additional features</p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {addOns.map((addon, index) => (
-              <Card key={index} className="hover-elevate" data-testid={`card-addon-${addon.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                <CardContent className="p-6">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-semibold text-foreground text-sm">{addon.name}</h4>
-                      <Badge variant="outline" className="text-primary border-primary">
-                        {addon.price}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground">{addon.description}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
         </div>
 
         {/* Guarantee Section */}
