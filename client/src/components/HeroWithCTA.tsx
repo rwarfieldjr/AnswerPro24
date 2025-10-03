@@ -17,7 +17,7 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
   ];
 
   return (
-    <section className="py-16 lg:py-24 bg-gradient-to-br from-background to-muted/20">
+    <section className="pt-20 pb-16 lg:pt-32 lg:pb-24 bg-gradient-to-br from-background to-muted/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Content */}
