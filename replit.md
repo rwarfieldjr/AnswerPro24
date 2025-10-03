@@ -76,9 +76,32 @@ Preferred communication style: Simple, everyday language.
 - TypeScript for type safety across the stack
 - Replit-specific plugins for development environment
 
+**Payment Processing:**
+- Stripe integration for subscription management with hosted Checkout
+- 14-day free trial with payment_method_collection: "always" to collect card upfront
+- Trial subscriptions with automatic conversion to paid after trial period
+- Webhook handling for subscription lifecycle events
+- In-memory pending checkout storage for lead data during checkout flow
+
 **Planned Integrations:**
 - Email services (SendGrid/Mailgun) for lead notifications
 - SMS services (Twilio) for customer communications
 - CRM webhooks for lead distribution
 - Analytics platforms for user tracking
-- Payment processing for subscription management
+
+## Stripe Checkout Flow
+
+**Implementation:**
+1. User completes 2-step lead form (Step 1: Contact info, Step 2: Company details)
+2. Backend creates Stripe Checkout Session with 14-day trial
+3. Lead data stored temporarily in memory (pendingCheckouts Map) keyed by session ID
+4. User redirected to Stripe's hosted checkout page
+5. After payment, Stripe redirects to /signup/success with session_id
+6. Success page calls /api/checkout-success to save lead with Stripe IDs
+7. Webhooks handle subscription lifecycle (checkout.session.completed, invoice.paid, etc.)
+
+**Key Features:**
+- Webhook handler registered before express.json() middleware for raw body access
+- Automatic cleanup of expired pending checkouts (>1 hour old)
+- Success and cancel pages with clear messaging and next steps
+- Proper error handling and user feedback throughout flow

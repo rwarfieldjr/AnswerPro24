@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertLeadSchema } from "@shared/schema";
 import Stripe from "stripe";
+import express from "express";
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
@@ -11,7 +12,73 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2025-09-30.clover",
 });
 
+// In-memory storage for pending checkouts (maps session ID to lead data)
+const pendingCheckouts = new Map<string, any>();
+
+// Register webhook handler BEFORE express.json() middleware
+export function registerWebhook(app: Express): void {
+  app.post("/api/stripe/webhook",
+    express.raw({ type: "application/json" }),
+    async (req, res) => {
+      const sig = req.headers["stripe-signature"];
+      const whSecret = process.env.STRIPE_WEBHOOK_SECRET;
+      
+      if (!sig) {
+        console.error("Missing webhook signature");
+        return res.status(400).send("Webhook Error: Missing signature");
+      }
+      
+      if (!whSecret) {
+        console.warn("STRIPE_WEBHOOK_SECRET not set - webhook signature verification disabled");
+        return res.status(400).send("Webhook Error: Webhook secret not configured");
+      }
+
+      let event: Stripe.Event;
+
+      try {
+        event = stripe.webhooks.constructEvent(req.body, sig, whSecret);
+      } catch (err: any) {
+        console.error("Webhook signature verification failed:", err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+      }
+
+      // Handle events
+      switch (event.type) {
+        case "checkout.session.completed": {
+          const session = event.data.object as Stripe.Checkout.Session;
+          console.log("✅ Checkout session completed:", session.id);
+          console.log("   Customer:", session.customer);
+          console.log("   Subscription:", session.subscription);
+          break;
+        }
+        case "invoice.paid": {
+          const invoice = event.data.object as Stripe.Invoice;
+          console.log("✅ Invoice paid:", invoice.id);
+          break;
+        }
+        case "customer.subscription.updated": {
+          const subscription = event.data.object as Stripe.Subscription;
+          console.log("✅ Subscription updated:", subscription.id);
+          console.log("   Status:", subscription.status);
+          break;
+        }
+        case "customer.subscription.deleted": {
+          const subscription = event.data.object as Stripe.Subscription;
+          console.log("🔴 Subscription deleted:", subscription.id);
+          break;
+        }
+        default:
+          console.log(`📋 Unhandled event type: ${event.type}`);
+          break;
+      }
+
+      res.json({ received: true });
+    }
+  );
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
+
   // Lead creation endpoint
   app.post("/api/leads", async (req, res) => {
     try {
@@ -76,41 +143,46 @@ Lead ID: ${lead.id}
       const successUrl = `${baseUrl}/signup/success?session_id={CHECKOUT_SESSION_ID}`;
       const cancelUrl = `${baseUrl}/signup/cancel`;
 
-      const product = await stripe.products.create({
-        name: 'AnswerPro 24 - Monthly Subscription',
-        description: 'AI-powered after-hours answering service with 14-day free trial',
-      });
-      
-      const price = await stripe.prices.create({
-        product: product.id,
-        currency: 'usd',
-        recurring: {
-          interval: 'month',
-        },
-        unit_amount: 49900,
-      });
+      // Create a temporary session to store lead data
+      const tempSessionId = `temp_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
       const session = await stripe.checkout.sessions.create({
         mode: "subscription",
         customer_email: email,
-        line_items: [{ price: price.id, quantity: 1 }],
+        line_items: [{ 
+          price: "price_1Qh0WiAHdOxJzlqtK4wMW01F", // Fixed Price ID - replace with env var
+          quantity: 1 
+        }],
         payment_method_collection: "always",
         subscription_data: {
           trial_period_days: 14,
           metadata: {
             plan: 'monthly-499',
             trial: 'true',
-            companyName: companyName,
-            leadData: JSON.stringify(leadData),
           },
         },
         metadata: {
-          companyName: companyName,
-          leadData: JSON.stringify(leadData),
+          tempSessionId,
         },
         allow_promotion_codes: true,
         success_url: successUrl,
         cancel_url: cancelUrl,
+      });
+
+      // Store lead data temporarily with session ID as key
+      pendingCheckouts.set(session.id, {
+        leadData,
+        email,
+        companyName,
+        createdAt: Date.now(),
+      });
+
+      // Clean up old pending checkouts (older than 1 hour)
+      const oneHourAgo = Date.now() - 3600000;
+      Array.from(pendingCheckouts.entries()).forEach(([key, value]) => {
+        if (value.createdAt < oneHourAgo) {
+          pendingCheckouts.delete(key);
+        }
       });
 
       res.json({ url: session.url, sessionId: session.id });
@@ -131,28 +203,35 @@ Lead ID: ${lead.id}
         return res.status(400).json({ error: "Missing session_id" });
       }
 
+      // Retrieve pending checkout data
+      const pendingData = pendingCheckouts.get(sessionId);
+      if (!pendingData) {
+        return res.status(400).json({ error: "Session not found or expired" });
+      }
+
       const session = await stripe.checkout.sessions.retrieve(sessionId, {
         expand: ['subscription', 'customer'],
       });
 
-      const leadDataStr = session.metadata?.leadData;
-      if (!leadDataStr) {
-        return res.status(400).json({ error: "No lead data found" });
-      }
-
-      const leadData = JSON.parse(leadDataStr);
       const customer = session.customer as Stripe.Customer;
       const subscription = session.subscription as Stripe.Subscription;
 
+      if (!customer || !subscription) {
+        return res.status(400).json({ error: "Invalid session: missing customer or subscription" });
+      }
+
       const validatedData = insertLeadSchema.parse({
-        ...leadData,
+        ...pendingData.leadData,
         stripeCustomerId: customer.id,
         stripeSubscriptionId: subscription.id,
       });
 
       const lead = await storage.createLead(validatedData);
       
-      console.log("New lead created from checkout:", lead);
+      // Clean up pending checkout
+      pendingCheckouts.delete(sessionId);
+      
+      console.log("✅ New lead created from checkout:", lead);
       console.log("✅ Lead notification sent to hello@answerpro24.com");
 
       res.json({ 
