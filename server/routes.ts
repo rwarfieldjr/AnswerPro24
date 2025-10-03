@@ -64,29 +64,60 @@ Lead ID: ${lead.id}
     }
   });
 
-  // Create Stripe subscription payment intent
+  // Create Stripe subscription
   app.post("/api/create-subscription-intent", async (req, res) => {
     try {
-      const { email, amount } = req.body;
+      const { email, companyName } = req.body;
       
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(amount * 100),
-        currency: "usd",
-        automatic_payment_methods: {
-          enabled: true,
-        },
-        receipt_email: email,
+      const customer = await stripe.customers.create({
+        email,
+        name: companyName,
         metadata: {
-          type: 'subscription',
-          plan: 'monthly-499',
+          source: 'answerpro24-trial-signup',
         },
       });
       
-      res.json({ clientSecret: paymentIntent.client_secret });
+      const product = await stripe.products.create({
+        name: 'AnswerPro 24 - Monthly Subscription',
+        description: 'AI-powered after-hours answering service with 14-day free trial',
+      });
+      
+      const price = await stripe.prices.create({
+        product: product.id,
+        currency: 'usd',
+        recurring: {
+          interval: 'month',
+        },
+        unit_amount: 49900,
+      });
+      
+      const subscription = await stripe.subscriptions.create({
+        customer: customer.id,
+        items: [{ price: price.id }],
+        payment_behavior: 'default_incomplete',
+        payment_settings: {
+          save_default_payment_method: 'on_subscription',
+        },
+        expand: ['latest_invoice.payment_intent'],
+        trial_period_days: 14,
+        metadata: {
+          plan: 'monthly-499',
+          trial: 'true',
+        },
+      });
+      
+      const invoice = subscription.latest_invoice as any;
+      const clientSecret = invoice?.payment_intent?.client_secret;
+      
+      res.json({ 
+        clientSecret,
+        customerId: customer.id,
+        subscriptionId: subscription.id,
+      });
     } catch (error: any) {
-      console.error("Error creating payment intent:", error);
+      console.error("Error creating subscription:", error);
       res.status(500).json({ 
-        error: "Error creating payment intent: " + error.message 
+        error: "Error creating subscription: " + error.message 
       });
     }
   });

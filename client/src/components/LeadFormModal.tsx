@@ -65,7 +65,12 @@ interface LeadFormModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-function CheckoutForm({ leadData }: { leadData: Step1Data & Step2Data }) {
+function CheckoutForm({ leadData, stripeCustomerId, stripeSubscriptionId, onSuccess }: { 
+  leadData: Step1Data & Step2Data, 
+  stripeCustomerId: string,
+  stripeSubscriptionId: string,
+  onSuccess: () => void 
+}) {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
@@ -73,16 +78,23 @@ function CheckoutForm({ leadData }: { leadData: Step1Data & Step2Data }) {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const createLeadMutation = useMutation({
-    mutationFn: (data: Step1Data & Step2Data & { stripeCustomerId?: string; stripeSubscriptionId?: string }) => {
+    mutationFn: (data: Step1Data & Step2Data & { stripeCustomerId: string; stripeSubscriptionId: string }) => {
       const transformedData = {
         ...data,
         transactionalConsent: data.transactionalConsent ? "true" : "false",
-        marketingConsent: data.marketingConsent ? "true" : "false"
+        marketingConsent: data.marketingConsent ? "true" : "false",
+        stripeCustomerId: data.stripeCustomerId,
+        stripeSubscriptionId: data.stripeSubscriptionId,
       };
       return apiRequest("POST", "/api/leads", transformedData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/leads"] });
+      toast({
+        title: "Welcome to AnswerPro 24!",
+        description: "Your 14-day free trial starts now. We'll be in touch shortly to complete your setup.",
+      });
+      onSuccess();
     },
   });
 
@@ -109,11 +121,10 @@ function CheckoutForm({ leadData }: { leadData: Step1Data & Step2Data }) {
         });
         setIsProcessing(false);
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
-        await createLeadMutation.mutateAsync(leadData);
-        
-        toast({
-          title: "Welcome to AnswerPro 24!",
-          description: "Your subscription is active. We'll be in touch shortly to complete your setup.",
+        await createLeadMutation.mutateAsync({
+          ...leadData,
+          stripeCustomerId,
+          stripeSubscriptionId,
         });
         setIsProcessing(false);
       }
@@ -147,6 +158,8 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
   const [step1Data, setStep1Data] = useState<Step1Data | null>(null);
   const [step2Data, setStep2Data] = useState<Step2Data | null>(null);
   const [clientSecret, setClientSecret] = useState("");
+  const [stripeCustomerId, setStripeCustomerId] = useState("");
+  const [stripeSubscriptionId, setStripeSubscriptionId] = useState("");
   const { toast } = useToast();
 
   const step1Form = useForm<Step1Data>({
@@ -187,10 +200,13 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     try {
       const response = await apiRequest("POST", "/api/create-subscription-intent", {
         email: step1Data?.email,
-        amount: 499,
+        companyName: step1Data?.companyName,
       });
       const result = await response.json();
       setClientSecret(result.clientSecret);
+      setStripeCustomerId(result.customerId);
+      setStripeSubscriptionId(result.subscriptionId);
+      
       setStep(3);
     } catch (error) {
       toast({
@@ -207,6 +223,8 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     setStep1Data(null);
     setStep2Data(null);
     setClientSecret("");
+    setStripeCustomerId("");
+    setStripeSubscriptionId("");
     step1Form.reset();
     step2Form.reset();
   };
@@ -541,9 +559,14 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
           </Form>
         )}
 
-        {step === 3 && clientSecret && (
+        {step === 3 && clientSecret && stripeCustomerId && stripeSubscriptionId && (
           <Elements stripe={stripePromise} options={{ clientSecret }}>
-            <CheckoutForm leadData={{ ...step1Data!, ...step2Data! }} />
+            <CheckoutForm 
+              leadData={{ ...step1Data!, ...step2Data! }} 
+              stripeCustomerId={stripeCustomerId}
+              stripeSubscriptionId={stripeSubscriptionId}
+              onSuccess={handleClose}
+            />
           </Elements>
         )}
       </DialogContent>
