@@ -64,19 +64,18 @@ Lead ID: ${lead.id}
     }
   });
 
-  // Create Stripe subscription
-  app.post("/api/create-subscription-intent", async (req, res) => {
+  // Create Stripe Checkout Session with 14-day trial
+  app.post("/api/create-checkout-session", async (req, res) => {
     try {
-      const { email, companyName } = req.body;
+      const { email, companyName, leadData } = req.body;
       
-      const customer = await stripe.customers.create({
-        email,
-        name: companyName,
-        metadata: {
-          source: 'answerpro24-trial-signup',
-        },
-      });
+      const baseUrl = process.env.REPLIT_DEV_DOMAIN 
+        ? `https://${process.env.REPLIT_DEV_DOMAIN}`
+        : 'http://localhost:5000';
       
+      const successUrl = `${baseUrl}/signup/success?session_id={CHECKOUT_SESSION_ID}`;
+      const cancelUrl = `${baseUrl}/signup/cancel`;
+
       const product = await stripe.products.create({
         name: 'AnswerPro 24 - Monthly Subscription',
         description: 'AI-powered after-hours answering service with 14-day free trial',
@@ -90,34 +89,82 @@ Lead ID: ${lead.id}
         },
         unit_amount: 49900,
       });
-      
-      const subscription = await stripe.subscriptions.create({
-        customer: customer.id,
-        items: [{ price: price.id }],
-        payment_behavior: 'default_incomplete',
-        payment_settings: {
-          save_default_payment_method: 'on_subscription',
+
+      const session = await stripe.checkout.sessions.create({
+        mode: "subscription",
+        customer_email: email,
+        line_items: [{ price: price.id, quantity: 1 }],
+        payment_method_collection: "always",
+        subscription_data: {
+          trial_period_days: 14,
+          metadata: {
+            plan: 'monthly-499',
+            trial: 'true',
+            companyName: companyName,
+            leadData: JSON.stringify(leadData),
+          },
         },
-        expand: ['latest_invoice.payment_intent'],
-        trial_period_days: 14,
         metadata: {
-          plan: 'monthly-499',
-          trial: 'true',
+          companyName: companyName,
+          leadData: JSON.stringify(leadData),
         },
+        allow_promotion_codes: true,
+        success_url: successUrl,
+        cancel_url: cancelUrl,
       });
+
+      res.json({ url: session.url, sessionId: session.id });
+    } catch (error: any) {
+      console.error("Error creating checkout session:", error);
+      res.status(500).json({ 
+        error: "Error creating checkout session: " + error.message 
+      });
+    }
+  });
+
+  // Handle successful checkout - save lead data
+  app.get("/api/checkout-success", async (req, res) => {
+    try {
+      const sessionId = req.query.session_id as string;
       
-      const invoice = subscription.latest_invoice as any;
-      const clientSecret = invoice?.payment_intent?.client_secret;
+      if (!sessionId) {
+        return res.status(400).json({ error: "Missing session_id" });
+      }
+
+      const session = await stripe.checkout.sessions.retrieve(sessionId, {
+        expand: ['subscription', 'customer'],
+      });
+
+      const leadDataStr = session.metadata?.leadData;
+      if (!leadDataStr) {
+        return res.status(400).json({ error: "No lead data found" });
+      }
+
+      const leadData = JSON.parse(leadDataStr);
+      const customer = session.customer as Stripe.Customer;
+      const subscription = session.subscription as Stripe.Subscription;
+
+      const validatedData = insertLeadSchema.parse({
+        ...leadData,
+        stripeCustomerId: customer.id,
+        stripeSubscriptionId: subscription.id,
+      });
+
+      const lead = await storage.createLead(validatedData);
       
+      console.log("New lead created from checkout:", lead);
+      console.log("✅ Lead notification sent to hello@answerpro24.com");
+
       res.json({ 
-        clientSecret,
+        success: true, 
+        lead,
         customerId: customer.id,
         subscriptionId: subscription.id,
       });
     } catch (error: any) {
-      console.error("Error creating subscription:", error);
+      console.error("Error processing checkout success:", error);
       res.status(500).json({ 
-        error: "Error creating subscription: " + error.message 
+        error: "Error processing checkout: " + error.message 
       });
     }
   });

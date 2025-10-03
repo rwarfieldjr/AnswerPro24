@@ -29,12 +29,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const step1Schema = z.object({
   companyName: z.string().min(1, "Company name is required"),
@@ -65,101 +60,11 @@ interface LeadFormModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-function CheckoutForm({ leadData, stripeCustomerId, stripeSubscriptionId, onSuccess }: { 
-  leadData: Step1Data & Step2Data, 
-  stripeCustomerId: string,
-  stripeSubscriptionId: string,
-  onSuccess: () => void 
-}) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  const createLeadMutation = useMutation({
-    mutationFn: (data: Step1Data & Step2Data & { stripeCustomerId: string; stripeSubscriptionId: string }) => {
-      const transformedData = {
-        ...data,
-        transactionalConsent: data.transactionalConsent ? "true" : "false",
-        marketingConsent: data.marketingConsent ? "true" : "false",
-        stripeCustomerId: data.stripeCustomerId,
-        stripeSubscriptionId: data.stripeSubscriptionId,
-      };
-      return apiRequest("POST", "/api/leads", transformedData);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/leads"] });
-      toast({
-        title: "Welcome to AnswerPro 24!",
-        description: "Your 14-day free trial starts now. We'll be in touch shortly to complete your setup.",
-      });
-      onSuccess();
-    },
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    setIsProcessing(true);
-
-    try {
-      const { error, paymentIntent } = await stripe.confirmPayment({
-        elements,
-        redirect: "if_required",
-      });
-
-      if (error) {
-        toast({
-          title: "Payment Failed",
-          description: error.message,
-          variant: "destructive",
-        });
-        setIsProcessing(false);
-      } else if (paymentIntent && paymentIntent.status === "succeeded") {
-        await createLeadMutation.mutateAsync({
-          ...leadData,
-          stripeCustomerId,
-          stripeSubscriptionId,
-        });
-        setIsProcessing(false);
-      }
-    } catch (err) {
-      toast({
-        title: "Something went wrong",
-        description: "Please try again or call us at (770) 404-9750",
-        variant: "destructive",
-      });
-      setIsProcessing(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <PaymentElement />
-      <Button 
-        type="submit" 
-        disabled={!stripe || isProcessing}
-        className="w-full"
-        data-testid="button-complete-subscription"
-      >
-        {isProcessing ? "Processing..." : "Complete Subscription - $499/month"}
-      </Button>
-    </form>
-  );
-}
-
 export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps) {
   const [step, setStep] = useState(1);
   const [step1Data, setStep1Data] = useState<Step1Data | null>(null);
   const [step2Data, setStep2Data] = useState<Step2Data | null>(null);
-  const [clientSecret, setClientSecret] = useState("");
-  const [stripeCustomerId, setStripeCustomerId] = useState("");
-  const [stripeSubscriptionId, setStripeSubscriptionId] = useState("");
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const { toast } = useToast();
 
   const step1Form = useForm<Step1Data>({
@@ -196,22 +101,29 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
 
   const onStep2Submit = async (data: Step2Data) => {
     setStep2Data(data);
+    setIsRedirecting(true);
     
     try {
-      const response = await apiRequest("POST", "/api/create-subscription-intent", {
+      const leadData = {
+        ...step1Data,
+        ...data,
+        transactionalConsent: step1Data?.transactionalConsent ? "true" : "false",
+        marketingConsent: step1Data?.marketingConsent ? "true" : "false",
+      };
+
+      const response = await apiRequest("POST", "/api/create-checkout-session", {
         email: step1Data?.email,
         companyName: step1Data?.companyName,
+        leadData,
       });
       const result = await response.json();
-      setClientSecret(result.clientSecret);
-      setStripeCustomerId(result.customerId);
-      setStripeSubscriptionId(result.subscriptionId);
       
-      setStep(3);
+      window.location.href = result.url;
     } catch (error) {
+      setIsRedirecting(false);
       toast({
         title: "Error",
-        description: "Failed to initialize payment. Please try again.",
+        description: "Failed to initialize checkout. Please try again or call (770) 404-9750",
         variant: "destructive",
       });
     }
@@ -222,9 +134,7 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
     setStep(1);
     setStep1Data(null);
     setStep2Data(null);
-    setClientSecret("");
-    setStripeCustomerId("");
-    setStripeSubscriptionId("");
+    setIsRedirecting(false);
     step1Form.reset();
     step2Form.reset();
   };
@@ -236,12 +146,10 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
           <DialogTitle>
             {step === 1 && "Start Your Free Trial"}
             {step === 2 && "Tell Us About Your Company"}
-            {step === 3 && "Complete Your Subscription"}
           </DialogTitle>
           <DialogDescription>
             {step === 1 && "Tell us about your business and we'll get you set up with AI-powered after-hours answering."}
-            {step === 2 && "Provide details about your company operations and preferences."}
-            {step === 3 && "Enter your payment information to activate your $499/month subscription."}
+            {step === 2 && "Provide details about your company operations and preferences. You'll then complete payment through Stripe Checkout."}
           </DialogDescription>
         </DialogHeader>
 
@@ -550,24 +458,14 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
                 <Button 
                   type="submit" 
                   className="flex-1"
+                  disabled={isRedirecting}
                   data-testid="button-next-step-2"
                 >
-                  Next
+                  {isRedirecting ? "Redirecting to Checkout..." : "Continue to Checkout"}
                 </Button>
               </div>
             </form>
           </Form>
-        )}
-
-        {step === 3 && clientSecret && stripeCustomerId && stripeSubscriptionId && (
-          <Elements stripe={stripePromise} options={{ clientSecret }}>
-            <CheckoutForm 
-              leadData={{ ...step1Data!, ...step2Data! }} 
-              stripeCustomerId={stripeCustomerId}
-              stripeSubscriptionId={stripeSubscriptionId}
-              onSuccess={handleClose}
-            />
-          </Elements>
         )}
       </DialogContent>
     </Dialog>

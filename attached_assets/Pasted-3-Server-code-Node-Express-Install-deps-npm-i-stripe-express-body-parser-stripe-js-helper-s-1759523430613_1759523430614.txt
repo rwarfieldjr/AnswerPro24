@@ -1,0 +1,152 @@
+3) Server code (Node/Express)
+Install deps
+npm i stripe express body-parser
+
+stripe.js (helper)
+// stripe.js
+import Stripe from "stripe";
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error("STRIPE_SECRET_KEY missing");
+}
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2024-06-20",
+});
+
+routes/checkout.js
+// routes/checkout.js
+import express from "express";
+import { stripe } from "../stripe.js";
+
+const router = express.Router();
+
+/**
+ * Expects JSON body: { email?: string }
+ * Uses env PRICE_PRO_499 for the subscription.
+ */
+router.post("/checkout", async (req, res) => {
+  try {
+    const { email } = req.body || {};
+    const priceId = process.env.PRICE_PRO_499;
+    if (!priceId) throw new Error("PRICE_PRO_499 not set");
+
+    const successUrl = process.env.STRIPE_SUCCESS_URL || `${process.env.APP_BASE_URL}/billing/success?session_id={CHECKOUT_SESSION_ID}`;
+    const cancelUrl  = process.env.STRIPE_CANCEL_URL  || `${process.env.APP_BASE_URL}/billing/cancel`;
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      line_items: [{ price: priceId, quantity: 1 }],
+      allow_promotion_codes: true,
+      customer_creation: "if_required",
+      // optionally prefill email
+      ...(email ? { customer_email: email } : {}),
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      // useful metadata you can read in webhook:
+      metadata: { plan: "pro_499" },
+    });
+
+    res.json({ url: session.url });
+  } catch (err) {
+    console.error("Checkout error", err);
+    res.status(400).json({ error: err.message });
+  }
+});
+
+export default router;
+
+routes/webhook.js
+// routes/webhook.js
+import express from "express";
+import { stripe } from "../stripe.js";
+import bodyParser from "body-parser";
+
+const router = express.Router();
+
+// Stripe needs raw body for signature verification
+router.post("/stripe/webhook",
+  bodyParser.raw({ type: "application/json" }),
+  (req, res) => {
+    const sig = req.headers["stripe-signature"];
+    const whSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(req.body, sig, whSecret);
+    } catch (err) {
+      console.error("Webhook signature verification failed.", err.message);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    // Handle events
+    switch (event.type) {
+      case "checkout.session.completed": {
+        const session = event.data.object;
+        // TODO: mark user as active; session.customer, session.subscription
+        // If you passed metadata, you can read it here: session.metadata.plan
+        break;
+      }
+      case "invoice.paid": {
+        const invoice = event.data.object;
+        // TODO: ensure membership stays active
+        break;
+      }
+      case "customer.subscription.updated": {
+        const sub = event.data.object;
+        // TODO: reflect updated status/period_end in your DB
+        break;
+      }
+      case "customer.subscription.deleted": {
+        const sub = event.data.object;
+        // TODO: set membership to canceled/expired in your DB
+        break;
+      }
+      default:
+        // console.log(`Unhandled event: ${event.type}`);
+        break;
+    }
+
+    res.json({ received: true });
+  }
+);
+
+export default router;
+
+index.js (wire it up)
+// index.js
+import express from "express";
+import checkoutRoutes from "./routes/checkout.js";
+import webhookRoutes from "./routes/webhook.js";
+
+const app = express();
+
+// IMPORTANT: do NOT use JSON parser on the webhook route BEFORE the raw parser.
+app.use("/api", express.json());
+app.use("/api", checkoutRoutes);
+
+// Webhook must come after; it uses its own raw body parser:
+app.use("/api", webhookRoutes);
+
+app.get("/healthz", (_, res) => res.send("ok"));
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Server listening on ${port}`));
+
+4) Front-end hook (start checkout)
+
+Add a button and small fetch:
+
+<button id="buy-499">Join for $499</button>
+<script>
+  document.getElementById("buy-499").addEventListener("click", async () => {
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ /* email: optional */ })
+    });
+    const data = await res.json();
+    if (data.url) window.location = data.url;
+    else alert(data.error || "Unable to start checkout");
+  });
+</script>
