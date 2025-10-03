@@ -21,7 +21,7 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Content */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             <div className="space-y-4">
               <Badge variant="secondary" className="text-sm px-4 py-2">
                 Industry-First AI Call Screening Technology
@@ -41,8 +41,18 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
               </p>
             </div>
 
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button size="lg" onClick={onStartTrial} data-testid="button-hero-start-trial">
+                Start Free Trial
+              </Button>
+              <Button size="lg" variant="outline" onClick={onSeeHowItWorks} data-testid="button-hero-see-how">
+                See How It Works
+              </Button>
+            </div>
+
             {/* Trust Badges */}
-            <div className="grid grid-cols-2 gap-4 pt-8">
+            <div className="grid grid-cols-2 gap-4 pt-4">
               {trustBadges.map((badge, index) => (
                 <div key={index} className="flex items-center space-x-2" data-testid={`badge-trust-${index}`}>
                   <div className="p-2 bg-primary/10 rounded-lg">
@@ -55,39 +65,27 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
           </div>
 
           {/* Hero Image */}
-          <div className="space-y-6">
-            <div className="relative">
-              <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
-                <img
-                  src={heroImage}
-                  alt="Professional service technician with smartphone"
-                  className="w-full h-full object-cover"
-                  data-testid="img-hero"
-                />
-              </div>
-              {/* Floating badge */}
-              <div className="absolute -bottom-4 -left-4 bg-background p-4 rounded-xl shadow-lg border">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium">Live 24/7</span>
-                </div>
-              </div>
+          <div className="relative">
+            <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
+              <img
+                src={heroImage}
+                alt="Professional service technician with smartphone"
+                className="w-full h-full object-cover"
+                data-testid="img-hero"
+              />
             </div>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" onClick={onStartTrial} className="text-lg px-8 py-6" data-testid="button-hero-start-trial">
-                Start Free Trial
-              </Button>
-              <Button size="lg" variant="outline" onClick={onSeeHowItWorks} className="text-lg px-8 py-6" data-testid="button-hero-see-how">
-                See How It Works
-              </Button>
+            {/* Floating badge */}
+            <div className="absolute -bottom-4 -left-4 bg-background p-4 rounded-xl shadow-lg border">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium">Live 24/7</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Test Drive Section - Full Width */}
-        <div className="max-w-5xl mx-auto mt-16">
+        <div className="max-w-5xl mx-auto mt-12">
           <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30 rounded-xl p-8 space-y-4">
             <div className="flex items-center space-x-3">
               <div className="p-3 bg-primary/20 rounded-lg">
