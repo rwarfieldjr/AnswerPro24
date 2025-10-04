@@ -6,6 +6,7 @@ import Stripe from "stripe";
 import express from "express";
 import { queueTrialSeries, runDueReminders } from "./services/reminders";
 import { sendEmail } from "./services/sendEmail";
+import { db } from "./db";
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
@@ -382,6 +383,14 @@ Lead ID: ${lead.id}
   app.post("/cron/run-reminders", async (req, res) => {
     const out = await runDueReminders(Math.floor(Date.now() / 1000));
     res.json(out);
+  });
+
+  // Debug endpoint: view pending reminders
+  app.get("/cron/pending", (req, res) => {
+    const rows = db.prepare(
+      "SELECT id,email,type,send_at,sent,attempts FROM reminder_jobs ORDER BY send_at ASC LIMIT 200"
+    ).all();
+    res.json(rows);
   });
 
   const httpServer = createServer(app);
