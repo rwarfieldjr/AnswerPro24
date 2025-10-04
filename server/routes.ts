@@ -5,6 +5,7 @@ import { insertLeadSchema } from "@shared/schema";
 import Stripe from "stripe";
 import express from "express";
 import { Resend } from "resend";
+import { queueTrialSeries, runDueReminders } from "./services/reminders";
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
@@ -94,30 +95,8 @@ export function registerWebhook(app: Express): void {
                 const email = customer.email;
                 
                 if (email) {
-                  // Schedule 7/3/1 day trial reminders
-                  await storage.queueReminder({
-                    email,
-                    type: "trial_7",
-                    sendAt: trialEnd - 7 * 86400,
-                    sent: false,
-                    stripeCustomerId: session.customer as string,
-                  });
-                  
-                  await storage.queueReminder({
-                    email,
-                    type: "trial_3",
-                    sendAt: trialEnd - 3 * 86400,
-                    sent: false,
-                    stripeCustomerId: session.customer as string,
-                  });
-                  
-                  await storage.queueReminder({
-                    email,
-                    type: "trial_1",
-                    sendAt: trialEnd - 1 * 86400,
-                    sent: false,
-                    stripeCustomerId: session.customer as string,
-                  });
+                  // Schedule 7/3/1 day trial reminders using SQLite
+                  await queueTrialSeries({ email, trialEnd });
                   
                   console.log("✅ Trial reminders scheduled for:", email);
                   console.log("   7-day reminder:", new Date((trialEnd - 7 * 86400) * 1000).toISOString());
@@ -403,32 +382,12 @@ Lead ID: ${lead.id}
   app.post("/cron/run-reminders", async (req, res) => {
     try {
       const nowSec = Math.floor(Date.now() / 1000);
-      const pendingReminders = await storage.getPendingReminders(nowSec);
+      console.log(`📬 Running due reminders at ${new Date().toISOString()}...`);
       
-      console.log(`📬 Running due reminders: ${pendingReminders.length} pending...`);
+      const result = await runDueReminders(nowSec, sendEmail);
       
-      for (const j of pendingReminders) {
-        const subject = {
-          trial_7: "Heads up: your free trial ends in 7 days",
-          trial_3: "Reminder: 3 days left in your free trial",
-          trial_1: "Last reminder: trial ends tomorrow",
-        }[j.type] || "Subscription update";
-
-        const html = `
-          <p>${subject.replace("Heads up: ", "")}</p>
-          <p>On trial end, your card will be charged <strong>$499</strong> for Answer Pro 24 (monthly).</p>
-          <p>If you don't want to continue, cancel before the trial ends.</p>
-          <p><a href="${process.env.APP_BASE_URL || 'http://localhost:5000'}/portal">Manage membership</a></p>
-        `;
-
-        await sendEmail({ to: j.email, subject, html });
-        await storage.markReminderSent(j.id);
-        
-        console.log(`✅ Sent ${j.type} reminder to ${j.email}`);
-      }
-      
-      console.log(`✅ Processed ${pendingReminders.length} reminders`);
-      res.json({ ok: true, processed: pendingReminders.length });
+      console.log(`✅ Processed ${result.processed} reminders, sent ${result.sent}`);
+      res.json({ ok: true, ...result });
     } catch (error: any) {
       console.error("Error running reminders:", error);
       res.status(500).json({ ok: false, error: error.message });

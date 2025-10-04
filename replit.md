@@ -34,10 +34,16 @@ Preferred communication style: Simple, everyday language.
 - Middleware for request logging and error handling
 
 **Data Layer:**
-- Drizzle ORM configured for PostgreSQL with schema-first approach
-- Type-safe database operations with generated TypeScript types
-- Structured schema for users, leads, and reminders with proper validation
-- Migration system for database version control (npm run db:push)
+- **PostgreSQL (Neon)** - Primary database for leads and membership data
+  - Drizzle ORM configured with schema-first approach
+  - Type-safe database operations with generated TypeScript types
+  - Structured schema for users and leads with proper validation
+  - Migration system for database version control (npm run db:push)
+- **SQLite (better-sqlite3)** - Secondary database for reminder queue
+  - File-based storage at data/app.db with WAL mode
+  - Idempotent job queuing with unique constraints
+  - Prepared statements for performance
+  - Automatic retry logic for failed email sends
 
 **Styling and Design:**
 - Custom design system inspired by Linear and Notion aesthetics
@@ -85,12 +91,14 @@ Preferred communication style: Simple, everyday language.
 - Persistent membership status tracking in PostgreSQL database
 
 **Trial Reminder System:**
-- Automated 7/3/1 day trial reminder scheduling
+- SQLite-based reminder queue (data/app.db) with better-sqlite3
+- Automated 7/3/1 day trial reminder scheduling via queueTrialSeries()
 - Reminders queued on checkout.session.completed webhook
-- Idempotent reminder creation with unique constraint on (stripeCustomerId, type)
-- Database table tracks email, type, sendAt timestamp, and sent status
-- POST /cron/run-reminders endpoint to send pending reminders
-- Designed for hourly cron job execution (UptimeRobot, Replit Cron, etc.)
+- Idempotent reminder creation with unique constraint on (email, type, send_at)
+- Database table tracks email, type, send_at timestamp, sent status, attempts, and payload
+- POST /cron/run-reminders endpoint processes pending reminders with retry logic
+- Designed for hourly cron job execution (Cloudflare Worker, UptimeRobot, Replit Cron, etc.)
+- WAL mode enabled for concurrent read/write performance
 
 **Customer Portal:**
 - Stripe Billing Portal integration for subscription management
