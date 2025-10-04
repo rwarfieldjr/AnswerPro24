@@ -1,0 +1,142 @@
+TASK: Fix Checkout gray skeleton (ensure /api/checkout returns a URL or a readable error)
+
+1) index.js — enforce middleware order + env checks
+-------------------------------------------------
+- Ensure JSON parser is BEFORE JSON routes and the webhook (which uses raw body).
+- Add a simple env validator to fail fast if any required var is missing.
+
+--- index.js (patch) ---
+import express from "express";
+import checkoutRoutes from "./routes/checkout.js";
+import webhookRoutes from "./routes/webhook.js";
+
+function must(name){
+  if(!process.env[name]) { console.error(`[ENV] Missing ${name}`); process.exit(1); }
+}
+["STRIPE_SECRET_KEY","STRIPE_WEBHOOK_SECRET","PRICE_PRO_499","APP_BASE_URL"].forEach(must);
+
+const app = express();
+
+// JSON routes first
+app.use("/api", express.json());
+app.use("/api", checkoutRoutes);
+
+// Webhook AFTER JSON routes; uses raw body internally
+app.use("/api", webhookRoutes);
+
+app.get("/healthz", (_,res)=>res.send("ok"));
+
+const port = process.env.PORT || 3000;
+app.listen(port, ()=>console.log(`Server on :${port}`));
+
+2) routes/checkout.js — log details + return readable error
+------------------------------------------------------------
+- Log price id, success/cancel URLs.
+- Log Stripe error internals if present.
+
+--- routes/checkout.js (replace with) ---
+import express from "express";
+import { stripe } from "../stripe.js";
+
+const router = express.Router();
+
+router.post("/checkout", async (req, res) => {
+  try {
+    const priceId = process.env.PRICE_PRO_499;
+    const successUrl = `${process.env.APP_BASE_URL}/billing/success?session_id={CHECKOUT_SESSION_ID}`;
+    const cancelUrl  = `${process.env.APP_BASE_URL}/billing/cancel`;
+
+    if(!priceId) throw new Error("PRICE_PRO_499 not set");
+    if(!process.env.APP_BASE_URL) throw new Error("APP_BASE_URL not set");
+
+    console.log("[checkout] price:", priceId);
+    console.log("[checkout] success_url:", successUrl);
+    console.log("[checkout] cancel_url:", cancelUrl);
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      line_items: [{ price: priceId, quantity: 1 }],
+      payment_method_collection: "always",
+      subscription_data: { trial_period_days: 14, metadata: { plan: "answerpro24_499_monthly" } },
+      allow_promotion_codes: true,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+    });
+
+    return res.json({ url: session.url });
+  } catch (err) {
+    // Stripe errors are very informative—return them
+    const msg = err?.raw?.message || err?.message || "Checkout failed";
+    const code = err?.statusCode || 400;
+    console.error("[checkout] ERROR:", msg, err?.raw || "");
+    return res.status(code).json({ error: msg });
+  }
+});
+
+export default router;
+
+3) Frontend button — surface errors instead of hanging
+------------------------------------------------------
+- Update the click handler to show error text and stop the skeleton state.
+
+--- in your page where the button exists ---
+<button id="buy-499">Click to Check Out</button>
+<div id="checkout-error" style="color:#b00020;margin-top:8px;"></div>
+<script>
+  const errBox = document.getElementById("checkout-error");
+  document.getElementById("buy-499").addEventListener("click", async () => {
+    errBox.textContent = "";
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({})
+      });
+      const data = await res.json().catch(()=> ({}));
+      if(!res.ok || !data.url) throw new Error(data.error || "Unexpected server reply");
+      window.location = data.url;
+    } catch(e) {
+      console.error("checkout click error:", e);
+      errBox.textContent = e.message;
+      // also stop any UI skeleton/spinner here if present
+    }
+  });
+</script>
+
+4) Sanity checks (run one by one in the Replit Shell)
+-----------------------------------------------------
+# Health:
+curl -i https://YOURDOMAIN.com/healthz
+
+# Does the route exist and return JSON?
+curl -i -X POST https://YOURDOMAIN.com/api/checkout -H 'Content-Type: application/json' -d '{}'
+
+# If error, you’ll get JSON like: {"error":"<reason>"}.
+# Common reasons you’ll see:
+#  - "PRICE_PRO_499 not set"  -> set it in App Secrets
+#  - "Invalid success_url"    -> APP_BASE_URL wrong (must be https and the correct domain)
+#  - "No such price: price_..." -> price id from TEST while using sk_live, or typo
+
+5) Verify your Stripe ids match LIVE mode
+-----------------------------------------
+- Confirm in Stripe Dashboard (Live mode ON) that PRICE_PRO_499 exists.
+- Optional direct check from shell (replace vars):
+  PRICE=price_xxx
+  SK=sk_live_xxx
+  curl https://api.stripe.com/v1/prices/$PRICE -u $SK:
+
+# If it returns the price object, the ids match LIVE. If you get "No such price", you mixed live/test.
+
+6) Typical root causes (fix in env or code)
+-------------------------------------------
+- Mixed keys: using sk_live with a TEST price (or vice versa) -> replace PRICE_PRO_499 with the LIVE price id.
+- APP_BASE_URL missing/wrong (e.g., http://localhost in prod) -> set to https://answerpro24.com (or your current domain).
+- Wrong route path on button (calling /checkout not /api/checkout) -> update fetch URL.
+- Webhook raw body parser mounted before JSON routes -> keep order exactly as in step 1.
+- Cross-origin fetch to a different domain without CORS -> call relative "/api/checkout" from the same origin or add CORS.
+
+7) After deploying
+------------------
+- Open DevTools → Network → click the button → inspect the POST /api/checkout.
+  - Status 200 + JSON {url: ...} = good → you should be redirected.
+  - Status 4xx/5xx = read the JSON "error" and the Replit console log (now detailed).
