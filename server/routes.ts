@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { insertLeadSchema } from "@shared/schema";
 import Stripe from "stripe";
 import express from "express";
+import { Resend } from "resend";
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
@@ -11,6 +12,22 @@ if (!process.env.STRIPE_SECRET_KEY) {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2025-09-30.clover",
 });
+
+async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
+  if (!process.env.RESEND_API_KEY || !process.env.FROM_EMAIL) {
+    console.warn("⚠️ RESEND_API_KEY or FROM_EMAIL not set - skipping email send");
+    console.log(`Would send email to ${to}: ${subject}`);
+    return null;
+  }
+  
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  return resend.emails.send({
+    from: process.env.FROM_EMAIL,
+    to,
+    subject,
+    html,
+  });
+}
 
 // In-memory storage for pending checkouts (maps session ID to lead data)
 const pendingCheckouts = new Map<string, any>();
@@ -372,14 +389,10 @@ Lead ID: ${lead.id}
         const subject = subjectFor(job.type);
         const html = htmlFor(job.type);
         
-        // In production, replace with: await sendEmail({ to: job.email, subject, html });
-        console.log(`\n=== SENDING REMINDER EMAIL ===`);
-        console.log(`To: ${job.email}`);
-        console.log(`Subject: ${subject}`);
-        console.log(`HTML: ${html}`);
-        console.log(`==============================\n`);
-        
+        await sendEmail({ to: job.email, subject, html });
         await storage.markReminderSent(job.id);
+        
+        console.log(`✅ Sent ${job.type} reminder to ${job.email}`);
       }
       
       console.log(`✅ Processed ${pendingReminders.length} reminders`);

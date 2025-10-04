@@ -156,11 +156,12 @@ reminders table:
 **Email Content:**
 - Subject lines: "Heads up: your free trial ends in 7 days" (and variations)
 - HTML includes: trial end warning, $499 price, cancellation option, link to /portal
-- Ready to integrate with Resend, SendGrid, or Mailgun
+- Resend integration for email delivery
 
 **Production Notes:**
-- Currently logs reminder HTML to console (development mode)
-- Replace console.log with actual email service (Resend recommended)
+- Resend package installed and integrated
+- sendEmail() function checks for RESEND_API_KEY and FROM_EMAIL environment variables
+- Falls back to console logging if environment variables not set (development mode)
 - Endpoint should be protected with authentication/secret token
 - Can be triggered by UptimeRobot, Replit Cron, or similar services
 - Consider adding composite index on (sent, sendAt) for performance
