@@ -13,56 +13,17 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2025-09-30.clover",
 });
 
-let connectionSettings: any;
-
-async function getCredentials() {
-  const hostname = process.env.REPLIT_CONNECTORS_HOSTNAME;
-  const xReplitToken = process.env.REPL_IDENTITY 
-    ? 'repl ' + process.env.REPL_IDENTITY 
-    : process.env.WEB_REPL_RENEWAL 
-    ? 'depl ' + process.env.WEB_REPL_RENEWAL 
-    : null;
-
-  if (!xReplitToken || !hostname) {
-    return null;
-  }
-
-  try {
-    connectionSettings = await fetch(
-      'https://' + hostname + '/api/v2/connection?include_secrets=true&connector_names=resend',
-      {
-        headers: {
-          'Accept': 'application/json',
-          'X_REPLIT_TOKEN': xReplitToken
-        }
-      }
-    ).then(res => res.json()).then(data => data.items?.[0]);
-
-    if (!connectionSettings || !connectionSettings.settings.api_key) {
-      return null;
-    }
-    return {
-      apiKey: connectionSettings.settings.api_key, 
-      fromEmail: connectionSettings.settings.from_email
-    };
-  } catch (error) {
-    console.error('Error fetching Resend credentials:', error);
-    return null;
-  }
-}
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
-  const credentials = await getCredentials();
-  
-  if (!credentials) {
-    console.warn("⚠️ Resend not connected - skipping email send");
+  if (!resend || !process.env.FROM_EMAIL) {
+    console.warn("⚠️ Resend not configured - skipping email send");
     console.log(`Would send email to ${to}: ${subject}`);
     return null;
   }
   
-  const resend = new Resend(credentials.apiKey);
   return resend.emails.send({
-    from: credentials.fromEmail,
+    from: process.env.FROM_EMAIL,
     to,
     subject,
     html,
