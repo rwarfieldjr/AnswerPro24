@@ -1,0 +1,80 @@
+Capture trial_end and schedule 7/3/1 reminders
+
+Stripe gives you trial_end (Unix timestamp) on the subscription. We’ll:
+
+read it on checkout.session.completed,
+
+create three reminder jobs for −7d, −3d, −1d,
+
+run a tiny daily (or hourly) job to send emails when due.
+
+Note: Stripe’s native customer.subscription.trial_will_end fires only at 3 days. Use it for the 3-day nudge, but we’ll still schedule the 7 and 1 day ourselves. 
+Stripe Docs
+
+Webhook handler
+// routes/webhook.js
+import express from "express";
+import bodyParser from "body-parser";
+import { stripe } from "../stripe.js";
+import { queueReminder } from "../services/reminders.js";
+
+const router = express.Router();
+
+router.post("/stripe/webhook",
+  bodyParser.raw({ type: "application/json" }),
+  async (req, res) => {
+    const sig = req.headers["stripe-signature"];
+    let event;
+    try {
+      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    } catch (err) {
+      console.error("Webhook signature verification failed.", err.message);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    switch (event.type) {
+      case "checkout.session.completed": {
+        const session = event.data.object;
+        // Expand to get subscription fields including trial_end:
+        const subscription = await stripe.subscriptions.retrieve(session.subscription);
+        const trialEnd = subscription.trial_end; // unix seconds
+
+        // Who to notify
+        const customerId = subscription.customer;
+        const customer = await stripe.customers.retrieve(customerId);
+        const email = customer.email;
+
+        // Schedule 7/3/1 day reminders
+        await queueReminder({ email, type: "trial_7",  sendAt: (trialEnd - 7*86400) });
+        await queueReminder({ email, type: "trial_3",  sendAt: (trialEnd - 3*86400) });
+        await queueReminder({ email, type: "trial_1",  sendAt: (trialEnd - 1*86400) });
+        break;
+      }
+
+      case "customer.subscription.trial_will_end": {
+        // Optional: immediate 3-day heads-up (Stripe emits this event 3 days prior)
+        const sub = event.data.object;
+        // sendEmail(...) // “3 days left” notice
+        break;
+      }
+
+      case "customer.subscription.updated":
+      case "customer.subscription.deleted": {
+        // Update your DB membership status here if you track access
+        break;
+      }
+
+      case "invoice.upcoming": {
+        // Fires before renewal; you can send an “upcoming charge” heads-up
+        break;
+      }
+    }
+
+    res.json({ received: true });
+  }
+);
+
+export default router;
+
+
+Stripe webhook + events refs:
