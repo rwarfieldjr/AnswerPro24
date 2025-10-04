@@ -1,4 +1,5 @@
 import { db } from "../db";
+import { sendEmail } from "./sendEmail";
 
 const insertJob = db.prepare(`
   INSERT OR IGNORE INTO reminder_jobs (email, type, send_at, payload)
@@ -53,7 +54,7 @@ export async function queueTrialSeries({ email, trialEnd }: { email: string; tri
   for (const t of times) await queueReminder({ email, ...t });
 }
 
-export async function runDueReminders(nowSec: number, sendEmailFn: (params: { to: string; subject: string; html: string }) => Promise<any>) {
+export async function runDueReminders(nowSec: number) {
   const due = selectDue.all({ now: nowSec }) as any[];
   let sentCount = 0;
 
@@ -72,7 +73,7 @@ export async function runDueReminders(nowSec: number, sendEmailFn: (params: { to
     `;
 
     try {
-      await sendEmailFn({ to: job.email, subject, html });
+      await sendEmail({ to: job.email, subject, html });
       markSent.run({ id: job.id, sentAt: nowSec });
       sentCount++;
     } catch (err: any) {

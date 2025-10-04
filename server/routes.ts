@@ -4,8 +4,8 @@ import { storage } from "./storage";
 import { insertLeadSchema } from "@shared/schema";
 import Stripe from "stripe";
 import express from "express";
-import { Resend } from "resend";
 import { queueTrialSeries, runDueReminders } from "./services/reminders";
+import { sendEmail } from "./services/sendEmail";
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
@@ -13,23 +13,6 @@ if (!process.env.STRIPE_SECRET_KEY) {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2025-09-30.clover",
 });
-
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-
-async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
-  if (!resend || !process.env.FROM_EMAIL) {
-    console.warn("⚠️ Resend not configured - skipping email send");
-    console.log(`Would send email to ${to}: ${subject}`);
-    return null;
-  }
-  
-  return resend.emails.send({
-    from: process.env.FROM_EMAIL,
-    to,
-    subject,
-    html,
-  });
-}
 
 // In-memory storage for pending checkouts (maps session ID to lead data)
 const pendingCheckouts = new Map<string, any>();
@@ -384,7 +367,7 @@ Lead ID: ${lead.id}
       const nowSec = Math.floor(Date.now() / 1000);
       console.log(`📬 Running due reminders at ${new Date().toISOString()}...`);
       
-      const result = await runDueReminders(nowSec, sendEmail);
+      const result = await runDueReminders(nowSec);
       
       console.log(`✅ Processed ${result.processed} reminders, sent ${result.sent}`);
       res.json({ ok: true, ...result });
