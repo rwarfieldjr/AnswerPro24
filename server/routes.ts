@@ -380,18 +380,8 @@ Lead ID: ${lead.id}
 
   // Cron endpoint: run due reminders (hit hourly)
   app.post("/cron/run-reminders", async (req, res) => {
-    try {
-      const nowSec = Math.floor(Date.now() / 1000);
-      console.log(`📬 Running due reminders at ${new Date().toISOString()}...`);
-      
-      const result = await runDueReminders(nowSec);
-      
-      console.log(`✅ Processed ${result.processed} reminders, sent ${result.sent}`);
-      res.json({ ok: true, ...result });
-    } catch (error: any) {
-      console.error("Error running reminders:", error);
-      res.status(500).json({ ok: false, error: error.message });
-    }
+    const out = await runDueReminders(Math.floor(Date.now() / 1000));
+    res.json(out);
   });
 
   const httpServer = createServer(app);
