@@ -1,8 +1,8 @@
-import { type User, type InsertUser, type Lead, type InsertLead, users, leads } from "@shared/schema";
+import { type User, type InsertUser, type Lead, type InsertLead, type Reminder, type InsertReminder, users, leads, reminders } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
-import { eq } from "drizzle-orm";
+import { eq, and, lte } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -16,6 +16,9 @@ export interface IStorage {
     status: string,
     periodEnd: string
   ): Promise<Lead | undefined>;
+  queueReminder(reminder: InsertReminder): Promise<Reminder>;
+  getPendingReminders(currentTime: number): Promise<Reminder[]>;
+  markReminderSent(id: string): Promise<Reminder | undefined>;
 }
 
 export class DbStorage implements IStorage {
@@ -70,6 +73,35 @@ export class DbStorage implements IStorage {
         membershipPeriodEnd: periodEnd,
       })
       .where(eq(leads.stripeCustomerId, stripeCustomerId))
+      .returning();
+    return result[0];
+  }
+
+  async queueReminder(insertReminder: InsertReminder): Promise<Reminder> {
+    const result = await this.db.insert(reminders).values(insertReminder).returning();
+    return result[0];
+  }
+
+  async getPendingReminders(currentTime: number): Promise<Reminder[]> {
+    return await this.db
+      .select()
+      .from(reminders)
+      .where(
+        and(
+          eq(reminders.sent, false),
+          lte(reminders.sendAt, currentTime)
+        )
+      );
+  }
+
+  async markReminderSent(id: string): Promise<Reminder | undefined> {
+    const result = await this.db
+      .update(reminders)
+      .set({
+        sent: true,
+        sentAt: new Date().toISOString(),
+      })
+      .where(eq(reminders.id, id))
       .returning();
     return result[0];
   }
