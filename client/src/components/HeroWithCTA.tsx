@@ -96,7 +96,7 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
               <h3 className="text-2xl font-bold text-foreground">Hear It To Believe It</h3>
             </div>
             <p className="text-lg text-foreground font-medium">
-              Don't take our word for it - Call now to experience the future of after-hours call handling right now!
+              Don't take our word for it - Call now to experience the future of after-hours call handling!
             </p>
             <p className="text-muted-foreground">
               Call our live demo line and have a real conversation with our AI. You'll be amazed at how natural it sounds and how intelligently it handles service calls. This is the same technology that will protect your sleep and capture your leads.
