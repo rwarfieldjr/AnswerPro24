@@ -30,14 +30,14 @@ Preferred communication style: Simple, everyday language.
 - Express.js server with TypeScript for API endpoints
 - RESTful API design for lead management (/api/leads)
 - Modular route registration system
-- In-memory storage with interface-based design for easy database migration
+- PostgreSQL database with DbStorage implementation for persistent data
 - Middleware for request logging and error handling
 
 **Data Layer:**
 - Drizzle ORM configured for PostgreSQL with schema-first approach
 - Type-safe database operations with generated TypeScript types
-- Structured schema for users and leads with proper validation
-- Migration system for database version control
+- Structured schema for users, leads, and reminders with proper validation
+- Migration system for database version control (npm run db:push)
 
 **Styling and Design:**
 - Custom design system inspired by Linear and Notion aesthetics
@@ -82,9 +82,18 @@ Preferred communication style: Simple, everyday language.
 - Trial subscriptions with automatic conversion to paid after trial period
 - Webhook handling for subscription lifecycle events
 - In-memory pending checkout storage for lead data during checkout flow
+- Persistent membership status tracking in PostgreSQL database
+
+**Trial Reminder System:**
+- Automated 7/3/1 day trial reminder scheduling
+- Reminders queued on checkout.session.completed webhook
+- Idempotent reminder creation with unique constraint on (stripeCustomerId, type)
+- Database table tracks email, type, sendAt timestamp, and sent status
+- POST /api/process-reminders endpoint to send pending reminders
+- Designed for daily/hourly cron job execution
 
 **Planned Integrations:**
-- Email services (SendGrid/Mailgun) for lead notifications
+- Email services (SendGrid/Mailgun) for lead notifications and trial reminders
 - SMS services (Twilio) for customer communications
 - CRM webhooks for lead distribution
 - Analytics platforms for user tracking
@@ -93,15 +102,59 @@ Preferred communication style: Simple, everyday language.
 
 **Implementation:**
 1. User completes 2-step lead form (Step 1: Contact info, Step 2: Company details)
-2. Backend creates Stripe Checkout Session with 14-day trial
+2. Backend creates Stripe Checkout Session with 14-day trial ($499/month)
 3. Lead data stored temporarily in memory (pendingCheckouts Map) keyed by session ID
 4. User redirected to Stripe's hosted checkout page
 5. After payment, Stripe redirects to /signup/success with session_id
-6. Success page calls /api/checkout-success to save lead with Stripe IDs
-7. Webhooks handle subscription lifecycle (checkout.session.completed, invoice.paid, etc.)
+6. Success page calls /api/checkout-success to save lead with Stripe IDs and membership status
+7. Webhooks handle subscription lifecycle and update membership status in database
+
+**Webhook Handlers:**
+- checkout.session.completed: Updates membership, schedules 7/3/1 day trial reminders
+- invoice.paid: Updates membership status after payment
+- customer.subscription.updated: Syncs membership status changes
+- customer.subscription.deleted: Marks membership as canceled
 
 **Key Features:**
 - Webhook handler registered before express.json() middleware for raw body access
 - Automatic cleanup of expired pending checkouts (>1 hour old)
 - Success and cancel pages with clear messaging and next steps
-- Proper error handling and user feedback throughout flow
+- Membership status persisted in /api/checkout-success as primary source of truth
+- Webhooks provide backup updates and handle ongoing subscription changes
+- Idempotent reminder scheduling with unique database constraints
+
+## Trial Reminder System
+
+**Reminder Scheduling:**
+- 7-day reminder: Sent 7 days before trial ends
+- 3-day reminder: Sent 3 days before trial ends
+- 1-day reminder: Sent 1 day before trial ends
+
+**Database Schema:**
+```typescript
+reminders table:
+- id: varchar (UUID primary key)
+- email: text (recipient)
+- type: text ("trial_7", "trial_3", "trial_1")
+- sendAt: integer (Unix timestamp when to send)
+- sent: boolean (default false)
+- sentAt: text (ISO timestamp when sent)
+- stripeCustomerId: text (for correlation)
+- createdAt: text (tracking)
+- UNIQUE INDEX on (stripeCustomerId, type) for idempotency
+```
+
+**Processing Flow:**
+1. Webhook fires on checkout.session.completed
+2. System retrieves subscription.trial_end from Stripe
+3. Queues 3 reminders with calculated sendAt timestamps
+4. Unique constraint prevents duplicates from webhook retries
+5. Cron job calls POST /api/process-reminders periodically
+6. Endpoint fetches pending reminders (sendAt <= currentTime, sent = false)
+7. Sends reminder emails and marks as sent
+
+**Production Notes:**
+- Currently logs reminder content to console (development mode)
+- Ready for email service integration (SendGrid, Mailgun, etc.)
+- Endpoint should be protected with authentication/secret token
+- Consider adding composite index on (sent, sendAt) for performance
