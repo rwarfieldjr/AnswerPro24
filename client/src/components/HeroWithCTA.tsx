@@ -115,7 +115,10 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
                   <Phone className="h-4 w-4" />
                   Call anytime, 24/7
                 </div>
-                <div>Try real plumbing, HVAC, or electrical scenarios</div>
+                <div>Try real world scenarios:</div>
+                <div>1. Urgent: "I have a burst pipe and water is flooding my house!"</div>
+                <div>2. Non Urgent: "My garage door is stuck, but it can wait until tomorrow morning"</div>
+                <div>3. Come up with your own!</div>
                 <div className="text-xs italic mt-1">No spam. Just an incredible demo experience.</div>
               </div>
             </div>
