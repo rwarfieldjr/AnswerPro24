@@ -241,7 +241,14 @@ Lead ID: ${lead.id}
   // Create Stripe Checkout Session with 14-day trial
   app.post("/api/create-checkout-session", async (req, res) => {
     try {
+      console.log("[CHECKOUT] Request received:", { email: req.body.email, companyName: req.body.companyName });
+      
       const { email, companyName, leadData } = req.body;
+      
+      if (!email || !companyName) {
+        console.error("[CHECKOUT] Missing required fields");
+        return res.status(400).json({ error: "Email and company name are required" });
+      }
       
       const baseUrl = process.env.APP_BASE_URL 
         || (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : 'http://localhost:5000');
@@ -251,8 +258,11 @@ Lead ID: ${lead.id}
 
       const priceId = process.env.PRICE_PRO_499;
       if (!priceId) {
-        throw new Error("PRICE_PRO_499 environment variable not set");
+        console.error("[CHECKOUT] PRICE_PRO_499 not set");
+        return res.status(500).json({ error: "Server configuration error: Missing price ID" });
       }
+
+      console.log("[CHECKOUT] Creating session with:", { priceId, baseUrl, email });
 
       const session = await stripe.checkout.sessions.create({
         mode: "subscription",
@@ -267,6 +277,8 @@ Lead ID: ${lead.id}
         success_url: successUrl,
         cancel_url: cancelUrl,
       });
+
+      console.log("[CHECKOUT] Session created:", { id: session.id, url: session.url?.substring(0, 50) + "..." });
 
       // Store lead data temporarily with session ID as key
       pendingCheckouts.set(session.id, {
@@ -284,11 +296,23 @@ Lead ID: ${lead.id}
         }
       });
 
-      res.json({ url: session.url, sessionId: session.id });
+      const response = { url: session.url, sessionId: session.id };
+      console.log("[CHECKOUT] Sending response:", { hasUrl: !!session.url, urlLength: session.url?.length });
+      res.json(response);
     } catch (error: any) {
-      console.error("Error creating checkout session:", error);
-      res.status(500).json({ 
-        error: "Error creating checkout session: " + error.message 
+      console.error("[CHECKOUT] ERROR:", {
+        message: error.message,
+        type: error.type,
+        code: error.code,
+        statusCode: error.statusCode,
+        raw: error.raw
+      });
+      
+      const errorMessage = error.raw?.message || error.message || "Checkout failed";
+      const statusCode = error.statusCode || 500;
+      
+      res.status(statusCode).json({ 
+        error: errorMessage
       });
     }
   });

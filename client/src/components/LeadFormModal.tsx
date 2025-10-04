@@ -118,7 +118,8 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
       });
       
       if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `API request failed with status ${response.status}`);
       }
       
       const result = await response.json();
@@ -127,13 +128,20 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
         throw new Error("No checkout URL received from server");
       }
       
-      window.location.href = result.url;
+      // Close dialog before redirect to prevent it from blocking
+      onOpenChange(false);
+      
+      // Small delay to ensure dialog closes before redirect
+      setTimeout(() => {
+        window.location.href = result.url;
+      }, 100);
+      
     } catch (error) {
       console.error("Checkout error:", error);
       setIsRedirecting(false);
       toast({
         title: "Error",
-        description: "Failed to initialize checkout. Please try again or call (770) 404-9750",
+        description: error instanceof Error ? error.message : "Failed to initialize checkout. Please try again or call (770) 404-9750",
         variant: "destructive",
       });
     }
