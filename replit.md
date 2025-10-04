@@ -179,3 +179,80 @@ reminders table:
 - Endpoint should be protected with authentication/secret token
 - Can be triggered by UptimeRobot, Replit Cron, or similar services
 - Consider adding composite index on (sent, sendAt) for performance
+
+## Production Setup Checklist
+
+**Environment Variables Required:**
+- `STRIPE_SECRET_KEY` - Live Stripe secret key (sk_live_...)
+- `STRIPE_WEBHOOK_SECRET` - Webhook signing secret from Stripe Dashboard
+- `PRICE_PRO_499` - Live Stripe price ID for $499/month subscription
+- `APP_BASE_URL` - Production domain (e.g., https://answerpro24.com)
+- `RESEND_API_KEY` - Resend API key for sending trial reminder emails
+- `FROM_EMAIL` - Email address to send from (e.g., billing@answerpro24.com)
+- `ADMIN_TOKEN` - Secret token to protect cron endpoints from unauthorized access (required for production)
+- `SLACK_WEBHOOK_URL` - (Optional) Slack incoming webhook URL for notifications
+
+**1. Resend Email Setup:**
+- Verify domain in Resend dashboard: https://resend.com/domains
+- Add DNS records (SPF, DKIM, DMARC) to domain provider
+- Set `FROM_EMAIL=billing@answerpro24.com` in environment
+- Set `RESEND_API_KEY` from Resend dashboard
+
+**2. Stripe Webhook Configuration:**
+- In Stripe Dashboard → Developers → Webhooks, add endpoint: `https://answerpro24.com/api/stripe/webhook`
+- Select events: `checkout.session.completed`, `invoice.paid`, `invoice.payment_failed`, `customer.subscription.updated`, `customer.subscription.deleted`, `customer.subscription.trial_will_end`
+- Copy signing secret to `STRIPE_WEBHOOK_SECRET` environment variable
+- Test webhook delivery using Stripe CLI or dashboard test mode
+
+**3. Cloudflare Worker for Hourly Reminder Cron:**
+
+Create a Cloudflare Worker to hit the reminder endpoint hourly:
+
+```javascript
+export default {
+  async scheduled(event, env, ctx) {
+    const response = await fetch('https://answerpro24.com/cron/run-reminders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${env.ADMIN_TOKEN}` // Optional: protect endpoint
+      }
+    });
+    
+    const result = await response.json();
+    console.log('Reminder cron result:', result);
+  }
+};
+```
+
+Set cron trigger: `0 * * * *` (every hour at minute 0)
+
+**Alternative Cron Services:**
+- **UptimeRobot**: Create HTTP monitor hitting `https://answerpro24.com/cron/run-reminders` every hour
+- **Replit Cron**: Use Replit's scheduled tasks feature
+- **EasyCron**: Free tier supports hourly jobs
+- **cron-job.org**: Free cron service with 1-hour minimum interval
+
+**4. Slack Notifications Setup (Optional):**
+- Create Slack app or use incoming webhook: https://api.slack.com/messaging/webhooks
+- Copy webhook URL to `SLACK_WEBHOOK_URL` environment variable
+- Notifications sent for: new trial signups, payment failures
+
+**5. Stripe Customer Portal:**
+- Configure portal settings in Stripe Dashboard → Settings → Billing → Customer Portal
+- Enable features: Update payment method, View invoices, Cancel subscription
+- Portal link appears on success page after checkout
+
+**6. Production Deployment:**
+- Verify all environment variables are set in production
+- Test checkout flow end-to-end in Stripe test mode first
+- Switch to live mode keys when ready
+- Monitor webhook logs for successful 200 responses
+- Check `/cron/pending` endpoint to verify reminders are queued
+- Test portal access from success page
+
+**7. Monitoring:**
+- Watch webhook logs for event.type and subscription.status
+- Monitor Slack channel for signup and payment failure notifications
+- Check Resend dashboard for email delivery rates
+- Review SQLite reminder queue at `/cron/pending`

@@ -488,7 +488,25 @@ Lead ID: ${lead.id}
   });
 
   // Cron endpoint: run due reminders (hit hourly)
+  // Protected with ADMIN_TOKEN to prevent abuse
   app.post("/cron/run-reminders", async (req, res) => {
+    const adminToken = process.env.ADMIN_TOKEN;
+    const authHeader = req.headers.authorization;
+    
+    // Check token if ADMIN_TOKEN is set
+    if (adminToken) {
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ error: "Missing authorization header" });
+      }
+      
+      const token = authHeader.substring(7);
+      if (token !== adminToken) {
+        return res.status(403).json({ error: "Invalid token" });
+      }
+    } else {
+      console.warn("⚠️ ADMIN_TOKEN not set - cron endpoint is unprotected");
+    }
+    
     const out = await runDueReminders(Math.floor(Date.now() / 1000));
     res.json(out);
   });
