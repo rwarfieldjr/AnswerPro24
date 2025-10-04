@@ -16,7 +16,7 @@ export interface IStorage {
     status: string,
     periodEnd: string
   ): Promise<Lead | undefined>;
-  queueReminder(reminder: InsertReminder): Promise<Reminder>;
+  queueReminder(reminder: InsertReminder): Promise<Reminder | undefined>;
   getPendingReminders(currentTime: number): Promise<Reminder[]>;
   markReminderSent(id: string): Promise<Reminder | undefined>;
 }
@@ -77,8 +77,12 @@ export class DbStorage implements IStorage {
     return result[0];
   }
 
-  async queueReminder(insertReminder: InsertReminder): Promise<Reminder> {
-    const result = await this.db.insert(reminders).values(insertReminder).returning();
+  async queueReminder(insertReminder: InsertReminder): Promise<Reminder | undefined> {
+    const result = await this.db
+      .insert(reminders)
+      .values(insertReminder)
+      .onConflictDoNothing()
+      .returning();
     return result[0];
   }
 

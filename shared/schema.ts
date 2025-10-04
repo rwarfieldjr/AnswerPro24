@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, boolean, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, boolean, integer, uniqueIndex } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -40,9 +40,11 @@ export const reminders = pgTable("reminders", {
   sendAt: integer("send_at").notNull(),
   sent: boolean("sent").notNull().default(false),
   sentAt: text("sent_at"),
-  stripeCustomerId: text("stripe_customer_id"),
+  stripeCustomerId: text("stripe_customer_id").notNull(),
   createdAt: text("created_at").default(sql`NOW()`),
-});
+}, (table) => ({
+  customerTypeUnique: uniqueIndex("reminders_customer_type_unique").on(table.stripeCustomerId, table.type),
+}));
 
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,

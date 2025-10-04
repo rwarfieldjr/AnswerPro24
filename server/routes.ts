@@ -372,6 +372,70 @@ Lead ID: ${lead.id}
     }
   });
 
+  // Process and send pending reminders
+  app.post("/api/process-reminders", async (req, res) => {
+    try {
+      const currentTime = Math.floor(Date.now() / 1000);
+      const pendingReminders = await storage.getPendingReminders(currentTime);
+      
+      console.log(`📬 Processing ${pendingReminders.length} pending reminders...`);
+      
+      const processed = [];
+      
+      for (const reminder of pendingReminders) {
+        // In production, this would send an actual email via SendGrid, Mailgun, etc.
+        console.log(`\n=== TRIAL REMINDER EMAIL ===`);
+        console.log(`To: ${reminder.email}`);
+        console.log(`Type: ${reminder.type}`);
+        console.log(`Customer: ${reminder.stripeCustomerId}`);
+        
+        let subject = "";
+        let message = "";
+        
+        switch (reminder.type) {
+          case "trial_7":
+            subject = "Your AnswerPro 24 trial ends in 7 days";
+            message = "Your 14-day free trial ends in one week. Start capturing more leads today!";
+            break;
+          case "trial_3":
+            subject = "Only 3 days left in your AnswerPro 24 trial";
+            message = "Your free trial ends in 3 days. Don't miss out on capturing after-hours leads!";
+            break;
+          case "trial_1":
+            subject = "Last day of your AnswerPro 24 trial";
+            message = "Your free trial ends tomorrow. Your subscription will automatically begin.";
+            break;
+        }
+        
+        console.log(`Subject: ${subject}`);
+        console.log(`Message: ${message}`);
+        console.log(`===========================\n`);
+        
+        // Mark as sent
+        await storage.markReminderSent(reminder.id);
+        processed.push({
+          id: reminder.id,
+          email: reminder.email,
+          type: reminder.type,
+          sent: true,
+        });
+      }
+      
+      console.log(`✅ Processed ${processed.length} reminders`);
+      
+      res.json({ 
+        success: true, 
+        processed: processed.length,
+        reminders: processed,
+      });
+    } catch (error: any) {
+      console.error("Error processing reminders:", error);
+      res.status(500).json({ 
+        error: "Error processing reminders: " + error.message 
+      });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
