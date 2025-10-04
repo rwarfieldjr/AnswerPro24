@@ -92,8 +92,13 @@ Preferred communication style: Simple, everyday language.
 - POST /cron/run-reminders endpoint to send pending reminders
 - Designed for hourly cron job execution (UptimeRobot, Replit Cron, etc.)
 
+**Customer Portal:**
+- Stripe Billing Portal integration for subscription management
+- POST /billing/portal endpoint creates portal session
+- Customers can update payment methods, cancel subscriptions, view invoices
+- Returns redirect URL to Stripe-hosted portal
+
 **Planned Integrations:**
-- Email services (SendGrid/Mailgun) for lead notifications and trial reminders
 - SMS services (Twilio) for customer communications
 - CRM webhooks for lead distribution
 - Analytics platforms for user tracking

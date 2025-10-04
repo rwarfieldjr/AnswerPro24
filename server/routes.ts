@@ -417,6 +417,27 @@ Lead ID: ${lead.id}
     }
   });
 
+  // Billing portal: create Stripe portal session
+  app.post("/billing/portal", async (req, res) => {
+    try {
+      const { stripeCustomerId } = req.body;
+      
+      if (!stripeCustomerId) {
+        return res.status(400).json({ error: "Missing stripeCustomerId" });
+      }
+      
+      const session = await stripe.billingPortal.sessions.create({
+        customer: stripeCustomerId,
+        return_url: `${process.env.APP_BASE_URL || 'http://localhost:5000'}/account`,
+      });
+      
+      res.json({ url: session.url });
+    } catch (error: any) {
+      console.error("Error creating portal session:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Cron endpoint: run due reminders (hit hourly)
   app.post("/cron/run-reminders", async (req, res) => {
     try {
