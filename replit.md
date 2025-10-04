@@ -89,8 +89,8 @@ Preferred communication style: Simple, everyday language.
 - Reminders queued on checkout.session.completed webhook
 - Idempotent reminder creation with unique constraint on (stripeCustomerId, type)
 - Database table tracks email, type, sendAt timestamp, and sent status
-- POST /api/process-reminders endpoint to send pending reminders
-- Designed for daily/hourly cron job execution
+- POST /cron/run-reminders endpoint to send pending reminders
+- Designed for hourly cron job execution (UptimeRobot, Replit Cron, etc.)
 
 **Planned Integrations:**
 - Email services (SendGrid/Mailgun) for lead notifications and trial reminders
@@ -149,12 +149,18 @@ reminders table:
 2. System retrieves subscription.trial_end from Stripe
 3. Queues 3 reminders with calculated sendAt timestamps
 4. Unique constraint prevents duplicates from webhook retries
-5. Cron job calls POST /api/process-reminders periodically
+5. Cron job calls POST /cron/run-reminders hourly
 6. Endpoint fetches pending reminders (sendAt <= currentTime, sent = false)
 7. Sends reminder emails and marks as sent
 
+**Email Content:**
+- Subject lines: "Heads up: your free trial ends in 7 days" (and variations)
+- HTML includes: trial end warning, $499 price, cancellation option, link to /portal
+- Ready to integrate with Resend, SendGrid, or Mailgun
+
 **Production Notes:**
-- Currently logs reminder content to console (development mode)
-- Ready for email service integration (SendGrid, Mailgun, etc.)
+- Currently logs reminder HTML to console (development mode)
+- Replace console.log with actual email service (Resend recommended)
 - Endpoint should be protected with authentication/secret token
+- Can be triggered by UptimeRobot, Replit Cron, or similar services
 - Consider adding composite index on (sent, sendAt) for performance

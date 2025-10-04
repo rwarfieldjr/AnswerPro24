@@ -372,71 +372,63 @@ Lead ID: ${lead.id}
     }
   });
 
-  // Process and send pending reminders
-  app.post("/api/process-reminders", async (req, res) => {
+  // Cron endpoint: run due reminders (hit hourly)
+  app.post("/cron/run-reminders", async (req, res) => {
     try {
-      const currentTime = Math.floor(Date.now() / 1000);
-      const pendingReminders = await storage.getPendingReminders(currentTime);
+      const nowSec = Math.floor(Date.now() / 1000);
+      const pendingReminders = await storage.getPendingReminders(nowSec);
       
-      console.log(`📬 Processing ${pendingReminders.length} pending reminders...`);
+      console.log(`📬 Running due reminders: ${pendingReminders.length} pending...`);
       
-      const processed = [];
-      
-      for (const reminder of pendingReminders) {
-        // In production, this would send an actual email via SendGrid, Mailgun, etc.
-        console.log(`\n=== TRIAL REMINDER EMAIL ===`);
-        console.log(`To: ${reminder.email}`);
-        console.log(`Type: ${reminder.type}`);
-        console.log(`Customer: ${reminder.stripeCustomerId}`);
+      for (const job of pendingReminders) {
+        const subject = subjectFor(job.type);
+        const html = htmlFor(job.type);
         
-        let subject = "";
-        let message = "";
-        
-        switch (reminder.type) {
-          case "trial_7":
-            subject = "Your AnswerPro 24 trial ends in 7 days";
-            message = "Your 14-day free trial ends in one week. Start capturing more leads today!";
-            break;
-          case "trial_3":
-            subject = "Only 3 days left in your AnswerPro 24 trial";
-            message = "Your free trial ends in 3 days. Don't miss out on capturing after-hours leads!";
-            break;
-          case "trial_1":
-            subject = "Last day of your AnswerPro 24 trial";
-            message = "Your free trial ends tomorrow. Your subscription will automatically begin.";
-            break;
-        }
-        
+        // In production, replace with: await sendEmail({ to: job.email, subject, html });
+        console.log(`\n=== SENDING REMINDER EMAIL ===`);
+        console.log(`To: ${job.email}`);
         console.log(`Subject: ${subject}`);
-        console.log(`Message: ${message}`);
-        console.log(`===========================\n`);
+        console.log(`HTML: ${html}`);
+        console.log(`==============================\n`);
         
-        // Mark as sent
-        await storage.markReminderSent(reminder.id);
-        processed.push({
-          id: reminder.id,
-          email: reminder.email,
-          type: reminder.type,
-          sent: true,
-        });
+        await storage.markReminderSent(job.id);
       }
       
-      console.log(`✅ Processed ${processed.length} reminders`);
-      
-      res.json({ 
-        success: true, 
-        processed: processed.length,
-        reminders: processed,
-      });
+      console.log(`✅ Processed ${pendingReminders.length} reminders`);
+      res.json({ ok: true, processed: pendingReminders.length });
     } catch (error: any) {
-      console.error("Error processing reminders:", error);
-      res.status(500).json({ 
-        error: "Error processing reminders: " + error.message 
-      });
+      console.error("Error running reminders:", error);
+      res.status(500).json({ ok: false, error: error.message });
     }
   });
 
   const httpServer = createServer(app);
 
   return httpServer;
+}
+
+function subjectFor(type: string): string {
+  return {
+    trial_7: "Heads up: your free trial ends in 7 days",
+    trial_3: "Reminder: 3 days left in your free trial",
+    trial_1: "Last reminder: trial ends tomorrow",
+  }[type] || "Subscription update";
+}
+
+function htmlFor(type: string): string {
+  const baseUrl = process.env.APP_BASE_URL 
+    || (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : 'http://localhost:5000');
+  
+  const line = {
+    trial_7: "Your 14-day free trial ends in 7 days.",
+    trial_3: "Only 3 days left in your free trial.",
+    trial_1: "Your trial ends tomorrow.",
+  }[type] || "Your trial is ending soon.";
+
+  return `
+    <p>${line}</p>
+    <p>On trial end, your card will be charged <strong>$499</strong> for AnswerPro 24.</p>
+    <p>If you don't want to continue, cancel any time before the trial ends.</p>
+    <p><a href="${baseUrl}/portal">Manage membership</a></p>
+  `;
 }
