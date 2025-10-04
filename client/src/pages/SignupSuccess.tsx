@@ -12,6 +12,7 @@ export default function SignupSuccess() {
   const [, setLocation] = useLocation();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [checkoutData, setCheckoutData] = useState<any>(null);
 
   useEffect(() => {
     const sessionId = new URLSearchParams(window.location.search).get("session_id");
@@ -24,7 +25,9 @@ export default function SignupSuccess() {
 
     async function processCheckout() {
       try {
-        await apiRequest("GET", `/api/checkout-success?session_id=${sessionId}`);
+        const response = await apiRequest("GET", `/api/checkout-success?session_id=${sessionId}`);
+        const data = await response.json();
+        setCheckoutData(data);
         setLoading(false);
       } catch (err) {
         console.error("Error processing checkout:", err);
@@ -82,6 +85,18 @@ export default function SignupSuccess() {
                   <p className="text-lg text-foreground">
                     Your 14-day free trial has started successfully.
                   </p>
+                  {checkoutData?.trialEnd && (
+                    <p className="text-sm text-muted-foreground">
+                      Your free trial ends on{" "}
+                      <span className="font-semibold text-foreground">
+                        {new Date(checkoutData.trialEnd).toLocaleDateString('en-US', { 
+                          month: 'long', 
+                          day: 'numeric', 
+                          year: 'numeric' 
+                        })}
+                      </span>
+                    </p>
+                  )}
                   <p className="text-muted-foreground">
                     We'll be in touch within 24 hours to complete your setup and get your AI-powered after-hours answering service running.
                   </p>
@@ -110,6 +125,32 @@ export default function SignupSuccess() {
                 </div>
 
                 <div className="text-center space-y-4 pt-4">
+                  {checkoutData?.customerId && (
+                    <div className="flex flex-col items-center gap-3">
+                      <Button 
+                        variant="outline"
+                        onClick={async () => {
+                          try {
+                            const response = await apiRequest("POST", "/billing/portal", {
+                              stripeCustomerId: checkoutData.customerId
+                            });
+                            const data = await response.json();
+                            if (data.url) {
+                              window.location.href = data.url;
+                            }
+                          } catch (err) {
+                            console.error("Error opening portal:", err);
+                          }
+                        }}
+                        data-testid="button-manage-membership"
+                      >
+                        Manage Membership
+                      </Button>
+                      <p className="text-xs text-muted-foreground">
+                        Update payment method, view invoices, or cancel anytime
+                      </p>
+                    </div>
+                  )}
                   <p className="text-sm text-muted-foreground">
                     Questions? Call us anytime at{" "}
                     <a href="tel:770-404-9750" className="text-primary font-semibold hover:underline">

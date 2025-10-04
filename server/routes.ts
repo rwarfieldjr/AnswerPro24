@@ -8,6 +8,36 @@ import { queueTrialSeries, runDueReminders } from "./services/reminders";
 import { sendEmail } from "./services/sendEmail";
 import { db } from "./db";
 
+// Send notification to Slack
+async function sendSlackNotification(message: string, color: string = "#36a64f") {
+  const webhookUrl = process.env.SLACK_WEBHOOK_URL;
+  
+  if (!webhookUrl) {
+    console.log("⚠️ SLACK_WEBHOOK_URL not set - skipping Slack notification");
+    return;
+  }
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        attachments: [{
+          color,
+          text: message,
+          ts: Math.floor(Date.now() / 1000)
+        }]
+      })
+    });
+
+    if (!response.ok) {
+      console.error("Failed to send Slack notification:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Error sending Slack notification:", error);
+  }
+}
+
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
 }
@@ -43,6 +73,18 @@ export function registerWebhook(app: Express): void {
       } catch (err: any) {
         console.error("Webhook signature verification failed:", err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);
+      }
+
+      // Log every webhook receipt for monitoring
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+      console.log(`📥 WEBHOOK: ${event.type}`);
+      console.log(`   Event ID: ${event.id}`);
+      console.log(`   Time: ${new Date(event.created * 1000).toISOString()}`);
+      
+      // Log subscription status for relevant events
+      if (event.type.startsWith('customer.subscription')) {
+        const sub = event.data.object as Stripe.Subscription;
+        console.log(`   Subscription Status: ${sub.status}`);
       }
 
       // Handle events
@@ -86,6 +128,17 @@ export function registerWebhook(app: Express): void {
                   console.log("   7-day reminder:", new Date((trialEnd - 7 * 86400) * 1000).toISOString());
                   console.log("   3-day reminder:", new Date((trialEnd - 3 * 86400) * 1000).toISOString());
                   console.log("   1-day reminder:", new Date((trialEnd - 1 * 86400) * 1000).toISOString());
+                  
+                  // Send Slack notification for new signup
+                  const trialEndDate = new Date(trialEnd * 1000).toLocaleDateString();
+                  await sendSlackNotification(
+                    `🎉 *New Trial Signup*\n` +
+                    `Email: ${email}\n` +
+                    `Customer ID: ${session.customer}\n` +
+                    `Trial Ends: ${trialEndDate}\n` +
+                    `Amount: $499/month`,
+                    "#36a64f"
+                  );
                 }
               }
             }
@@ -111,6 +164,29 @@ export function registerWebhook(app: Express): void {
               } else {
                 console.warn("⚠️ Lead not found for customer:", invoice.customer);
               }
+            }
+            break;
+          }
+          case "invoice.payment_failed": {
+            const invoice = event.data.object as Stripe.Invoice;
+            console.log("🔴 Invoice payment failed:", invoice.id);
+            
+            // Get customer information for notification
+            if (invoice.customer) {
+              const customer = await stripe.customers.retrieve(invoice.customer as string) as Stripe.Customer;
+              const amount = invoice.amount_due ? (invoice.amount_due / 100).toFixed(2) : "0.00";
+              
+              // Send Slack notification for payment failure
+              await sendSlackNotification(
+                `🔴 *Payment Failed*\n` +
+                `Customer: ${customer.email || customer.id}\n` +
+                `Amount: $${amount}\n` +
+                `Invoice: ${invoice.id}\n` +
+                `Customer ID: ${invoice.customer}`,
+                "#ff0000"
+              );
+              
+              console.log("🔴 Payment failure notification sent to Slack");
             }
             break;
           }
@@ -175,11 +251,13 @@ export function registerWebhook(app: Express): void {
             break;
         }
       } catch (error: any) {
-        console.error("Error processing webhook event:", error);
-        // Still return 200 to acknowledge receipt
+        console.error("❌ Error processing webhook event:", error);
+        // Still return 200 to acknowledge receipt to Stripe
       }
 
-      res.json({ received: true });
+      console.log(`✅ Webhook processed: ${event.type}`);
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+      res.status(200).json({ received: true });
     }
   );
 }
@@ -366,6 +444,11 @@ Lead ID: ${lead.id}
       console.log("✅ Membership activated:", subscription.status, "until", periodEnd);
       console.log("✅ Lead notification sent to hello@answerpro24.com");
 
+      // Get trial end date if available
+      const trialEnd = subscription.trial_end 
+        ? new Date(subscription.trial_end * 1000).toISOString()
+        : null;
+      
       res.json({ 
         success: true, 
         lead,
@@ -373,6 +456,7 @@ Lead ID: ${lead.id}
         subscriptionId: subscription.id,
         membershipStatus: subscription.status,
         membershipPeriodEnd: periodEnd,
+        trialEnd,
       });
     } catch (error: any) {
       console.error("Error processing checkout success:", error);
