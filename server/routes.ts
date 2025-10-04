@@ -251,9 +251,6 @@ Lead ID: ${lead.id}
       const successUrl = `${baseUrl}/signup/success?session_id={CHECKOUT_SESSION_ID}`;
       const cancelUrl = `${baseUrl}/signup/cancel`;
 
-      // Create a temporary session to store lead data
-      const tempSessionId = `temp_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-
       const priceId = process.env.PRICE_PRO_499;
       if (!priceId) {
         throw new Error("PRICE_PRO_499 environment variable not set");
@@ -262,20 +259,11 @@ Lead ID: ${lead.id}
       const session = await stripe.checkout.sessions.create({
         mode: "subscription",
         customer_email: email,
-        line_items: [{ 
-          price: priceId,
-          quantity: 1 
-        }],
+        line_items: [{ price: priceId, quantity: 1 }],
         payment_method_collection: "always",
         subscription_data: {
           trial_period_days: 14,
-          metadata: {
-            plan: 'monthly-499',
-            trial: 'true',
-          },
-        },
-        metadata: {
-          tempSessionId,
+          metadata: { plan: "answerpro24_499_monthly" },
         },
         allow_promotion_codes: true,
         success_url: successUrl,
