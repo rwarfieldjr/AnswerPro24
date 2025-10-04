@@ -64,7 +64,7 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
                 />
               </div>
               {/* Floating badge */}
-              <div className="absolute -bottom-4 -left-4 bg-background p-4 rounded-xl shadow-lg border">
+              <div className="absolute -top-4 -right-4 bg-background p-4 rounded-xl shadow-lg border">
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                   <span className="text-sm font-medium">Live 24/7</span>
