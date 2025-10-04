@@ -51,10 +51,11 @@ export function registerWebhook(app: Express): void {
             console.log("   Customer:", session.customer);
             console.log("   Subscription:", session.subscription);
             
-            // Get subscription to extract period_end
-            if (session.subscription) {
+            // Get subscription to extract period_end and trial_end
+            if (session.subscription && session.customer) {
               const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
               const periodEnd = new Date((subscription as any).current_period_end * 1000).toISOString();
+              const trialEnd = (subscription as any).trial_end;
               
               // Update lead membership status (lead may not exist yet if webhook fires before /api/checkout-success)
               const updated = await storage.updateLeadMembership(
@@ -67,6 +68,44 @@ export function registerWebhook(app: Express): void {
                 console.log("✅ Membership activated for customer:", session.customer);
               } else {
                 console.warn("⚠️ Lead not found for customer (will be set in /api/checkout-success):", session.customer);
+              }
+              
+              // Schedule trial reminders if trial exists
+              if (trialEnd) {
+                const customer = await stripe.customers.retrieve(session.customer as string) as Stripe.Customer;
+                const email = customer.email;
+                
+                if (email) {
+                  // Schedule 7/3/1 day trial reminders
+                  await storage.queueReminder({
+                    email,
+                    type: "trial_7",
+                    sendAt: trialEnd - 7 * 86400,
+                    sent: false,
+                    stripeCustomerId: session.customer as string,
+                  });
+                  
+                  await storage.queueReminder({
+                    email,
+                    type: "trial_3",
+                    sendAt: trialEnd - 3 * 86400,
+                    sent: false,
+                    stripeCustomerId: session.customer as string,
+                  });
+                  
+                  await storage.queueReminder({
+                    email,
+                    type: "trial_1",
+                    sendAt: trialEnd - 1 * 86400,
+                    sent: false,
+                    stripeCustomerId: session.customer as string,
+                  });
+                  
+                  console.log("✅ Trial reminders scheduled for:", email);
+                  console.log("   7-day reminder:", new Date((trialEnd - 7 * 86400) * 1000).toISOString());
+                  console.log("   3-day reminder:", new Date((trialEnd - 3 * 86400) * 1000).toISOString());
+                  console.log("   1-day reminder:", new Date((trialEnd - 1 * 86400) * 1000).toISOString());
+                }
               }
             }
             break;
