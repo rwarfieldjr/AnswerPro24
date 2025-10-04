@@ -13,16 +13,56 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2025-09-30.clover",
 });
 
+let connectionSettings: any;
+
+async function getCredentials() {
+  const hostname = process.env.REPLIT_CONNECTORS_HOSTNAME;
+  const xReplitToken = process.env.REPL_IDENTITY 
+    ? 'repl ' + process.env.REPL_IDENTITY 
+    : process.env.WEB_REPL_RENEWAL 
+    ? 'depl ' + process.env.WEB_REPL_RENEWAL 
+    : null;
+
+  if (!xReplitToken || !hostname) {
+    return null;
+  }
+
+  try {
+    connectionSettings = await fetch(
+      'https://' + hostname + '/api/v2/connection?include_secrets=true&connector_names=resend',
+      {
+        headers: {
+          'Accept': 'application/json',
+          'X_REPLIT_TOKEN': xReplitToken
+        }
+      }
+    ).then(res => res.json()).then(data => data.items?.[0]);
+
+    if (!connectionSettings || !connectionSettings.settings.api_key) {
+      return null;
+    }
+    return {
+      apiKey: connectionSettings.settings.api_key, 
+      fromEmail: connectionSettings.settings.from_email
+    };
+  } catch (error) {
+    console.error('Error fetching Resend credentials:', error);
+    return null;
+  }
+}
+
 async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
-  if (!process.env.RESEND_API_KEY || !process.env.FROM_EMAIL) {
-    console.warn("⚠️ RESEND_API_KEY or FROM_EMAIL not set - skipping email send");
+  const credentials = await getCredentials();
+  
+  if (!credentials) {
+    console.warn("⚠️ Resend not connected - skipping email send");
     console.log(`Would send email to ${to}: ${subject}`);
     return null;
   }
   
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  const resend = new Resend(credentials.apiKey);
   return resend.emails.send({
-    from: process.env.FROM_EMAIL,
+    from: credentials.fromEmail,
     to,
     subject,
     html,
@@ -385,14 +425,24 @@ Lead ID: ${lead.id}
       
       console.log(`📬 Running due reminders: ${pendingReminders.length} pending...`);
       
-      for (const job of pendingReminders) {
-        const subject = subjectFor(job.type);
-        const html = htmlFor(job.type);
+      for (const j of pendingReminders) {
+        const subject = {
+          trial_7: "Heads up: your free trial ends in 7 days",
+          trial_3: "Reminder: 3 days left in your free trial",
+          trial_1: "Last reminder: trial ends tomorrow",
+        }[j.type] || "Subscription update";
+
+        const html = `
+          <p>${subject.replace("Heads up: ", "")}</p>
+          <p>On trial end, your card will be charged <strong>$499</strong> for Answer Pro 24 (monthly).</p>
+          <p>If you don't want to continue, cancel before the trial ends.</p>
+          <p><a href="${process.env.APP_BASE_URL || 'http://localhost:5000'}/portal">Manage membership</a></p>
+        `;
+
+        await sendEmail({ to: j.email, subject, html });
+        await storage.markReminderSent(j.id);
         
-        await sendEmail({ to: job.email, subject, html });
-        await storage.markReminderSent(job.id);
-        
-        console.log(`✅ Sent ${job.type} reminder to ${job.email}`);
+        console.log(`✅ Sent ${j.type} reminder to ${j.email}`);
       }
       
       console.log(`✅ Processed ${pendingReminders.length} reminders`);
@@ -406,30 +456,4 @@ Lead ID: ${lead.id}
   const httpServer = createServer(app);
 
   return httpServer;
-}
-
-function subjectFor(type: string): string {
-  return {
-    trial_7: "Heads up: your free trial ends in 7 days",
-    trial_3: "Reminder: 3 days left in your free trial",
-    trial_1: "Last reminder: trial ends tomorrow",
-  }[type] || "Subscription update";
-}
-
-function htmlFor(type: string): string {
-  const baseUrl = process.env.APP_BASE_URL 
-    || (process.env.REPLIT_DEV_DOMAIN ? `https://${process.env.REPLIT_DEV_DOMAIN}` : 'http://localhost:5000');
-  
-  const line = {
-    trial_7: "Your 14-day free trial ends in 7 days.",
-    trial_3: "Only 3 days left in your free trial.",
-    trial_1: "Your trial ends tomorrow.",
-  }[type] || "Your trial is ending soon.";
-
-  return `
-    <p>${line}</p>
-    <p>On trial end, your card will be charged <strong>$499</strong> for AnswerPro 24.</p>
-    <p>If you don't want to continue, cancel any time before the trial ends.</p>
-    <p><a href="${baseUrl}/portal">Manage membership</a></p>
-  `;
 }
