@@ -116,10 +116,20 @@ export default function LeadFormModal({ open, onOpenChange }: LeadFormModalProps
         companyName: step1Data?.companyName,
         leadData,
       });
+      
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+      
       const result = await response.json();
+      
+      if (!result.url) {
+        throw new Error("No checkout URL received from server");
+      }
       
       window.location.href = result.url;
     } catch (error) {
+      console.error("Checkout error:", error);
       setIsRedirecting(false);
       toast({
         title: "Error",
