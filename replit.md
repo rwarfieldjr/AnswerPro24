@@ -124,6 +124,7 @@ Preferred communication style: Simple, everyday language.
 
 **Webhook Handlers:**
 - checkout.session.completed: Updates membership, schedules 7/3/1 day trial reminders
+- customer.subscription.trial_will_end: Sends immediate 3-day trial reminder email
 - invoice.paid: Updates membership status after payment
 - customer.subscription.updated: Syncs membership status changes
 - customer.subscription.deleted: Marks membership as canceled

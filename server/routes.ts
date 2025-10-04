@@ -152,6 +152,23 @@ export function registerWebhook(app: Express): void {
             }
             break;
           }
+          case "customer.subscription.trial_will_end": {
+            const subscription = event.data.object as Stripe.Subscription;
+            console.log("⏰ Trial ending soon:", subscription.id);
+            
+            const customer = await stripe.customers.retrieve(subscription.customer as string) as Stripe.Customer;
+            if (customer.email) {
+              await sendEmail({
+                to: customer.email,
+                subject: "Reminder: 3 days left in your free trial",
+                html: `<p>Your 14-day free trial ends in 3 days.</p>
+                       <p>We'll charge <strong>$499</strong> unless you cancel before the trial ends.</p>
+                       <p><a href="${process.env.APP_BASE_URL || 'http://localhost:5000'}/portal">Manage membership</a></p>`
+              });
+              console.log("✅ Trial will end email sent to:", customer.email);
+            }
+            break;
+          }
           default:
             console.log(`📋 Unhandled event type: ${event.type}`);
             break;
