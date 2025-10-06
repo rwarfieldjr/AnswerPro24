@@ -51,7 +51,7 @@ export default function About() {
                 We Understand Your Challenges
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="text-about-hero-subtitle">
-                AnswerPro24 was born from hearing real frustration from home services business owners. After a long day, the last thing they wanted to do was to take another call. That's why we built AnswerPro24 — intelligent call screening designed specifically for home service professionals.
+                AnswerPro24 was born from hearing real frustration from home services business owners. After a long day, the last thing they wanted to do was to take another call. So we built a solution.
               </p>
             </div>
           </div>
