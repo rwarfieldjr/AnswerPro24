@@ -46,7 +46,7 @@ const faqs = [
   },
   {
     question: "What if I need to speak with someone urgently?",
-    answer: "Call our priority support line at (864) 404-9606. For existing customers, we offer 24/7 technical support."
+    answer: "Call our priority support line at (864) 404-9606."
   }
 ];
 
