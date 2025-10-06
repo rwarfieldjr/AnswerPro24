@@ -20,23 +20,23 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
   ];
 
   return (
-    <section className="py-16 lg:py-24 bg-gradient-to-br from-background to-muted/20">
+    <section className="py-8 sm:py-12 lg:py-24 bg-gradient-to-br from-background to-muted/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-start">
           {/* Content */}
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <Badge variant="secondary" className="text-sm px-4 py-2">
+          <div className="space-y-6 sm:space-y-8">
+            <div className="space-y-3 sm:space-y-4">
+              <Badge variant="secondary" className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2">
                 Industry-First AI Call Screening Technology
               </Badge>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight" data-testid="text-hero-title">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight" data-testid="text-hero-title">
                 After-Hours Answering{" "}
                 <span className="text-primary">Powered by AI Voice</span>
               </h1>
-              <p className="text-xl text-muted-foreground leading-relaxed max-w-lg" data-testid="text-hero-subtitle">
+              <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-lg" data-testid="text-hero-subtitle">
                 What are missed calls — during business hours or after hours — costing your business?
               </p>
-              <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-lg">
                 <span className="font-semibold text-foreground">27% of service calls go unanswered.*</span> We screen every call, collect details, and escalate only true emergencies. You wake up to organized service requests — not chaos.
               </p>
               <p className="text-xs text-muted-foreground italic">
@@ -45,20 +45,20 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" onClick={onStartTrial} data-testid="button-hero-start-trial">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <Button size="lg" onClick={onStartTrial} data-testid="button-hero-start-trial" className="w-full sm:w-auto">
                 Start Free Trial
               </Button>
-              <Button size="lg" variant="outline" onClick={onSeeHowItWorks} data-testid="button-hero-see-how">
+              <Button size="lg" variant="outline" onClick={onSeeHowItWorks} data-testid="button-hero-see-how" className="w-full sm:w-auto">
                 See How It Works
               </Button>
             </div>
           </div>
 
           {/* Hero Image */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div className="relative">
-              <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
+              <div className="aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl">
                 <img
                   src={heroImage}
                   alt="Professional service technician with smartphone"
@@ -67,22 +67,22 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
                 />
               </div>
               {/* Floating badge */}
-              <div className="absolute -top-4 -right-4 bg-background p-4 rounded-xl shadow-lg border">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium">Live 24/7</span>
+              <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 bg-background p-2 sm:p-4 rounded-lg sm:rounded-xl shadow-lg border">
+                <div className="flex items-center space-x-1.5 sm:space-x-2">
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-xs sm:text-sm font-medium">Live 24/7</span>
                 </div>
               </div>
             </div>
 
             {/* Trust Badges */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               {trustBadges.map((badge, index) => (
                 <div key={index} className="flex items-center space-x-2" data-testid={`badge-trust-${index}`}>
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <badge.icon className="h-4 w-4 text-primary" />
+                  <div className="p-1.5 sm:p-2 bg-primary/10 rounded-lg">
+                    <badge.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
                   </div>
-                  <span className="text-sm font-medium text-foreground">{badge.text}</span>
+                  <span className="text-xs sm:text-sm font-medium text-foreground">{badge.text}</span>
                 </div>
               ))}
             </div>
@@ -90,30 +90,30 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
         </div>
 
         {/* Test Drive Section - Full Width */}
-        <div className="max-w-5xl mx-auto mt-12">
-          <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30 rounded-xl p-8 space-y-4">
-            <div className="flex items-center space-x-3">
-              <div className="p-3 bg-primary/20 rounded-lg">
-                <Sparkles className="h-6 w-6 text-primary" />
+        <div className="max-w-5xl mx-auto mt-8 sm:mt-12">
+          <div className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30 rounded-lg sm:rounded-xl p-4 sm:p-6 lg:p-8 space-y-3 sm:space-y-4">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="p-2 sm:p-3 bg-primary/20 rounded-lg">
+                <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
               </div>
-              <h3 className="text-2xl font-bold text-foreground">Hear It To Believe It</h3>
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground">Hear It To Believe It</h3>
             </div>
-            <p className="text-lg text-foreground font-medium">
+            <p className="text-base sm:text-lg text-foreground font-medium">
               Don't take our word for it - Call now to experience the future of after-hours call handling!
             </p>
-            <p className="text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               Call our live demo line and have a real conversation with our AI. You'll be amazed at how natural it sounds and how intelligently it handles service calls. This is the same technology that will protect your sleep and capture your leads.
             </p>
-            <div className="flex flex-col sm:flex-row items-start gap-6 pt-2">
-              <div className="flex flex-col gap-3">
+            <div className="flex flex-col lg:flex-row items-start gap-4 sm:gap-6 pt-2">
+              <div className="flex flex-col gap-2 sm:gap-3 w-full lg:w-auto">
                 <a 
                   href="tel:770-404-9750"
-                  className="text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
+                  className="text-xl sm:text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
                   data-testid="link-test-drive-phone"
                 >
                   (770) 404-9750
                 </a>
-                <div className="space-y-2">
+                <div className="space-y-2 w-full">
                   <AudioPlayer 
                     src={urgentAudio} 
                     title="🚨 Urgent: Pipe Leak Demo"
@@ -126,15 +126,15 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
                   />
                 </div>
               </div>
-              <div className="text-sm text-muted-foreground space-y-1">
-                <div className="flex items-center gap-2 text-base font-semibold text-foreground mb-2">
+              <div className="text-sm text-muted-foreground space-y-1 w-full lg:w-auto">
+                <div className="flex items-center gap-2 text-sm sm:text-base font-semibold text-foreground mb-2">
                   <Phone className="h-4 w-4" />
                   Call anytime, 24/7
                 </div>
-                <div className="text-base font-semibold text-foreground mb-2">Try real world scenarios:</div>
-                <div>1. Urgent: "I have a burst pipe and water is flooding my house!"</div>
-                <div>2. Non Urgent: "My garage door is stuck, but it can wait until tomorrow morning"</div>
-                <div>3. Come up with your own!</div>
+                <div className="text-sm sm:text-base font-semibold text-foreground mb-2">Try real world scenarios:</div>
+                <div className="text-xs sm:text-sm">1. Urgent: "I have a burst pipe and water is flooding my house!"</div>
+                <div className="text-xs sm:text-sm">2. Non Urgent: "My garage door is stuck, but it can wait until tomorrow morning"</div>
+                <div className="text-xs sm:text-sm">3. Come up with your own!</div>
                 <div className="text-xs italic mt-2">No spam. Just an incredible demo experience.</div>
               </div>
             </div>
