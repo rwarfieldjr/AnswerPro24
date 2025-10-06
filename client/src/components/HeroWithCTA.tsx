@@ -106,13 +106,16 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
             </p>
             <div className="flex flex-col lg:flex-row items-start gap-4 sm:gap-6 pt-2">
               <div className="flex flex-col gap-2 sm:gap-3 w-full lg:w-auto">
-                <a 
-                  href="tel:770-404-9750"
-                  className="text-xl sm:text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
-                  data-testid="link-test-drive-phone"
-                >
-                  (770) 404-9750
-                </a>
+                <div className="flex items-center gap-2">
+                  <a 
+                    href="tel:770-404-9750"
+                    className="text-xl sm:text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
+                    data-testid="link-test-drive-phone"
+                  >
+                    (770) 404-9750
+                  </a>
+                  <span className="text-sm font-medium text-muted-foreground">Demo Line</span>
+                </div>
                 <div className="space-y-2 w-full">
                   <AudioPlayer 
                     src={urgentAudio} 
