@@ -5,14 +5,7 @@ import LeadFormModal from "@/components/LeadFormModal";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Users, Target, Award, Shield, Clock, Heart, Phone } from "lucide-react";
-
-const stats = [
-  { label: "Calls Handled", value: "500K+", icon: Phone },
-  { label: "Home Service Businesses", value: "1,200+", icon: Users },
-  { label: "Emergency Response Time", value: "<30s", icon: Clock },
-  { label: "Customer Satisfaction", value: "98%", icon: Heart }
-];
+import { Users, Target, Award, Shield } from "lucide-react";
 
 const values = [
   {
@@ -118,31 +111,6 @@ export default function About() {
                   </div>
                 </CardContent>
               </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Stats Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-foreground mb-4">
-                Trusted by the Industry
-              </h2>
-              <p className="text-muted-foreground">
-                Numbers that show our impact on home service businesses
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-4 gap-6">
-              {stats.map((stat, index) => (
-                <Card key={index} className="text-center hover-elevate" data-testid={`stat-${index}`}>
-                  <CardContent className="p-6 space-y-2">
-                    <div className="text-3xl font-bold text-primary">{stat.value}</div>
-                    <p className="text-sm text-muted-foreground">{stat.label}</p>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
           </div>
         </section>
