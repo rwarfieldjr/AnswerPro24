@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Clock, Phone, CheckCircle, Sparkles } from "lucide-react";
 import heroImage from "@assets/generated_images/Service_technician_hero_image_1ccde34c.png";
+import AudioPlayer from "@/components/AudioPlayer";
+import urgentAudio from "@assets/AnswerPro24 Urgent - Pipe Leak_1759775874741.m4a";
+import nonUrgentAudio from "@assets/AnswerPro24 - Non-Urgent - Garage Door_1759775889205.m4a";
 
 interface HeroWithCTAProps {
   onStartTrial: () => void;
@@ -102,7 +105,7 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
               Call our live demo line and have a real conversation with our AI. You'll be amazed at how natural it sounds and how intelligently it handles service calls. This is the same technology that will protect your sleep and capture your leads.
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-6 pt-2">
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-3">
                 <a 
                   href="tel:770-404-9750"
                   className="text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
@@ -110,6 +113,18 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
                 >
                   (770) 404-9750
                 </a>
+                <div className="space-y-2">
+                  <AudioPlayer 
+                    src={urgentAudio} 
+                    title="🚨 Urgent: Pipe Leak Demo"
+                    testId="audio-urgent-demo"
+                  />
+                  <AudioPlayer 
+                    src={nonUrgentAudio} 
+                    title="⏰ Non-Urgent: Garage Door Demo"
+                    testId="audio-non-urgent-demo"
+                  />
+                </div>
               </div>
               <div className="text-sm text-muted-foreground space-y-1">
                 <div className="flex items-center gap-2 text-base font-semibold text-foreground mb-2">
