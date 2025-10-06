@@ -51,8 +51,7 @@ export default function About() {
                 We Understand Your Challenges
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="text-about-hero-subtitle">
-                AnswerPro 24 was born from real frustration with after-hours calls. 
-                Our founders spent years in the home services industry, experiencing the same challenges you face every day.
+                AnswerPro24 was born from hearing real frustration from home services business owners. After a long day, the last thing they wanted to do was to take another call.
               </p>
             </div>
           </div>
