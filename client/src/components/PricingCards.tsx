@@ -44,7 +44,7 @@ export default function PricingCards({ onPlanSelect }: PricingCardsProps) {
   return (
     <section className="py-16 lg:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center space-y-4 mb-16">
+        <div className="text-center space-y-4 mb-8">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground" data-testid="text-pricing-title">
             One Simple Plan, Everything Included
           </h2>
