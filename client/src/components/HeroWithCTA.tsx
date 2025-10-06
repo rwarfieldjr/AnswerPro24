@@ -105,11 +105,10 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
               <div className="flex flex-col gap-2">
                 <a 
                   href="tel:770-404-9750"
-                  className="flex items-center space-x-2 text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
+                  className="text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
                   data-testid="link-test-drive-phone"
                 >
-                  <Phone className="h-6 w-6" />
-                  <span>(770) 404-9750</span>
+                  (770) 404-9750
                 </a>
                 <div className="flex items-center gap-2 text-base font-semibold text-foreground">
                   <Phone className="h-4 w-4" />
