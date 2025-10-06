@@ -1,0 +1,115 @@
+AnswerPro24 Terms of Service
+
+Effective Date: {{right_now.middle_endian_date}}
+
+1. Acceptance of Terms
+
+By accessing or using AnswerPro24 (“AnswerPro24,” “we,” “our,” or the “Service”), you agree to be bound by these Terms of Service (“Terms”) and all applicable laws and regulations. If you do not agree, do not use the Service.
+
+2. Description of Service
+
+AnswerPro24 provides AI-powered after-hours call answering and routing for home-service businesses. Features may include:
+
+24/7 AI voice screening and customer data capture
+
+Intelligent call routing and escalation per your rules
+
+CRM integration and lead forwarding
+
+Call recording, transcription, analytics, and reporting
+
+Real-time notifications and daily summaries
+
+We may enhance or modify features to improve reliability or performance.
+
+3. Account Registration and Responsibilities
+
+Accuracy: Provide accurate, complete, and current registration information and keep credentials secure.
+
+Call Forwarding: Configure forwarding from your business line(s) to our assigned number(s).
+
+Escalation Rules: Define and maintain your emergency/escalation criteria. You are responsible for results arising from your configuration.
+
+Authority: You represent that you are authorized to bind your business to these Terms.
+
+4. Service Availability and Performance
+
+Uptime Target: 99.9% monthly uptime target (scheduled maintenance and force majeure excluded).
+
+AI Accuracy: While continuously trained, AI and transcriptions may occasionally misclassify or contain errors.
+
+Limitations: The Service is not a substitute for 911 or emergency dispatch and is intended for business communications in English.
+
+5. Billing and Payment
+
+Subscription Fees: Billed in advance; non-refundable except as stated in our refund policy.
+
+Usage Fees: Per-minute charges billed monthly in arrears, one-minute increments with a one-minute minimum.
+
+Payment Terms: Net 30 from invoice date. Overdue accounts (>60 days) may be suspended or terminated.
+
+Price Changes: We may modify pricing with 30 days’ written notice. Continued use after the effective date constitutes acceptance.
+
+6. Data and Privacy
+
+Recording/Transcription: Calls may be recorded and transcribed for quality assurance, service improvement, and dispute resolution. Retained for 90 days unless you request longer retention in writing.
+
+Data Use: We may use aggregated, anonymized data to enhance models and service quality.
+
+Privacy Policy: Personal information is handled per our Privacy Policy (incorporated by reference): https://answerpro24.com/privacy
+
+7. Prohibited Uses
+
+You agree not to use the Service for:
+
+Illegal or fraudulent activity
+
+Emergency or life-threatening situations
+
+Harassing, abusive, or threatening communications
+
+Telemarketing, spam, or unsolicited promotions
+
+Interfering with or degrading our systems or security
+
+8. Limitation of Liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, ANSWERPRO24 AND ITS AFFILIATES WILL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOST PROFITS OR BUSINESS INTERRUPTION.
+Our aggregate liability arising out of or related to the Service shall not exceed the amounts you paid to AnswerPro24 in the twelve (12) months preceding the claim.
+
+9. Service Level Commitments
+
+Escalation Handling: Emergency/escalation calls processed in ~30 seconds during normal operations.
+
+Accuracy: Target ≥95% call-classification accuracy measured monthly.
+
+Service Credits: If uptime falls below target, customers may be eligible for credits as described in our Service Level Agreement (SLA): https://answerpro24.com/sla
+
+10. Termination
+
+By You: Cancel at any time with 30 days’ written notice. Prepaid fees are non-refundable.
+
+By Us: We may suspend or terminate for breach, non-payment, or service discontinuation (60 days’ notice for discontinuation where practicable).
+
+Data Export: You have 30 days after termination to export your data. After that, it may be permanently deleted.
+
+11. Dispute Resolution
+
+Governing Law: Texas law governs these Terms, excluding conflict-of-law rules.
+
+Arbitration: Disputes will be resolved exclusively by binding arbitration in Austin, Texas, under the American Arbitration Association rules.
+
+Class Action Waiver: Disputes must be brought on an individual basis, not as a class or representative action.
+
+12. Modifications
+
+We may update these Terms from time to time. Material changes will be communicated at least 30 days before taking effect. Your continued use after the effective date constitutes acceptance.
+
+13. Contact Information
+
+AnswerPro24
+403 Woods Lake Rd, Suite 100
+Greenville, SC 29607
+Email: legal@answerpro24.com
+
+Phone: (864) 404-9606

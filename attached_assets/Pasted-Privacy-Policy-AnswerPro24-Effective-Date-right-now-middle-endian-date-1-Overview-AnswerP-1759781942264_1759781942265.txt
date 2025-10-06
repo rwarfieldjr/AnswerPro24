@@ -1,0 +1,196 @@
+Privacy Policy — AnswerPro24
+
+Effective Date: {{right_now.middle_endian_date}}
+
+1) Overview
+
+AnswerPro24 (“AnswerPro24,” “we,” “us”) provides AI-powered after-hours call answering and routing for home-service businesses. This Privacy Policy explains how we collect, use, disclose, and protect personal information when you use our services, sites, and related tools (the “Service”).
+
+By using the Service, you agree to this Policy and our Terms of Service.
+
+2) Roles and Definitions
+
+Customer: the business that signs up for the Service.
+
+End Caller: the individual who calls or is called on behalf of a Customer.
+
+Controller vs. Processor: For Customer contact data and call content, the Customer is the data controller and AnswerPro24 is the data processor. For our own marketing, billing, fraud prevention, and analytics, AnswerPro24 is the controller.
+
+3) Information We Collect
+
+Account & Billing: business name, contact person, email, phone, address, payment method, invoices.
+
+Service Data: phone numbers, call metadata (timestamps, duration), call audio, recordings, transcriptions, routing/escalation settings, CRM integration data, message logs, support tickets.
+
+Technical Data: device/browser info, IP address, cookies, usage logs, event logs, diagnostics.
+
+Communications: emails, chats, support interactions, surveys, testimonials (with permission).
+
+4) How We Use Information
+
+Provide, operate, and improve the Service.
+
+Screen, route, record, transcribe, and analyze calls.
+
+Send real-time alerts and daily summaries.
+
+Detect abuse, secure the Service, and debug issues.
+
+Train and evaluate models using aggregated and/or de-identified data.
+
+Billing, account management, and compliance with law.
+
+We do not sell personal information.
+
+5) Call Recording & Consent
+
+Calls may be recorded and/or transcribed. Customer is responsible for obtaining all legally required consents from End Callers (including two-party consent jurisdictions). If you use SMS/A2P messaging with us or your CRM, you must obtain valid opt-in/consent and honor opt-out requests.
+
+6) Data Retention
+
+Recordings/Transcripts: retained 90 days by default, unless Customer requests a longer period in writing.
+
+Logs/Metadata: retained as needed for security, operations, and legal requirements.
+
+Deletion: upon verified request and subject to legal holds/backups, we delete or anonymize data.
+
+7) Sharing & Disclosure
+
+We may share information with:
+
+Service Providers/Subprocessors (e.g., cloud hosting, telephony, storage, analytics, support).
+
+CRM/Integrations at Customer’s direction.
+
+Legal/Compliance: to comply with law, enforce agreements, or protect rights and safety.
+
+Corporate Transactions: merger, acquisition, or asset transfer (with continued protections).
+
+A current list of subprocessors is available on request.
+
+8) Security
+
+We use administrative, technical, and physical safeguards (encryption in transit, access controls, monitoring, least-privilege). No system is 100% secure; Customers must secure their own credentials, seats, and integrations.
+
+9) International Data Transfers
+
+If data is transferred across borders, we use legally recognized mechanisms (e.g., SCCs) where required.
+
+10) Your Choices & Rights
+
+Depending on your location, you may have rights to access, correct, delete, or restrict processing.
+
+Customers: manage your data in the dashboard or contact us.
+
+End Callers: please contact the relevant Customer (data controller). We will assist the Customer as the processor.
+
+11) Children
+
+The Service is for business use and not directed to children under 13 (or other local minimum age). We do not knowingly collect such data.
+
+12) Changes to this Policy
+
+We may update this Policy. Material changes will be notified at least 30 days before taking effect.
+
+13) Contact
+
+AnswerPro24
+403 Woods Lake Rd, Suite 100
+Greenville, SC 29607
+Email: legal@answerpro24.com
+
+Phone: (864) 404-9606
+
+Service Level Agreement (SLA) — AnswerPro24
+
+Effective Date: {{right_now.middle_endian_date}}
+This SLA forms part of the Terms of Service.
+
+1) Scope
+
+This SLA defines uptime, support targets, service credits, and exclusions for the AnswerPro24 platform and core telephony features we control.
+
+2) Uptime Target
+
+Monthly Uptime Target: 99.9%
+
+Measurement: calendar-month availability of the Service endpoints, excluding Exclusions (below).
+
+Downtime: minutes when the Service is unavailable for all Customers due to AnswerPro24-controlled systems.
+
+3) Exclusions
+
+No credits for downtime caused by:
+
+Force majeure (natural disasters, war, labor actions, internet backbone issues).
+
+Carrier outages or third-party telephony/CRM providers.
+
+Customer networks, call-forwarding misconfigurations, number porting issues, or credential misuse.
+
+Scheduled maintenance (with prior notice where practicable).
+
+Security events requiring emergency action.
+
+Beta or experimental features.
+
+4) Maintenance
+
+Planned Maintenance: typically scheduled during low-traffic windows with advance notice.
+
+Emergency Maintenance: performed as needed for security/stability.
+
+5) Support & Response Targets
+
+Standard Support Hours: 9am–6pm ET, Mon–Fri (excluding U.S. holidays).
+
+Sev-1 (Critical Outage): target initial response < 1 hour during Support Hours; best-effort outside hours.
+
+Sev-2 (Degraded Service / Major Feature Impact): target initial response < 4 hours.
+
+Sev-3 (General Issue/Question): target initial response next business day.
+
+Submit tickets via support@answerpro24.com
+ or your portal.
+
+6) Escalation Handling
+
+Emergency Escalations processed in ~30 seconds during normal operations (non-binding target).
+
+Customers must keep escalation rules, on-call contacts, and numbers accurate.
+
+7) Accuracy Target
+
+Classification Accuracy: monthly target ≥ 95% across sufficiently large sample sizes.
+
+Variance may occur by industry, audio quality, caller behavior, and configuration.
+
+8) Service Credits (Uptime)
+
+If Monthly Uptime falls below target, you may request a credit within 30 days after the month ends:
+
+99.0%–99.89%: 5% of monthly subscription fee
+
+98.0%–98.99%: 10% of monthly subscription fee
+
+<98.0%: 20% of monthly subscription fee
+
+Credits apply to future invoices only and exclude usage charges, taxes, and third-party fees. Credits are the sole and exclusive remedy for uptime shortfalls.
+
+9) Claim Process
+
+Email billing@answerpro24.com
+ with: account ID, month impacted, and incident details. We will verify metrics using our logs and monitoring systems.
+
+10) Changes
+
+We may update this SLA; material changes will be notified at least 30 days before taking effect.
+
+11) Contact
+
+AnswerPro24
+403 Woods Lake Rd, Suite 100
+Greenville, SC 29607
+Email: legal@answerpro24.com
+
+Phone: (864) 404-9606
