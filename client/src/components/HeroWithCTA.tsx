@@ -101,25 +101,27 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
             <p className="text-muted-foreground">
               Call our live demo line and have a real conversation with our AI. You'll be amazed at how natural it sounds and how intelligently it handles service calls. This is the same technology that will protect your sleep and capture your leads.
             </p>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2">
-              <a 
-                href="tel:770-404-9750"
-                className="flex items-center space-x-3 text-3xl font-bold text-primary hover:text-primary/80 transition-colors"
-                data-testid="link-test-drive-phone"
-              >
-                <Phone className="h-7 w-7" />
-                <span>(770) 404-9750</span>
-              </a>
-              <div className="text-sm text-muted-foreground">
-                <div className="flex items-center gap-2 font-semibold text-foreground">
+            <div className="flex flex-col sm:flex-row items-start gap-6 pt-2">
+              <div className="flex flex-col gap-2">
+                <a 
+                  href="tel:770-404-9750"
+                  className="flex items-center space-x-2 text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
+                  data-testid="link-test-drive-phone"
+                >
+                  <Phone className="h-6 w-6" />
+                  <span>(770) 404-9750</span>
+                </a>
+                <div className="flex items-center gap-2 text-base font-semibold text-foreground">
                   <Phone className="h-4 w-4" />
                   Call anytime, 24/7
                 </div>
-                <div>Try real world scenarios:</div>
+              </div>
+              <div className="text-sm text-muted-foreground space-y-1">
+                <div className="text-base font-semibold text-foreground mb-2">Try real world scenarios:</div>
                 <div>1. Urgent: "I have a burst pipe and water is flooding my house!"</div>
                 <div>2. Non Urgent: "My garage door is stuck, but it can wait until tomorrow morning"</div>
                 <div>3. Come up with your own!</div>
-                <div className="text-xs italic mt-1">No spam. Just an incredible demo experience.</div>
+                <div className="text-xs italic mt-2">No spam. Just an incredible demo experience.</div>
               </div>
             </div>
           </div>
