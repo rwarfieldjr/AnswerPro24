@@ -37,26 +37,6 @@ const values = [
   }
 ];
 
-const team = [
-  {
-    name: "Sarah Johnson",
-    role: "CEO & Co-Founder",
-    bio: "Former VP of Operations at ServiceTitan. 15 years in home services technology.",
-    image: "/api/placeholder/200/200"
-  },
-  {
-    name: "Mike Chen", 
-    role: "CTO & Co-Founder",
-    bio: "AI researcher from Google. Led voice recognition teams for 8 years.",
-    image: "/api/placeholder/200/200"
-  },
-  {
-    name: "David Rodriguez",
-    role: "VP of Customer Success", 
-    bio: "20+ years as plumbing contractor. Understands your challenges firsthand.",
-    image: "/api/placeholder/200/200"
-  }
-];
 
 export default function About() {
   const [isLeadFormOpen, setIsLeadFormOpen] = useState(false);
@@ -193,37 +173,6 @@ export default function About() {
                       <h3 className="text-xl font-semibold text-foreground">{value.title}</h3>
                     </div>
                     <p className="text-muted-foreground">{value.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Team Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-foreground mb-4">
-                Leadership Team
-              </h2>
-              <p className="text-muted-foreground">
-                Industry veterans who understand your business
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {team.map((member, index) => (
-                <Card key={index} className="text-center hover-elevate" data-testid={`team-member-${index}`}>
-                  <CardContent className="p-6 space-y-4">
-                    <div className="w-24 h-24 bg-muted rounded-full mx-auto flex items-center justify-center">
-                      <Users className="h-12 w-12 text-muted-foreground" />
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-xl font-semibold text-foreground">{member.name}</h3>
-                      <p className="text-primary font-medium">{member.role}</p>
-                      <p className="text-sm text-muted-foreground">{member.bio}</p>
-                    </div>
                   </CardContent>
                 </Card>
               ))}
