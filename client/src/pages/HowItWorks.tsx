@@ -123,8 +123,6 @@ export default function HowItWorks() {
           </div>
         </section>
 
-        {/* Main Process */}
-        <HowItWorksStepper />
 
         {/* Detailed Setup */}
         <section className="py-16 bg-muted/30">
