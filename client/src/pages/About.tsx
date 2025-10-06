@@ -54,9 +54,6 @@ export default function About() {
         <section className="py-16 lg:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center space-y-6 mb-16">
-              <Badge variant="secondary" className="text-sm px-4 py-2">
-                Founded by Home Service Veterans
-              </Badge>
               <h1 className="text-4xl sm:text-5xl font-bold text-foreground" data-testid="text-about-hero-title">
                 We Understand Your Challenges
               </h1>
