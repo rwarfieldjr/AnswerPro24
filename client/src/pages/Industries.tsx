@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -350,9 +351,14 @@ const industryDetails = {
 
 export default function Industries() {
   const [isLeadFormOpen, setIsLeadFormOpen] = useState(false);
+  const [, setLocation] = useLocation();
 
   const handleStartTrial = () => {
     setIsLeadFormOpen(true);
+  };
+
+  const handleGetInTouch = () => {
+    setLocation("/contact");
   };
 
   const industriesStructuredData = {
@@ -435,7 +441,7 @@ export default function Industries() {
                   </p>
                   <Button 
                     size="lg" 
-                    onClick={handleStartTrial}
+                    onClick={handleGetInTouch}
                     data-testid="button-custom-industry-cta"
                   >
                     Get in Touch
