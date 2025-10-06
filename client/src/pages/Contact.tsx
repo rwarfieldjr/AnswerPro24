@@ -30,20 +30,6 @@ const contactMethods = [
   }
 ];
 
-const offices = [
-  {
-    city: "Austin, TX",
-    address: "123 Tech Boulevard, Suite 400",
-    phone: "(512) 555-0123",
-    timezone: "Central Time"
-  },
-  {
-    city: "Denver, CO", 
-    address: "456 Innovation Drive, Floor 12",
-    phone: "(303) 555-0456",
-    timezone: "Mountain Time"
-  }
-];
 
 const faqs = [
   {
@@ -122,47 +108,6 @@ export default function Contact() {
                         <a href="mailto:hello@answerpro24.com" data-testid="button-email-us">Send Email</a>
                       </Button>
                     )}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Office Locations */}
-        <section className="py-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-foreground mb-4">
-                Our Locations
-              </h2>
-              <p className="text-muted-foreground">
-                Find us in these cities, supporting home service professionals nationwide
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {offices.map((office, index) => (
-                <Card key={index} className="hover-elevate" data-testid={`office-${index}`}>
-                  <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center space-x-2">
-                      <MapPin className="h-5 w-5 text-primary" />
-                      <span>{office.city}</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex items-start space-x-2">
-                      <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
-                      <span className="text-sm text-muted-foreground">{office.address}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Phone className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-foreground font-medium">{office.phone}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Clock className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">{office.timezone}</span>
-                    </div>
                   </CardContent>
                 </Card>
               ))}
