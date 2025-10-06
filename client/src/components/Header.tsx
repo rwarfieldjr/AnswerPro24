@@ -26,7 +26,9 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2" data-testid="link-home">
-            <img src={phoneLogoImage} alt="AnswerPro 24 Logo" className="h-8 w-8" />
+            <div className="bg-primary/10 rounded-lg p-1.5">
+              <Phone className="h-5 w-5 text-primary" />
+            </div>
             <span className="text-2xl font-bold">
               <span className="text-foreground">AnswerPro</span>
               <span className="text-primary"> 24</span>
