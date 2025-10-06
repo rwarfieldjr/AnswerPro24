@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Phone } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import logoImage from "@assets/AnswerPro Logo_1758032356924.jpeg";
+import phoneLogoImage from "@assets/Screen Shot 2025-10-06 at 3.00.31 PM_1759779415399.png";
 
 const navigation = [
   { name: "Pricing", href: "/pricing" },
@@ -24,7 +25,8 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center" data-testid="link-home">
+          <Link href="/" className="flex items-center space-x-2" data-testid="link-home">
+            <img src={phoneLogoImage} alt="AnswerPro 24 Logo" className="h-8 w-8" />
             <span className="text-2xl font-bold">
               <span className="text-foreground">AnswerPro</span>
               <span className="text-primary"> 24</span>
