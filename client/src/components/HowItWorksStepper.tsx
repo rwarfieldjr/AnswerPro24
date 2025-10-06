@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Phone, Brain, GitBranch, Mail } from "lucide-react";
+import { CreditCard, Calendar, PhoneForwarded } from "lucide-react";
 
 interface Step {
   number: number;
@@ -13,50 +13,38 @@ interface Step {
 const steps: Step[] = [
   {
     number: 1,
-    icon: Phone,
-    title: "Forward Your Number After Hours",
-    description: "Simple setup with your existing phone system",
+    icon: CreditCard,
+    title: "Start Your 14-Day Free Trial",
+    description: "Quick signup with complete flexibility",
     details: [
-      "We provide a dedicated number and setup instructions",
-      "Works with any carrier or VoIP system", 
-      "Keep your existing number",
-      "Forward only after business hours"
+      "Quick 2-minute signup process",
+      "No long-term commitment required",
+      "Full access to all features during trial",
+      "Cancel before trial ends - no charge"
     ]
   },
   {
     number: 2,
-    icon: Brain,
-    title: "AI Answers & Assesses",
-    description: "Intelligent call screening and data collection",
+    icon: Calendar,
+    title: "Personalize Your AI Assistant",
+    description: "15-minute onboarding call to configure your AI",
     details: [
-      "Collects caller details and issue description",
-      "Classifies urgency based on your criteria",
-      "Gathers photos/videos if needed",
-      "Records call and generates transcript"
+      "Quick setup call with our team",
+      "Customize call handling preferences",
+      "Define urgent vs. non-urgent criteria",
+      "Train AI on your business specifics"
     ]
   },
   {
     number: 3,
-    icon: GitBranch,
-    title: "Smart Routing Decision",
-    description: "Schedule for morning or escalate immediately",
+    icon: PhoneForwarded,
+    title: "Forward & Go Live",
+    description: "Start capturing leads the same night",
     details: [
-      "True emergencies ring your on-call tech",
-      "Regular requests scheduled for morning",
-      "Custom rules based on your business",
-      "Automatic backup escalation if needed"
-    ]
-  },
-  {
-    number: 4,
-    icon: Mail,
-    title: "Deliver Results",
-    description: "Organized information when you need it",
-    details: [
-      "Morning digest with all scheduled calls",
-      "Real-time alerts for escalations",
-      "Complete ticket with all details",
-      "Integration with your CRM system"
+      "Instant activation - no technical setup",
+      "Works with any phone carrier or VoIP",
+      "Keep your existing phone number",
+      "AI starts answering immediately"
     ]
   }
 ];
@@ -74,7 +62,7 @@ export default function HowItWorksStepper() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-8">
+        <div className="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {steps.map((step, index) => (
             <div key={index} className="relative" data-testid={`step-${step.number}`}>
               {/* Connector line for desktop */}

@@ -7,32 +7,26 @@ import LeadFormModal from "@/components/LeadFormModal";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Phone, Settings, MessageSquare, BarChart3, CheckCircle } from "lucide-react";
+import { CreditCard, Calendar, PhoneForwarded, CheckCircle } from "lucide-react";
 
 const setupSteps = [
   {
-    icon: Phone,
-    title: "Phone Setup (5 minutes)",
-    description: "Forward your after-hours calls to our dedicated number",
-    details: ["Call your phone provider", "Set up conditional forwarding", "Test the forwarding", "We'll guide you through each step"]
+    icon: CreditCard,
+    title: "Start Your 14-Day Free Trial",
+    description: "Quick signup with no long-term commitment",
+    details: ["Enter payment information - no charge during trial", "No contracts - cancel anytime", "Month-to-month service after trial", "Full access to all features immediately"]
   },
   {
-    icon: Settings,
-    title: "Configure Rules (10 minutes)",
-    description: "Customize your emergency escalation criteria",
-    details: ["Define what counts as emergency", "Set technician on-call schedule", "Configure backup escalation", "Test with sample scenarios"]
+    icon: Calendar,
+    title: "Schedule Your Onboarding Call",
+    description: "We'll personalize your AI assistant in 15 minutes",
+    details: ["Gather company information and preferences", "Configure how you want after-hours calls handled", "Set urgent vs. non-urgent criteria", "Train AI on business-specific details"]
   },
   {
-    icon: MessageSquare,
-    title: "AI Training (Automatic)",
-    description: "Our AI learns your specific service terminology",
-    details: ["Upload service menu/pricing", "Review common customer issues", "Customize greeting message", "AI adapts to your business"]
-  },
-  {
-    icon: BarChart3,
-    title: "Go Live (Immediate)",
-    description: "Start receiving professionally handled calls",
-    details: ["Monitor first few calls", "Adjust rules as needed", "Review morning summaries", "Scale with confidence"]
+    icon: PhoneForwarded,
+    title: "Forward & Go Live",
+    description: "When ready, we forward your after-hours number to our AI",
+    details: ["Simple call forwarding - works with any carrier", "Keep your existing phone number", "AI starts answering after-hours immediately", "Start capturing leads the same night"]
   }
 ];
 
@@ -70,30 +64,24 @@ export default function HowItWorks() {
     "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Set Up AnswerPro 24 Call Answering Service",
-    "description": "Simple 4-step process to get AI call answering for your home service business",
+    "description": "Simple 3-step process to get AI call answering for your home service business",
     "step": [
       {
         "@type": "HowToStep",
-        "name": "Phone Setup",
-        "text": "Forward your after-hours calls to our dedicated number",
-        "url": "https://answerpro24.com/how-it-works#phone-setup"
+        "name": "Start Your 14-Day Free Trial",
+        "text": "Quick signup with payment information. No contracts, cancel anytime.",
+        "url": "https://answerpro24.com/how-it-works#start-trial"
       },
       {
         "@type": "HowToStep",
-        "name": "Configure Rules",
-        "text": "Customize your emergency escalation criteria", 
-        "url": "https://answerpro24.com/how-it-works#configure-rules"
+        "name": "Schedule Your Onboarding Call",
+        "text": "15-minute call to configure your AI with company details and preferences", 
+        "url": "https://answerpro24.com/how-it-works#onboarding-call"
       },
       {
         "@type": "HowToStep",
-        "name": "AI Training",
-        "text": "Our AI learns your specific service terminology",
-        "url": "https://answerpro24.com/how-it-works#ai-training"
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Go Live",
-        "text": "Start receiving professionally handled calls",
+        "name": "Forward & Go Live",
+        "text": "Simple call forwarding to start receiving AI-handled calls immediately",
         "url": "https://answerpro24.com/how-it-works#go-live"
       }
     ]
@@ -102,9 +90,9 @@ export default function HowItWorks() {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="How It Works - AnswerPro 24 | Simple Setup in 15 Minutes"
-        description="Learn how AnswerPro 24 works. Simple 4-step setup process gets you professional after-hours call handling in just 15 minutes. No technical expertise required."
-        keywords={["how answering service works", "call service setup", "after hours setup process", "AI call answering setup", "home service call handling"]}
+        title="How It Works - AnswerPro 24 | Start Your Free Trial Today"
+        description="Get started in 3 simple steps: Start your 14-day free trial, schedule a quick onboarding call, then forward your after-hours calls. No contracts, cancel anytime."
+        keywords={["how answering service works", "call service setup", "after hours setup process", "AI call answering setup", "free trial answering service"]}
         canonicalUrl="https://answerpro24.com/how-it-works"
         structuredData={howItWorksStructuredData}
       />
@@ -122,13 +110,13 @@ export default function HowItWorks() {
                 How It Works
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="text-how-it-works-hero-subtitle">
-                Unlike traditional answering services, our AI actually understands the difference between emergencies and routine calls. 
-                Get started in minutes with our simple 4-step process. No technical expertise required.
+                Start your 14-day free trial, schedule a quick onboarding call to personalize your AI, 
+                then forward your after-hours calls. You'll be capturing leads the same night.
               </p>
               <div className="flex justify-center">
                 <Badge variant="secondary" className="text-sm px-4 py-2">
                   <CheckCircle className="w-4 h-4 mr-2" />
-                  Average setup time: 15 minutes
+                  Get started in 3 simple steps
                 </Badge>
               </div>
             </div>
@@ -143,14 +131,14 @@ export default function HowItWorks() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-foreground mb-4">
-                Detailed Setup Process
+                Simple Onboarding Process
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                We'll guide you through each step with personal onboarding support
+                We'll guide you through each step with personal support
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {setupSteps.map((step, index) => (
                 <Card key={index} className="hover-elevate" data-testid={`setup-step-${index}`}>
                   <CardContent className="p-6 space-y-4">
