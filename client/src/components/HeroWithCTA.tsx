@@ -110,12 +110,12 @@ export default function HeroWithCTA({ onStartTrial, onSeeHowItWorks }: HeroWithC
                 >
                   (770) 404-9750
                 </a>
-                <div className="flex items-center gap-2 text-base font-semibold text-foreground">
+              </div>
+              <div className="text-sm text-muted-foreground space-y-1">
+                <div className="flex items-center gap-2 text-base font-semibold text-foreground mb-2">
                   <Phone className="h-4 w-4" />
                   Call anytime, 24/7
                 </div>
-              </div>
-              <div className="text-sm text-muted-foreground space-y-1">
                 <div className="text-base font-semibold text-foreground mb-2">Try real world scenarios:</div>
                 <div>1. Urgent: "I have a burst pipe and water is flooding my house!"</div>
                 <div>2. Non Urgent: "My garage door is stuck, but it can wait until tomorrow morning"</div>
