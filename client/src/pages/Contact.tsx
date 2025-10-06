@@ -11,7 +11,7 @@ const contactMethods = [
     icon: Phone,
     title: "Call Us",
     description: "Speak with our team directly",
-    contact: "(770) 404-9750",
+    contact: "(864) 404-9606",
     hours: "Mon-Fri 8 AM - 8 PM EST"
   },
   {
@@ -46,7 +46,7 @@ const faqs = [
   },
   {
     question: "What if I need to speak with someone urgently?",
-    answer: "Call our priority support line at (770) 404-9750. For existing customers, we offer 24/7 technical support."
+    answer: "Call our priority support line at (864) 404-9606. For existing customers, we offer 24/7 technical support."
   }
 ];
 
@@ -100,7 +100,7 @@ export default function Contact() {
                     )}
                     {method.title === "Call Us" && (
                       <Button variant="outline" asChild className="w-full">
-                        <a href="tel:770-404-9750" data-testid="button-call-us">Call Now</a>
+                        <a href="tel:864-404-9606" data-testid="button-call-us">Call Now</a>
                       </Button>
                     )}
                     {method.title === "Email Us" && (
@@ -155,7 +155,7 @@ export default function Contact() {
                         </div>
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Emergency Line:</span>
-                          <span className="font-medium">(770) 404-9750</span>
+                          <span className="font-medium">(864) 404-9606</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Response Time:</span>
@@ -222,9 +222,9 @@ export default function Contact() {
                   className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
                   asChild
                 >
-                  <a href="tel:770-404-9750" data-testid="button-contact-call">
+                  <a href="tel:864-404-9606" data-testid="button-contact-call">
                     <Phone className="mr-2 h-5 w-5" />
-                    Call (770) 404-9750
+                    Call (864) 404-9606
                   </a>
                 </Button>
               </div>
