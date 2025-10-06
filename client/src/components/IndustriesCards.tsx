@@ -147,17 +147,8 @@ interface IndustriesCardsProps {
 
 export default function IndustriesCards({ onLearnMore }: IndustriesCardsProps) {
   return (
-    <section className="py-16 lg:py-24">
+    <section className="py-8 lg:py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground" data-testid="text-industries-title">
-            Industries We Serve
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="text-industries-subtitle">
-            Specialized call handling designed for the unique needs of home service professionals
-          </p>
-        </div>
-
         <div className="grid md:grid-cols-2 gap-8">
           {industries.map((industry, index) => (
             <Card key={index} className="group overflow-hidden hover-elevate" data-testid={`card-industry-${industry.slug}`}>
