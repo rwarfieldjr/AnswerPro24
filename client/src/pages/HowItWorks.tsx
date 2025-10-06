@@ -181,31 +181,31 @@ export default function HowItWorks() {
               <Card className="overflow-hidden">
                 <CardContent className="p-0">
                   <div className="bg-primary text-primary-foreground p-6">
-                    <h3 className="text-xl font-semibold mb-2">Scenario: Plumbing Emergency</h3>
-                    <p className="opacity-90">Customer calls at 2 AM about a burst pipe</p>
+                    <h3 className="text-xl font-semibold mb-2">Scenario: Urgent Pipe Leak</h3>
+                    <p className="opacity-90">Customer calls at 2 AM about a leaking pipe</p>
                   </div>
                   
                   <div className="p-6 space-y-6">
                     {[
                       {
                         step: "1. AI Greeting",
-                        content: "\"Thank you for calling ABC Plumbing. I'm here to help with your emergency. Can you tell me your name and the nature of your plumbing issue?\""
+                        content: "\"Thank you for calling! I'm an automated phone agent, you can speak to me in full sentences. What's the issue you're calling about?\""
                       },
                       {
                         step: "2. Information Gathering", 
-                        content: "AI collects: Customer details, location, issue description (\"burst pipe in basement\"), urgency assessment, photos if possible"
+                        content: "AI collects customer name, full address, and detailed issue description. Uses natural confirmation: \"Just to confirm, that's J-O-H-N for your first name...\""
                       },
                       {
-                        step: "3. Emergency Assessment",
-                        content: "AI determines: Active water damage = Emergency. Triggers immediate escalation to on-call technician."
+                        step: "3. Urgency Assessment",
+                        content: "\"Since you mentioned the leak is pretty bad, do you feel this is an urgent matter that needs a team member to respond right away?\" Customer confirms it's urgent."
                       },
                       {
-                        step: "4. Immediate Action",
-                        content: "\"This is an emergency. I'm connecting you to our on-call technician right now. They'll be with you within 2 rings.\""
+                        step: "4. Confirmation & Recap",
+                        content: "AI summarizes all collected information (name, address, issue, urgency level) and asks for confirmation to ensure accuracy."
                       },
                       {
-                        step: "5. Technician Notification",
-                        content: "On-call tech receives call with full context: customer info, issue details, photos, urgency level"
+                        step: "5. Immediate Escalation",
+                        content: "\"Please stay close to your phone—a team member will reach out to you right away.\" Team member receives complete call context and responds immediately."
                       }
                     ].map((item, index) => (
                       <div key={index} className="flex space-x-4">
