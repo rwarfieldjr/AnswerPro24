@@ -115,61 +115,6 @@ export default function Contact() {
           </div>
         </section>
 
-        {/* Support Hours */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-foreground mb-4">
-                Support Hours
-              </h2>
-            </div>
-
-            <div className="max-w-2xl mx-auto">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-foreground">Sales & General Support</h3>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Monday - Friday:</span>
-                          <span className="font-medium">8 AM - 8 PM EST</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Saturday:</span>
-                          <span className="font-medium">10 AM - 4 PM EST</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Sunday:</span>
-                          <span className="font-medium">Closed</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-foreground">Technical Support</h3>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">For Customers:</span>
-                          <span className="font-medium">24/7 Available</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Emergency Line:</span>
-                          <span className="font-medium">(864) 404-9606</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Response Time:</span>
-                          <span className="font-medium">&lt; 15 minutes</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
         {/* FAQ Section */}
         <section className="py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
