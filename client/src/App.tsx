@@ -12,7 +12,6 @@ import HowItWorks from "@/pages/HowItWorks";
 import FAQ from "@/pages/FAQ";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
-import Status from "@/pages/Status";
 import SignupSuccess from "@/pages/SignupSuccess";
 import SignupCancel from "@/pages/SignupCancel";
 import Privacy from "@/pages/legal/Privacy";
@@ -29,7 +28,6 @@ function Router() {
       <Route path="/faq" component={FAQ} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
-      <Route path="/status" component={Status} />
       <Route path="/signup/success" component={SignupSuccess} />
       <Route path="/signup/cancel" component={SignupCancel} />
       <Route path="/legal/privacy" component={Privacy} />
