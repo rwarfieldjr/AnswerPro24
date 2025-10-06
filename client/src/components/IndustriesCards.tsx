@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import plumberImage from "@assets/generated_images/Professional_plumber_at_work_6a157825.png";
 import electricianImage from "@assets/generated_images/Professional_electrician_at_work_097d465f.png";
-import hvacImage from "@assets/generated_images/Professional_HVAC_technician_349997aa.png";
+import hvacImage from "@assets/hvac-technician.png";
 import garageDoorImage from "@assets/Generated Image September 23, 2025 - 1_15PM_1758647836652.png";
 import locksmithImage from "@assets/Generated Image September 23, 2025 - 12_08PM_1758644350905.png";
 import towingImage from "@assets/Generated Image September 23, 2025 - 12_10PM_1758644393501.png";
