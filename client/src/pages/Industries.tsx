@@ -421,6 +421,31 @@ export default function Industries() {
           }
         }} />
 
+        {/* Custom Industry CTA */}
+        <section className="py-8">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto">
+              <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30">
+                <CardContent className="p-8 text-center space-y-4">
+                  <h3 className="text-2xl font-bold text-foreground">
+                    Don't See Your Industry on the List? Let's Talk!
+                  </h3>
+                  <p className="text-lg text-muted-foreground">
+                    We work with many home service businesses beyond those listed above. Contact us to discuss your specific needs.
+                  </p>
+                  <Button 
+                    size="lg" 
+                    onClick={handleStartTrial}
+                    data-testid="button-custom-industry-cta"
+                  >
+                    Get in Touch
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
         {/* Detailed Industry Sections */}
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
