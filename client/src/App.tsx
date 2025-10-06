@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import ScrollToTop from "@/components/ScrollToTop";
 import Home from "@/pages/Home";
 import Pricing from "@/pages/Pricing";
 import Industries from "@/pages/Industries";
@@ -44,6 +45,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light" storageKey="answerpro24-theme">
         <TooltipProvider>
+          <ScrollToTop />
           <Router />
           <Toaster />
         </TooltipProvider>
