@@ -16,6 +16,8 @@ export default defineConfig({
         ]
       : []),
   ],
+  // Expose NEXT_PUBLIC_* to the client for compatibility with Next-style env names
+  envPrefix: ["VITE_", "NEXT_PUBLIC_"],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),
