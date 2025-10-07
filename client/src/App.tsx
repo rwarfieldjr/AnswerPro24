@@ -17,11 +17,6 @@ import SignupCancel from "@/pages/SignupCancel";
 import Privacy from "@/pages/legal/Privacy";
 import Terms from "@/pages/legal/Terms";
 import NotFound from "@/pages/not-found";
-import Login from "@/pages/auth/Login";
-import Register from "@/pages/auth/Register";
-import Dashboard from "@/pages/Dashboard";
-import ProtectedRoute from "@/components/ProtectedRoute";
-
 function Router() {
   return (
     <Switch>
@@ -34,15 +29,6 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/signup/success" component={SignupSuccess} />
       <Route path="/signup/cancel" component={SignupCancel} />
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-      <Route path="/dashboard">
-        {() => (
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        )}
-      </Route>
       <Route path="/legal/privacy" component={Privacy} />
       <Route path="/legal/terms" component={Terms} />
       {/* Fallback to 404 */}
