@@ -16,7 +16,11 @@ import SignupSuccess from "@/pages/SignupSuccess";
 import SignupCancel from "@/pages/SignupCancel";
 import Privacy from "@/pages/legal/Privacy";
 import Terms from "@/pages/legal/Terms";
+import Login from "@/pages/Login";
+import Signup from "@/pages/Signup";
+import Portal from "@/pages/Portal";
 import NotFound from "@/pages/not-found";
+
 function Router() {
   return (
     <Switch>
@@ -27,6 +31,9 @@ function Router() {
       <Route path="/faq" component={FAQ} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
+      <Route path="/login" component={Login} />
+      <Route path="/signup" component={Signup} />
+      <Route path="/portal" component={Portal} />
       <Route path="/signup/success" component={SignupSuccess} />
       <Route path="/signup/cancel" component={SignupCancel} />
       <Route path="/legal/privacy" component={Privacy} />
