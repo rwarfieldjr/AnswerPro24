@@ -1,6 +1,10 @@
-node_modules
-dist
+# secrets / env
+.env
+.env.*
+.replit_secrets*
+# local db/files
+data/
+*.db
+# deps & misc
+node_modules/
 .DS_Store
-server/public
-vite.config.ts.*
-*.tar.gz
