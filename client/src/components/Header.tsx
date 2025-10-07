@@ -1,9 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Phone } from "lucide-react";
+import { Menu, Phone, User, LogOut } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { supabase } from "@/lib/supabase";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { User as SupabaseUser } from "@supabase/supabase-js";
 import logoImage from "@assets/AnswerPro Logo_1758032356924.jpeg";
 import phoneLogoImage from "@assets/Screen Shot 2025-10-06 at 3.00.31 PM_1759779415399.png";
 
@@ -17,8 +27,31 @@ const navigation = [
 ];
 
 export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+
+    checkUser();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setLocation("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
@@ -54,9 +87,45 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-4">
             <ThemeToggle />
-            <Button onClick={onStartTrial} data-testid="button-start-trial">
-              Start Free Trial
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon" data-testid="button-user-menu">
+                    <User className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium">Logged in as</p>
+                      <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => setLocation("/portal")} data-testid="menu-portal">
+                    <User className="mr-2 h-4 w-4" />
+                    Portal
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout} data-testid="menu-logout">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button 
+                  variant="ghost" 
+                  onClick={() => setLocation("/login")}
+                  data-testid="button-login"
+                >
+                  Login
+                </Button>
+                <Button onClick={onStartTrial} data-testid="button-start-trial">
+                  Start Free Trial
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -86,9 +155,47 @@ export default function Header({ onStartTrial }: { onStartTrial: () => void }) {
                     <span className="text-sm font-medium">Theme:</span>
                     <ThemeToggle />
                   </div>
-                  <Button onClick={() => { onStartTrial(); setIsOpen(false); }} className="w-full" data-testid="mobile-button-start-trial">
-                    Start Free Trial
-                  </Button>
+                  {user ? (
+                    <>
+                      <div className="text-sm text-muted-foreground">
+                        Logged in as: <span className="font-medium text-foreground">{user.email}</span>
+                      </div>
+                      <Button 
+                        onClick={() => { setLocation("/portal"); setIsOpen(false); }} 
+                        variant="outline" 
+                        className="w-full"
+                        data-testid="mobile-button-portal"
+                      >
+                        Portal
+                      </Button>
+                      <Button 
+                        onClick={() => { handleLogout(); setIsOpen(false); }} 
+                        variant="outline" 
+                        className="w-full"
+                        data-testid="mobile-button-logout"
+                      >
+                        Logout
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button 
+                        onClick={() => { setLocation("/login"); setIsOpen(false); }} 
+                        variant="outline" 
+                        className="w-full"
+                        data-testid="mobile-button-login"
+                      >
+                        Login
+                      </Button>
+                      <Button 
+                        onClick={() => { onStartTrial(); setIsOpen(false); }} 
+                        className="w-full" 
+                        data-testid="mobile-button-start-trial"
+                      >
+                        Start Free Trial
+                      </Button>
+                    </>
+                  )}
                 </div>
               </nav>
             </SheetContent>
